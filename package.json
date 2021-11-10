@@ -9,7 +9,7 @@
   "author": "Vladislav 'Ithelor' Dietrich",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.14"
+    "nodemon": "^2.0.15"
   },
   "dependencies": {
     "axios": "^0.24.0",

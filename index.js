@@ -7,21 +7,37 @@ const mongoose = require('mongoose')
 const PitchSchema = require('./models/Pitch')
 
 const app = express()
-app.use(cors())
+app.use(cors({
+	//
+}))
 
 const PORT = process.env['PORT'] || 8080
 const MONGO_URI = process.env['MONGO_URI']
 
+// TODO: resolve headers passing issue
 app.get('/home', (req, res) => {
+
+	let page = parseInt(req.query.page) || 0
+	let limit = parseInt(req.query.limit) || 101
 	
 	PitchSchema.find((err, data) => {
 		if (err) {
 			console.log(`An error occured: ${err.res}`)
 		}
 		else {
+			// res.setHeader('total', total)
 			res.json(data)
 		}
-	}).limit(10)
+	})
+		.skip(page * limit)
+		.limit(limit)
+})
+
+app.get('/home/total', (req, res) => {
+
+	PitchSchema.count((err, data) => {
+		res.json(data)
+	})
 })
 
 try {
