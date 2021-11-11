@@ -8,11 +8,23 @@ const PitchSchema = require('./models/Pitch')
 
 const app = express()
 app.use(cors({
-	//
+	origin: 'http://localhost:5051',
+	exposedHeaders: ['total']
 }))
 
 const PORT = process.env['PORT'] || 8080
 const MONGO_URI = process.env['MONGO_URI']
+
+let total = 0
+PitchSchema.count((err, data) => {
+	if (err) {
+		console.log(`An error occured: ${err.res}`)
+	}
+	else {
+		total = data
+		console.log(`set header to ${data}`)
+	}
+})
 
 // TODO: resolve headers passing issue
 app.get('/home', (req, res) => {
@@ -25,11 +37,11 @@ app.get('/home', (req, res) => {
 			console.log(`An error occured: ${err.res}`)
 		}
 		else {
-			// res.setHeader('total', total)
+			res.setHeader('total', total)
 			res.json(data)
 		}
 	})
-		.skip(page * limit)
+		.skip((page - 1) * limit)
 		.limit(limit)
 })
 
