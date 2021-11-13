@@ -10,7 +10,7 @@ export default class Header extends Component {
 			<div className="header">
 				<div className="header-left">
 					<img src={logo} className="App-logo" alt="logo" />
-					<p className="title">Princess</p>
+					<p>Princess</p>
 				</div>
 
 				<div className="header-right">

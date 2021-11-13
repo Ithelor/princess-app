@@ -2,29 +2,34 @@
 
 /* kanit-regular - latin */
 @font-face {
-  font-family: 'Kanit';
+  font-family: "Kanit";
   font-style: normal;
   font-weight: 400;
-  src: url('fonts/kanit-v7-latin-regular.eot'); /* IE9 Compat Modes */
-  src: local(''),
-       url('fonts/kanit-v7-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('fonts/kanit-v7-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-       url('fonts/kanit-v7-latin-regular.woff') format('woff'), /* Modern Browsers */
-       url('fonts/kanit-v7-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('fonts/kanit-v7-latin-regular.svg#Kanit') format('svg'); /* Legacy iOS */
+  src: url("fonts/kanit-v7-latin-regular.eot"); /* IE9 Compat Modes */
+  src: local(""),
+    url("fonts/kanit-v7-latin-regular.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("fonts/kanit-v7-latin-regular.woff2") format("woff2"),
+    /* Super Modern Browsers */ url("fonts/kanit-v7-latin-regular.woff")
+      format("woff"),
+    /* Modern Browsers */ url("fonts/kanit-v7-latin-regular.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */ url("fonts/kanit-v7-latin-regular.svg#Kanit")
+      format("svg"); /* Legacy iOS */
 }
 /* kanit-500 - latin */
 @font-face {
-  font-family: 'Kanit';
+  font-family: "Kanit";
   font-style: normal;
   font-weight: 500;
-  src: url('fonts/kanit-v7-latin-500.eot'); /* IE9 Compat Modes */
-  src: local(''),
-       url('fonts/kanit-v7-latin-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('fonts/kanit-v7-latin-500.woff2') format('woff2'), /* Super Modern Browsers */
-       url('fonts/kanit-v7-latin-500.woff') format('woff'), /* Modern Browsers */
-       url('fonts/kanit-v7-latin-500.ttf') format('truetype'), /* Safari, Android, iOS */
-       url('fonts/kanit-v7-latin-500.svg#Kanit') format('svg'); /* Legacy iOS */
+  src: url("fonts/kanit-v7-latin-500.eot"); /* IE9 Compat Modes */
+  src: local(""),
+    url("fonts/kanit-v7-latin-500.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("fonts/kanit-v7-latin-500.woff2") format("woff2"),
+    /* Super Modern Browsers */ url("fonts/kanit-v7-latin-500.woff")
+      format("woff"),
+    /* Modern Browsers */ url("fonts/kanit-v7-latin-500.ttf") format("truetype"),
+    /* Safari, Android, iOS */ url("fonts/kanit-v7-latin-500.svg#Kanit")
+      format("svg"); /* Legacy iOS */
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -70,6 +75,10 @@ body {
 
   /* height: 2000px;
   width: 2000px; */
+
+  background-position: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .App {
@@ -101,14 +110,190 @@ body {
   /* overflow: hidden; */
 }
 
-.title {
+.header-left > p {
   font-size: 24px;
   font-weight: 400;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-family: "Kanit", sans-serif;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+section {
+  width: 100%;
+  position: absolute;
+  top: 33%;
+}
+
+.content {
+  box-sizing: border-box;
+  /* width: calc(100% - 3em); */
+  width: 80vw;
+  min-height: 40vh;
+  border-radius: 1em;
+  box-shadow: 0 0.125em 4em rgba(0, 0, 0, 0.3);
+  color: var(--light);
+  margin: 0 auto;
+  background: hsla(0, 0%, 0%, 0.75);
+  backdrop-filter: blur(1rem);
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+}
+
+.home {
+  width: inherit;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  /* tbc */
+}
+
+/*  */
+/* Landing */
+/*  */
+
+.landing {
+  width: inherit;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* tbc */
+}
+
+.dashboard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  padding: 1rem 1rem;
+}
+
+.user {
+  text-align: center;
+}
+
+.avatar {
+  border-radius: 50%;
+}
+
+.links {
+  text-align: center;
+}
+
+.link {
+  /* display: flex; */
+  margin: 2rem 0rem;
+  padding: 1rem 5rem;
+  /* align-items: center; */
+}
+
+hr.vertical {
+  border: 1px inset;
+  size: 100%;
+}
+
+.settings {
+  text-align: left;
+  flex: 2;
+  padding: 1rem 1rem;
+}
+
+.settings > h3 {
+  text-align: center;
+}
+
+.settings-item {
+  display: flex;
+  margin: 1rem auto;
+  align-items: center;
+}
+
+.settings-item > h4 {
+  flex: 1;
+  text-align: center;
+}
+
+.settings-item > p {
+  flex: 4;
+  width: 100%;
+  height: 1em;
+  line-height: 1em;
+  background-color: rgba(100, 100, 100, 0.25);
+  border-radius: 2rem;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/*  */
+/* About */
+/*  */
+
+.about {
+  width: inherit;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* tbc */
+}
+
+.entries {
+  /* text-align: left;
+  overflow: hidden;
+  padding: 3rem; */
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
+
+.entries > h3 {
+  text-align: center;
+}
+
+.entry {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.entry > .user > h3 {
+  font-weight: 100;
+  font-size: 1em;
+}
+
+.entry > p {
+  width: 100%;
+  height: 1rem;
+  line-height: 1em;
+  background-color: rgba(100, 100, 100, 0.25);
+  border-radius: 2rem;
+  margin: 0 1rem 1.5rem;
+  text-align: center;
+
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 h2 {
-  font-family: 'Kanit', sans-serif;
+  font-family: "Kanit", sans-serif;
   font-weight: 500;
 }
 
@@ -123,27 +308,6 @@ h2 {
   padding: 12px;
   text-decoration: none;
   font-size: 18px;
-}
-
-.content {
-  width: 100%;
-  position: absolute;
-  top: 33%;
-  /* padding-top: 100vmin; */
-}
-
-.landing {
-  box-sizing: border-box;
-  /* width: calc(100% - 3em); */
-  width: 33%;
-  text-align: center;
-  background-color: var(--dark);
-  border-radius: 1em;
-  box-shadow: 0 0.125em 4em rgba(0, 0, 0, 0.3);
-  overflow: hidden;
-  color: var(--light);
-  margin: 0 auto;
-  padding: 1em;
 }
 
 a.button {

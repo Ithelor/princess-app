@@ -14,17 +14,20 @@ function App() {
 			<div className="App">
 				<Header />
 
-				<div className="content">
-					<Routes>
-						<Route path="" element={<Landing />} />
-						<Route path="home" element={<Home />} />
-						<Route path="about" element={<About />} />
-					</Routes>
-				</div>
+				<main>
+					<section>
+						<Routes>
+							<Route path="" element={<Landing />} />
+							<Route path="home" element={<Home />} />
+							<Route path="about" element={<About />} />
+						</Routes>
+					</section>
+				</main>
+
 			</div>
-					
+
 		</BrowserRouter>
-		
+
 	)
 }
 

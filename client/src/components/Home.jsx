@@ -48,15 +48,17 @@ export const Home = () => {
 	}, [totalCount, scrollHandler])
 
 	return (
-		<div className="landing">
-			<h2>Home</h2>
-			{
-			loading ? (
-				pitchData.map(pitch =>
-					<p key={pitch._id}>{pitch.expression} {pitch.reading} {pitch.accent}</p>
-				)
-			) : (<svg className="spinner"></svg>)
-			}
+		<div className="content">
+			<div className="home">
+				<h2>Home</h2>
+				{
+					loading ? (
+						pitchData.map(pitch =>
+							<p key={pitch._id}>{pitch.expression} {pitch.reading} {pitch.accent}</p>
+						)
+					) : (<svg className="spinner"></svg>)
+				}
+			</div>
 		</div>
 	)
 }
