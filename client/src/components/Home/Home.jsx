@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 
+import styles from './Home.module.css'
+
 export const Home = () => {
 
 	// handling data loading
@@ -27,7 +29,7 @@ export const Home = () => {
 
 				try {
 					await axios
-						.get(`http://localhost:5050/home?limit=35&page=${currentPage}`)
+						.get(`http://localhost:5050/home?limit=50&page=${currentPage}`)
 						.then(res => {
 							setPitchData([...pitchData, ...res.data])
 							setCurrentPage(prevState => prevState + 1)
@@ -48,17 +50,15 @@ export const Home = () => {
 	}, [totalCount, scrollHandler])
 
 	return (
-		<div className="content">
-			<div className="home">
-				<h2>Home</h2>
-				{
-					loading ? (
-						pitchData.map(pitch =>
-							<p key={pitch._id}>{pitch.expression} {pitch.reading} {pitch.accent}</p>
-						)
-					) : (<svg className="spinner"></svg>)
-				}
-			</div>
-		</div>
+		<article className={styles.home}>
+			<h2>Home</h2>
+			{
+				loading ? (
+					pitchData.map(pitch =>
+						<p key={pitch._id}>{pitch.expression} {pitch.reading} {pitch.accent}</p>
+					)
+				) : (<svg className={styles.spinner}></svg>)
+			}
+		</article>
 	)
 }

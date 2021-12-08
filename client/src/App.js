@@ -1,33 +1,26 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import { Landing } from './components/Landing'
-import { Home } from './components/Home'
-import About from './components/About'
-import Header from './components/Header'
+import Header from './components/Header/Header'
+import { Landing } from './components/Landing/Landing'
+import { Home } from './components/Home/Home'
+import About from './components/About/About'
+
+
 
 function App() {
 	return (
-
 		<BrowserRouter>
+			<Header />
 
-			<div className="App">
-				<Header />
-
-				<main>
-					<section>
-						<Routes>
-							<Route path="" element={<Landing />} />
-							<Route path="home" element={<Home />} />
-							<Route path="about" element={<About />} />
-						</Routes>
-					</section>
-				</main>
-
-			</div>
-
+			<main id="main">
+				<Routes>
+					<Route path="" element={<Landing />} />
+					<Route path="home" element={<Home />} />
+					<Route path="about" element={<About />} />
+				</Routes>
+			</main>
 		</BrowserRouter>
-
 	)
 }
 
