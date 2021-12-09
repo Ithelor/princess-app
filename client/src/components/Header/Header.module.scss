@@ -19,7 +19,7 @@
 	color: #f0f0f0;
 	font-family: 'Poppins', sans-serif;
 	user-select: none;
-	/* overflow: hidden; */
+	// overflow: hidden;
 }
 
 .logo {
@@ -30,7 +30,7 @@
 
 header {
 	box-sizing: border-box;
-	padding: 0 1rem;
+	padding: 0 2rem;
 	background-color: var(--bg-primary);
 	position: fixed;
 	top: 0;
@@ -52,7 +52,7 @@ header {
 	height: 3rem;
 	width: 3rem;
 	margin: 0.5rem auto;
-	background-color: rgb(31, 41, 55);
+	background-color: var(--bg-secondary);
 	color: var(--primary);
 	border-radius: 1.5rem;
 	transition-property: all;
@@ -92,11 +92,6 @@ header {
 	font-weight: 400;
 	letter-spacing: 0.1em;
 }
-
-/* .nav-tooltip::after {
-	content: attr(datatooltiptext);
-	position: relative;
-} */
 
 .nav-icon:hover .nav-tooltip {
 	transform: scale(1);

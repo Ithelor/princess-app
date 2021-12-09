@@ -1,11 +1,16 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { BsFillPlayBtnFill as LandingIcon, BsHouseFill as HomeIcon, BsPatchQuestion as AboutIcon, BsGearFill as SettingsIcon } from 'react-icons/bs'
+import {
+	BsFillPlayBtnFill as LandingIcon,
+	BsHouseFill as HomeIcon,
+	BsPatchQuestion as AboutIcon,
+	BsGearFill as SettingsIcon
+} from 'react-icons/bs'
 
-import { ReactComponent as Logo } from '../../assets/shared/logo.svg'
+import { ReactComponent as Logo } from 'assets/shared/logo.svg'
 
-import styles from './Header.module.css'
-import '../../index.css'
+import styles from './Header.module.scss'
+import 'index.scss'
 
 const Header = () => {
 
@@ -54,7 +59,7 @@ const Header = () => {
 }
 
 const NavIcon = ({ icon, tooltip }) => (
-	// group since applying classes to child while hovering on parent
+
 	<div className={styles['nav-icon']}>
 		{icon}
 

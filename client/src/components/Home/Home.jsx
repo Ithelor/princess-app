@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 
-import styles from './Home.module.css'
+import styles from './Home.module.scss'
 
 export const Home = () => {
 
@@ -42,7 +42,7 @@ export const Home = () => {
 				}
 			}
 		})()
-	}, [fetching]) // eslint-disable-line react-hooks/exhaustive-deps
+	}, [fetching]) /* fuck off */ // eslint-disable-line react-hooks/exhaustive-deps
 
 	useEffect(() => {
 		document.addEventListener('scroll', scrollHandler)
@@ -51,14 +51,28 @@ export const Home = () => {
 
 	return (
 		<article className={styles.home}>
-			<h2>Home</h2>
 			{
 				loading ? (
-					pitchData.map(pitch =>
-						<p key={pitch._id}>{pitch.expression} {pitch.reading} {pitch.accent}</p>
-					)
+					<table className={styles['fade-in']}>
+						<thead>
+							<tr>
+								<th>Expression</th>
+								<th>Reading</th>
+								<th>Pattern</th>
+							</tr>
+						</thead>
+						<tbody>
+							{pitchData.map(pitch =>
+								<tr key={pitch._id} className={styles['fade-in']}>
+									<td>{pitch.expression}</td>
+									<td>{pitch.reading}</td>
+									<td>{pitch.accent}</td>
+								</tr>)}
+						</tbody>
+					</table>
 				) : (<svg className={styles.spinner}></svg>)
 			}
+
 		</article>
 	)
 }
