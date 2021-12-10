@@ -3,11 +3,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap');
 
-$primary: rgb(97, 218, 251);
-
 :root {
-  --primary: rgb(5, 150, 105);
-  --primary: rgb(16, 185, 129);
+  // 5, 150, 105
+  // 16, 185, 129
 
   --primary-val: 97, 218, 251;
   --primary: rgb(var(--primary-val));
@@ -28,7 +26,7 @@ $primary: rgb(97, 218, 251);
 }
 
 body {
-  /* transition: 0.4s ease-out; */
+  // transition: 0.4s ease-out;
   height: 100vh;
   min-height: 500px;
 
@@ -40,7 +38,7 @@ body {
   background-image: url('./assets/shared/sprinkle.svg'),
     linear-gradient(to top, var(--primary), var(--bg-primary));
 
-  // backdrop-filter: blur(0.5rem); // breaking header position
+  // backdrop-filter: blur(0.5rem);
   scroll-behavior: smooth;
 }
 
@@ -68,12 +66,4 @@ main {
 
 article {
   width: 100%;
-}
-
-h2 {
-  font-family: 'Sawarabi Mincho', sans-serif;
-  font-weight: 400;
-  font-size: 2em;
-  padding: 1rem;
-  text-align: center;
 }

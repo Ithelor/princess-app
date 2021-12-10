@@ -46,8 +46,8 @@ export const Home = () => {
 
   return (
     <article>
-      <h2>高低アクセント</h2>
-      <section onScroll={onScroll} className={styles['jtp-table']}>
+      <h2 className={styles.title}>高低アクセント</h2>
+      <section className={styles['jtp-table']}>
         {loading ? (
           <table className={styles['fade-in']}>
             <thead>
@@ -57,7 +57,7 @@ export const Home = () => {
                 <th>Pattern</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody onScroll={onScroll}>
               {pitchData.map((pitch) => (
                 <tr key={pitch._id} className={styles['fade-in']}>
                   <td>{pitch.expression}</td>
