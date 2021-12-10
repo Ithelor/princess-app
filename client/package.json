@@ -21,7 +21,8 @@
 		"react-scripts": "4.0.3",
 		"web-vitals": "^1.0.1"
 	},
-  "devDependencies": {
+	"devDependencies": {
+		"prettier": "2.5.1",
 		"sass": "^1.44.0"
 	},
 	"eslintConfig": {
@@ -41,5 +42,5 @@
 			"last 1 firefox version",
 			"last 1 safari version"
 		]
-  }
+	}
 }

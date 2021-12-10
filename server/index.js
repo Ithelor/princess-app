@@ -46,7 +46,7 @@ try {
 	mongoose
 		.connect(MONGO_URI, { useNewUrlParser: true })
 		.then(() => {
-			console.log('Database Connected');
+			console.log('Database connected');
 		})
 		.then(() => {
 			app.listen(PORT, () => console.log(`App is running at ${PORT}..`));
@@ -55,7 +55,7 @@ try {
 			console.error(err);
 		});
 } catch (err) {
-	console.log('Databaase connection error', err.message);
+	console.log('Database connection error', err.message);
 	process.exit(1);
 }
 
