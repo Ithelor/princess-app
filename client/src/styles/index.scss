@@ -1,0 +1,50 @@
+@use 'partials/_fonts.scss';
+@use 'partials/colors';
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  // transition: 0.4s ease-out;
+  height: 100vh;
+  min-height: 500px;
+
+  background-attachment: fixed;
+  background-position: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  background-image: url('../assets/shared/sprinkle.svg'),
+    linear-gradient(to top, colors.$primary-color, colors.$bg-primary-color);
+
+  // backdrop-filter: blur(0.5rem);
+  scroll-behavior: smooth;
+}
+
+main {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+
+  position: relative;
+  top: 5rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 80vw;
+  margin: auto;
+
+  border-radius: 1em;
+  box-shadow: 0 0.125em 4em rgba(colors.$bg-primary-color, 0.3);
+  color: colors.$light-color;
+  background-color: rgba(colors.$bg-primary-color, 0.8);
+
+  backdrop-filter: blur(0.5rem);
+}
+
+article {
+  width: 100%;
+}

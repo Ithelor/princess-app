@@ -10,7 +10,7 @@ import {
 import { ReactComponent as Logo } from 'assets/shared/logo.svg'
 
 import styles from './Header.module.scss'
-import 'index.scss'
+import 'styles/index.scss'
 
 const Header = () => {
   const IconSize = 24
@@ -30,21 +30,18 @@ const Header = () => {
                 icon={<LandingIcon size={IconSize} />}
                 tooltip="Landing"
               />
-              {/* <span className=''>00</span>Landing */}
             </NavLink>
           </li>
 
           <li>
             <NavLink to="home">
               <NavIcon icon={<HomeIcon size={IconSize} />} tooltip="Home" />
-              {/* <span className=''>01</span>Home */}
             </NavLink>
           </li>
 
           <li>
             <NavLink to="about">
               <NavIcon icon={<AboutIcon size={IconSize} />} tooltip="About" />
-              {/* <span className=''>02</span>About */}
             </NavLink>
           </li>
         </ul>

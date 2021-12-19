@@ -1,0 +1,66 @@
+@use '~styles/partials/_colors.scss';
+
+.card {
+  //TODO: delete these two when done
+  position: relative;
+  top: 5rem;
+
+  border-radius: 1em;
+
+  display: block;
+  margin: auto;
+
+  box-sizing: border-box;
+
+  padding: 10%;
+  text-align: center;
+  width: 70%;
+  color: colors.$light-color;
+
+  background-color: rgba(colors.$bg-primary-color, 0.8);
+  backdrop-filter: blur(0.5em);
+
+  overflow: hidden;
+
+  h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 100;
+    font-size: 5rem;
+  }
+}
+
+.sub-content {
+  margin-top: 1em;
+  display: grid;
+
+  .row {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 400;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .reading {
+      display: inline-block;
+      padding: 0.5em;
+      border-radius: 0.5em;
+      color: #f4ffff;
+      text-align: left;
+
+      margin: 0.25em;
+      text-align: center;
+
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 400;
+    }
+
+    .on {
+      background-color: colors.$on-color;
+    }
+
+    .kun {
+      background-color: colors.$kun-color;
+    }
+  }
+}

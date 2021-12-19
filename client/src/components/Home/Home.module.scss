@@ -1,3 +1,5 @@
+@use '~styles/partials/_colors.scss';
+
 @keyframes spinner {
   to {
     transform: rotate(360deg);
@@ -31,7 +33,7 @@
   height: 4em;
   border-radius: 50%;
   border: 0.15em solid white;
-  border-top-color: var(--primary);
+  border-top-color: colors.$primary-color;
   animation: spinner 0.7s linear infinite;
   margin: 5rem auto;
 }
@@ -59,14 +61,14 @@ table {
   border-collapse: collapse;
 
   thead {
-    background-color: var(--bg-primary);
+    background-color: colors.$bg-primary-color;
     font-weight: bold;
     border-radius: 0.5rem 0.5rem 0 0;
   }
 
   tbody {
     display: block;
-    max-height: 75vh;
+    max-height: 80vh;
     overflow-y: scroll;
 
     scroll-snap-type: y mandatory;
@@ -79,14 +81,14 @@ table {
       border-radius: 1em;
     }
     &::-webkit-scrollbar-thumb {
-      background-color: var(--bg-primary);
+      background-color: colors.$bg-primary-color;
 
       border-radius: 1em;
       box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
     }
     &:hover {
       &::-webkit-scrollbar-thumb {
-        background-color: var(--light);
+        background-color: colors.$light-color;
       }
     }
   }
@@ -114,7 +116,7 @@ table {
 }
 
 .title {
-  font-family: 'Sawarabi Mincho', sans-serif;
+  font-family: 'Noto Serif JP', serif;
   font-weight: 400;
   font-size: 2em;
   padding: 1rem;

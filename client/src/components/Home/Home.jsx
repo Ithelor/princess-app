@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import styles from './Home.module.scss'
 
-export const Home = () => {
+const Home = () => {
   // handling data loading
   const [pitchData, setPitchData] = useState([])
   const [loading, setLoading] = useState(false)
@@ -45,32 +45,36 @@ export const Home = () => {
   }
 
   return (
-    <article>
-      <h2 className={styles.title}>高低アクセント</h2>
-      <section className={styles['jtp-table']}>
-        {loading ? (
-          <table className={styles['fade-in']}>
-            <thead>
-              <tr>
-                <th>Expression</th>
-                <th>Reading</th>
-                <th>Pattern</th>
-              </tr>
-            </thead>
-            <tbody onScroll={onScroll}>
-              {pitchData.map((pitch) => (
-                <tr key={pitch._id} className={styles['fade-in']}>
-                  <td>{pitch.expression}</td>
-                  <td>{pitch.reading}</td>
-                  <td>{pitch.accent}</td>
+    <main>
+      <article>
+        <h2 className={styles.title}>高低アクセント</h2>
+        <section className={styles['jtp-table']}>
+          {loading ? (
+            <table className={styles['fade-in']}>
+              <thead>
+                <tr>
+                  <th>Expression</th>
+                  <th>Reading</th>
+                  <th>Pattern</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <svg className={styles.spinner}></svg>
-        )}
-      </section>
-    </article>
+              </thead>
+              <tbody onScroll={onScroll}>
+                {pitchData.map((pitch) => (
+                  <tr key={pitch._id} className={styles['fade-in']}>
+                    <td>{pitch.expression}</td>
+                    <td>{pitch.reading}</td>
+                    <td>{pitch.accent}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <svg className={styles.spinner}></svg>
+          )}
+        </section>
+      </article>
+    </main>
   )
 }
+
+export default Home
