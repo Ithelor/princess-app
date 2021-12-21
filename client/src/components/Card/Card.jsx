@@ -1,12 +1,22 @@
 import styles from './Card.module.scss'
 
-// basic card layout
-//
-
 const Card = () => {
   return (
     <div className={styles.card}>
-      <div className={styles['main-content']}>
+      <div className={styles['card-header']}>
+        <p className={styles.left}>
+          <span>Variant:</span>
+
+          <span>Radical:</span>
+        </p>
+        <p className={styles.right}>
+          <span>Strokes:</span>
+
+          <span>Level: </span>
+        </p>
+      </div>
+
+      <div>
         <h2>農</h2>
         <hr />
       </div>
