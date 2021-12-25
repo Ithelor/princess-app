@@ -12,9 +12,9 @@
 
   box-sizing: border-box;
 
-  padding: 5%;
+  padding: 0.5rem;
   text-align: center;
-  width: 70%;
+  width: clamp(100px, 50%, 600px);
   color: colors.$light-color;
 
   background-color: rgba(colors.$bg-primary-color, 0.8);
@@ -37,7 +37,7 @@
     .left,
     .right {
       span {
-        @extend .reading, .generic;
+        @extend .label, .generic;
       }
     }
   }
@@ -46,6 +46,12 @@
     font-family: 'Noto Serif JP', serif;
     font-weight: 100;
     font-size: 5rem;
+  }
+
+  .search-results-placeholder {
+    padding: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
   }
 }
 
@@ -60,11 +66,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    p {
+      padding: 0.5rem;
+    }
   }
 }
 
-.reading {
+.label {
   display: inline-block;
+  min-width: 64px;
   padding: 0.5em;
   border-radius: 0.5em;
   color: #f4ffff;

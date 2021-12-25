@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import styles from './Home.module.scss'
+import Spinner from 'components/Spinner/Spinner'
+
+import styles from './Kanjium.module.scss'
 
 const Home = () => {
   // handling data loading
@@ -9,7 +11,8 @@ const Home = () => {
   const [loading, setLoading] = useState(false)
 
   // handling pagination
-  const [currentPage, setCurrentPage] = useState(1) // 3546 * 35
+  // 3546 * 35
+  const [currentPage, setCurrentPage] = useState(1)
   const [fetching, setFetching] = useState(true)
   const [totalCount, setTotalCount] = useState(0)
 
@@ -69,7 +72,7 @@ const Home = () => {
               </tbody>
             </table>
           ) : (
-            <svg className={styles.spinner}></svg>
+            <Spinner />
           )}
         </section>
       </article>

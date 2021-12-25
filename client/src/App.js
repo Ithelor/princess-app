@@ -1,11 +1,9 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import About from 'components/About/About'
-import Card from 'components/Card/Card'
+import Kentei from 'components/Kentei/Kentei'
 import Header from 'components/Header/Header'
-import Home from 'components/Home/Home'
-import Landing from 'components/Landing/Landing'
+import Kanjium from 'components/Kanjium/Kanjium'
 
 function App() {
   return (
@@ -13,10 +11,9 @@ function App() {
       <Header />
 
       <Routes>
-        <Route path="about" element={<About />} />
-        <Route path="card" element={<Card />} />
-        <Route path="home" element={<Home />} />
-        <Route path="" element={<Landing />} />
+        <Route path="kentei" element={<Kentei />} />
+        <Route path="kanjium" element={<Kanjium />} />
+        <Route path="" element={<Kanjium />} />
       </Routes>
     </BrowserRouter>
   )

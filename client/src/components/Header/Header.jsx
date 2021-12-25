@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
-  BsFillPlayBtnFill as LandingIcon,
-  BsHouseFill as HomeIcon,
-  BsPatchQuestion as AboutIcon,
+  BsCardHeading as KenteiIcon,
+  BsSoundwave as KanjiumIcon,
   BsGearFill as SettingsIcon,
   BsPersonBadgeFill as ProfileIcon,
   BsChevronBarRight as ChevronIcon
@@ -26,17 +25,14 @@ const Header = () => {
 
       <ul className={styles['navbar-nav']}>
         <NavItem
-          to="/"
-          icon={<LandingIcon size={IconSize} />}
-          tooltip="Landing"
+          to="kentei"
+          icon={<KenteiIcon size={IconSize} />}
+          tooltip="Kentei"
         />
-
-        <NavItem to="home" icon={<HomeIcon size={IconSize} />} tooltip="Home" />
-
         <NavItem
-          to="about"
-          icon={<AboutIcon size={IconSize} />}
-          tooltip="About"
+          to="kanjium"
+          icon={<KanjiumIcon size={IconSize} />}
+          tooltip="Kanjium"
         />
 
         <NavItem
