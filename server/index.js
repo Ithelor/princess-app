@@ -10,32 +10,21 @@ const KanjiSchema = require('./models/Kanji')
 const app = express()
 app.use(
   cors({
-    origin: 'http://localhost:5051',
-    exposedHeaders: ['total']
+    origin: 'http://localhost:5051'
   })
 )
 
 const PORT = process.env['PORT'] || 8080
 const MONGO_URI = process.env['MONGO_URI']
 
-let total = 0
-PitchSchema.count((err, data) => {
-  if (err) {
-    console.log(`An error occured: ${err.res}`)
-  } else {
-    total = data
-  }
-})
-
-app.get('/home', (req, res) => {
-  let page = parseInt(req.query.page) || 0
+app.get('/kanjium', (req, res) => {
+  let page = parseInt(req.query.page) || 1
   let limit = parseInt(req.query.limit) || 101
 
   PitchSchema.find((err, data) => {
     if (err) {
       console.log(`An error occured: ${err.res}`)
     } else {
-      res.setHeader('total', total)
       res.json(data)
     }
   })
@@ -44,15 +33,29 @@ app.get('/home', (req, res) => {
 })
 
 app.get('/kentei', (req, res) => {
-  let kanji = req.query.kanji || ''
+  let page = parseInt(req.query.page)
+  let limit = parseInt(req.query.limit)
+  let kanji = req.query.kanji
 
-  KanjiSchema.findOne({ kanji: kanji }, (err, data) => {
-    if (err) {
-      console.log(`An error occured: ${err.res}`)
-    } else {
-      res.json(data)
-    }
-  })
+  if (page && limit) {
+    KanjiSchema.find((err, data) => {
+      if (err) {
+        console.log(`An error occured: ${err.res}`)
+      } else {
+        res.json(data)
+      }
+    })
+      .skip((page - 1) * limit)
+      .limit(limit)
+  } else {
+    KanjiSchema.findOne({ kanji: kanji }, (err, data) => {
+      if (err) {
+        console.log(`An error occured: ${err.res}`)
+      } else {
+        res.json(data)
+      }
+    })
+  }
 })
 
 try {

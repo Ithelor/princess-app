@@ -7,10 +7,6 @@
 }
 
 body {
-  // transition: 0.4s ease-out;
-  height: 100vh;
-  min-height: 500px;
-
   background-attachment: fixed;
   background-position: fixed;
   background-size: cover;
@@ -47,4 +43,5 @@ main {
 
 article {
   width: 100%;
+  padding: 0.5rem;
 }

@@ -12,22 +12,22 @@ const Home = () => {
 
   // handling pagination
   // 3546 * 35
+  const totalCount = 124137
+  const limit = 50
   const [currentPage, setCurrentPage] = useState(1)
   const [fetching, setFetching] = useState(true)
-  const [totalCount, setTotalCount] = useState(0)
 
   useEffect(() => {
     ;(async () => {
       if (fetching) {
-        console.log(`fetching: ${pitchData.length} / ${totalCount}`)
-
         try {
           await axios
-            .get(`http://localhost:5050/home?limit=50&page=${currentPage}`)
+            .get(
+              `http://localhost:5050/kanjium?limit=${limit}&page=${currentPage}`
+            )
             .then((res) => {
               setPitchData([...pitchData, ...res.data])
               setCurrentPage((prevState) => prevState + 1)
-              setTotalCount(res.headers['total'])
             })
             .finally(() => setFetching(false))
           setLoading(true)

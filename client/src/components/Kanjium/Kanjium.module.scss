@@ -88,7 +88,9 @@ table {
     width: 100%;
     box-sizing: border-box;
 
-    scroll-snap-align: start;
+    // disabled since messing up with dynamic table loading
+    // TODO:? workaround
+    // scroll-snap-align: start;
   }
 
   td {

@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react'
 // import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 
-import styles from './Kentei.module.scss'
 import SearchBar from 'components/SearchBar/SearchBar'
+import KenteiItem from './KenteiItem/KenteiItem'
 
-const DEFAULT_TERM = '鍵'
+import styles from './Kentei.module.scss'
 
 // TODO: controller
 // TODO: loading spinner logic
@@ -15,7 +15,7 @@ const Card = () => {
   // const search = useLocation().search
   // const kanji = new URLSearchParams(search).get('kanji')
 
-  const [searchTerm, setSearchTerm] = useState(DEFAULT_TERM)
+  const [searchTerm, setSearchTerm] = useState('')
   const [searchResults, setSearchResults] = useState([])
   // no time for spinners
   // const [loading, setLoading] = useState(false)
@@ -53,52 +53,47 @@ const Card = () => {
     })()
   }, [searchTerm])
 
+  const [kanjiData, setKanjiData] = useState([])
+  const limit = 15
+  const [currentPage, setCurrentPage] = useState(1)
+  // const totalCount = 6355
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        await axios
+          .get(
+            `http://localhost:5050/kentei?limit=${limit}&page=${currentPage}`
+          )
+          .then((res) => {
+            setKanjiData([...kanjiData, ...res.data])
+            setCurrentPage((prevState) => prevState + 1)
+          })
+        // setLoading(true)
+      } catch (err) {
+        console.log(err)
+      }
+    })()
+  }, []) /* later */ // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
-    <div>
-      <div className={styles.card}>
+    <main>
+      <article>
         <SearchBar
-          defaultValue={DEFAULT_TERM}
+          // defaultValue={DEFAULT_TERM}
           onChange={optimisedHandleChange}
         />
-        {searchResults ? (
-          <div>
-            <div className={styles['card-header']}>
-              <p className={styles.left}>
-                {searchResults.variant && (
-                  <span>Variant: {searchResults.variant}</span>
-                )}
-                <span>Radical: {searchResults.radical}</span>
-              </p>
-              <p className={styles.right}>
-                <span>Strokes: {searchResults.strokes}</span>
-                <span>Level: {searchResults.level}</span>
-              </p>
-            </div>
-            <div>
-              <h2>{searchResults.kanji}</h2>
-              <hr />
-            </div>
-            <div className={styles['sub-content']}>
-              <div className={styles.row}>
-                <span className={`${styles.label} ${styles.on}`}>音読み</span>
-                <p>{searchResults.onyomi}</p>
-              </div>
-              <div className={styles.row}>
-                <span className={`${styles.label} ${styles.kun}`}>訓読み</span>
-                <p>{searchResults.kunyomi}</p>
-              </div>
-              <div className={styles.row}>
-                <p>{searchResults.meaning}</p>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className={styles['search-results-placeholder']}>
-            Results will appear hear if present 。。
-          </div>
-        )}
-      </div>
-    </div>
+        <section className={styles['kt-container']}>
+          {searchResults ? (
+            <KenteiItem data={searchResults} />
+          ) : (
+            kanjiData.map((kanji) => (
+              <KenteiItem key={kanji._id} data={kanji} />
+            ))
+          )}
+        </section>
+      </article>
+    </main>
   )
 }
 
