@@ -1,5 +1,5 @@
 @use 'partials/_fonts.scss';
-@use 'partials/colors';
+@use 'partials/_colors';
 
 * {
   margin: 0;
@@ -8,7 +8,6 @@
 
 body {
   background-attachment: fixed;
-  background-position: fixed;
   background-size: cover;
   background-repeat: no-repeat;
 

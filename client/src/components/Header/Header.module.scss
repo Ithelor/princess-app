@@ -1,3 +1,4 @@
+@use '~styles/partials/_fonts.scss';
 @use '~styles/partials/_colors.scss';
 
 @media (prefers-reduced-motion: no-preference) {
@@ -156,4 +157,10 @@
   background-color: colors.$bg-primary-color;
   border-radius: 1rem;
   overflow: hidden;
+
+  transition: height 500ms ease;
+}
+
+.menu {
+  width: 100%;
 }

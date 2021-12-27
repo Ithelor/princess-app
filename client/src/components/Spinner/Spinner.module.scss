@@ -8,12 +8,11 @@
 
 .spinner {
   box-sizing: border-box;
-  position: relative;
   width: 4em;
   height: 4em;
   border-radius: 50%;
   border: 0.15em solid white;
   border-top-color: colors.$primary-color;
   animation: spinner 0.7s linear infinite;
-  margin: 5rem auto;
+  margin: 2rem auto;
 }
