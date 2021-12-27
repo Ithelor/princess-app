@@ -1,61 +1,61 @@
 @-webkit-keyframes fade-in {
-	from {
-		opacity: 0;
-	}
+  from {
+    opacity: 0;
+  }
 
-	to {
-		opacity: 1;
-	}
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fade-in {
-	from {
-		opacity: 0;
-	}
+  from {
+    opacity: 0;
+  }
 
-	to {
-		opacity: 1;
-	}
+  to {
+    opacity: 1;
+  }
 }
 
 .fade-in {
-	-webkit-animation-name: fade-in;
-	animation-name: fade-in;
-	-webkit-animation-duration: 1s;
-	animation-duration: 1s;
-	-webkit-animation-fill-mode: both;
-	animation-fill-mode: both;
+  -webkit-animation-name: fade-in;
+  animation-name: fade-in;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
 }
 
 // CSSTransition classes
 
 .menu-primary-enter {
-	position: absolute;
-	transform: translateX(-110%);
+  position: absolute;
+  transform: translateX(-110%);
 }
 .menu-primary-enter-active {
-	transform: translateX(0%);
-	transition: all 500ms ease;
+  transform: translateX(0%);
+  transition: all 500ms ease;
 }
 .menu-primary-exit {
-	position: absolute;
+  position: absolute;
 }
 .menu-primary-exit-active {
-	transform: translateX(-110%);
-	transition: all 500ms ease;
+  transform: translateX(-110%);
+  transition: all 500ms ease;
 }
 
 .menu-secondary-enter {
-	transform: translateX(110%);
+  transform: translateX(110%);
 }
 .menu-secondary-enter-active {
-	transform: translateX(0%);
-	transition: all 500ms ease;
+  transform: translateX(0%);
+  transition: all 500ms ease;
 }
 
 // .menu-secondary-exit {}
 
 .menu-secondary-exit-active {
-	transform: translateX(110%);
-	transition: all 500ms ease;
+  transform: translateX(110%);
+  transition: all 500ms ease;
 }

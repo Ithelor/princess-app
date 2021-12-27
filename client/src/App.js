@@ -6,17 +6,17 @@ import Header from 'components/Header/Header'
 import Kanjium from 'components/Kanjium/Kanjium'
 
 function App() {
-	return (
-		<BrowserRouter>
-			<Header />
+  return (
+    <BrowserRouter>
+      <Header />
 
-			<Routes>
-				<Route path="kentei" element={<Kentei />} />
-				<Route path="kanjium" element={<Kanjium />} />
-				<Route path="" element={<Kanjium />} />
-			</Routes>
-		</BrowserRouter>
-	)
+      <Routes>
+        <Route path="kentei" element={<Kentei />} />
+        <Route path="kanjium" element={<Kanjium />} />
+        <Route path="" element={<Kanjium />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App
