@@ -13,7 +13,7 @@
   min-height: 100%;
   color: colors.$light-color;
 
-  border: solid 3px rgba(colors.$bg-primary-color, 0.8);
+  border: solid 3px colors.$bg-primary-color;
   // backdrop-filter: blur(0.5em);
 
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -66,7 +66,67 @@
     align-items: center;
 
     p {
-      padding: 0.5rem;
+      // Controlled
+
+      // outdated native code
+      // will TODO: fix
+
+      .deprecated {
+        opacity: 0.25;
+      }
+
+      .on-ned {
+        background: linear-gradient(
+          -90deg,
+          colors.$gen-trsp,
+          colors.$gen-trsp 25px,
+          colors.$on-color 25px
+        );
+      }
+
+      .kun-ned {
+        background: linear-gradient(
+          -90deg,
+          colors.$gen-trsp,
+          colors.$gen-trsp 25px,
+          colors.$kun-color 25px
+        );
+      }
+
+      .on-ned::after,
+      .on-nd::after,
+      .kun-ned::after,
+      .kun-nd::after {
+        content: '中';
+        position: relative;
+        right: -0.4em;
+        color: colors.$generic-color;
+        font-size: 1em;
+        opacity: 0.5;
+      }
+
+      .on-nd {
+        background: linear-gradient(
+          -90deg,
+          colors.$gen-trsp,
+          colors.$gen-trsp 25px,
+          colors.$on-color 25px
+        );
+      }
+
+      .kun-nd {
+        background: linear-gradient(
+          -90deg,
+          colors.$gen-trsp,
+          colors.$gen-trsp 25px,
+          colors.$kun-color 25px
+        );
+      }
+
+      .on-nd::after,
+      .kun-nd::after {
+        content: '高';
+      }
     }
   }
 }
@@ -83,6 +143,12 @@
 
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 400;
+}
+
+.reading {
+  @extend .label;
+
+  min-width: auto;
 }
 
 .on {

@@ -2,6 +2,7 @@
 
 .kt-container {
   margin: 0 auto;
+  padding: 0.5rem 0.5rem 0 0;
 
   display: grid;
 
@@ -12,8 +13,13 @@
   border-radius: 1rem;
   border-radius: 0.5rem 0.5rem 0 0;
 
-  max-height: 80vh;
+  max-height: 85vh;
   overflow-y: scroll;
+
+  .fill {
+    grid-column: 1/-1;
+    margin: 0 auto;
+  }
 
   &::-webkit-scrollbar {
     width: 0.25rem;

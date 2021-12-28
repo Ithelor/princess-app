@@ -1,5 +1,7 @@
 import React from 'react'
 
+import ContentController from 'controllers/KenteiItemController'
+
 import styles from './KenteiItem.module.scss'
 
 const KenteiItem = ({ data, className }) => {
@@ -17,19 +19,7 @@ const KenteiItem = ({ data, className }) => {
         <h2>{data.kanji}</h2>
         <hr />
       </div>
-      <div className={styles['sub-content']}>
-        <div className={styles.row}>
-          <span className={`${styles.label} ${styles.on}`}>音読み</span>
-          <p>{data.onyomi}</p>
-        </div>
-        <div className={styles.row}>
-          <span className={`${styles.label} ${styles.kun}`}>訓読み</span>
-          <p>{data.kunyomi}</p>
-        </div>
-        {/* <div className={styles.row}>
-          <p>{data.meaning}</p>
-        </div> */}
-      </div>
+      <ContentController data={data} id={data._id} onyomi={data.onyomi} />
     </div>
   )
 }

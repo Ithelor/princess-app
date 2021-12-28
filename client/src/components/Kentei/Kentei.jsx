@@ -95,29 +95,23 @@ const Card = () => {
   return (
     <main>
       <article>
-        <SearchBar
-          // defaultValue={DEFAULT_TERM}
-          onChange={optimisedHandleChange}
-        />
+        <SearchBar onChange={optimisedHandleChange} />
         <section className={styles['kt-container']} onScroll={onScroll}>
-          {loading ? (
-            kanjiData.map((kanji) => (
-              <KenteiItem key={kanji._id} data={kanji} className="fade-in" />
-            ))
-          ) : searchResults ? (
-            <KenteiItem
-              key={searchResults._id}
-              data={searchResults}
-              className="fade-in"
-            />
-          ) : (
-            <>
-              <br />
+          {loading
+            ? kanjiData.map((kanji) => (
+                <KenteiItem key={kanji._id} data={kanji} className="fade-in" />
+              ))
+            : searchResults && (
+                <KenteiItem
+                  key={searchResults._id}
+                  data={searchResults}
+                  className="fade-in"
+                />
+              )}
+          {(fetching || !loading) && (
+            <div className={styles.fill}>
               <Spinner />
-              {/* genius, will TODO: find another solution */}
-              {/* and TODO: put a spinner on dynamic cards loading */}
-              <br />
-            </>
+            </div>
           )}
         </section>
       </article>
