@@ -1,8 +1,8 @@
 import React from 'react'
 
-import ContentController from 'controllers/KenteiItemController'
+import ContentController from 'components/Kentei/Card/CardController'
 
-import styles from './KenteiItem.module.scss'
+import styles from './Card.module.scss'
 
 const KenteiItem = ({ data, className }) => {
   return (
@@ -19,7 +19,7 @@ const KenteiItem = ({ data, className }) => {
         <h2>{data.kanji}</h2>
         <hr />
       </div>
-      <ContentController data={data} id={data._id} onyomi={data.onyomi} />
+      <ContentController data={data} />
     </div>
   )
 }

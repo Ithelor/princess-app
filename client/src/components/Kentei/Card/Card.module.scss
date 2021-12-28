@@ -35,8 +35,6 @@
 
     span {
       @extend .label, .generic;
-      // font-size: 0.57rem;
-      // width: 30%;
     }
   }
 
@@ -67,15 +65,14 @@
 
     p {
       // Controlled
-
       // outdated native code
       // will TODO: fix
 
-      .deprecated {
+      .outdated {
         opacity: 0.25;
       }
 
-      .on-ned {
+      .on-neo {
         background: linear-gradient(
           -90deg,
           colors.$gen-trsp,
@@ -84,7 +81,7 @@
         );
       }
 
-      .kun-ned {
+      .kun-neo {
         background: linear-gradient(
           -90deg,
           colors.$gen-trsp,
@@ -93,10 +90,10 @@
         );
       }
 
-      .on-ned::after,
-      .on-nd::after,
-      .kun-ned::after,
-      .kun-nd::after {
+      .on-neo::after,
+      .on-no::after,
+      .kun-neo::after,
+      .kun-no::after {
         content: '中';
         position: relative;
         right: -0.4em;
@@ -105,7 +102,7 @@
         opacity: 0.5;
       }
 
-      .on-nd {
+      .on-no {
         background: linear-gradient(
           -90deg,
           colors.$gen-trsp,
@@ -114,7 +111,7 @@
         );
       }
 
-      .kun-nd {
+      .kun-no {
         background: linear-gradient(
           -90deg,
           colors.$gen-trsp,
@@ -123,8 +120,8 @@
         );
       }
 
-      .on-nd::after,
-      .kun-nd::after {
+      .on-no::after,
+      .kun-no::after {
         content: '高';
       }
     }

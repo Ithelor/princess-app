@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 
 import SearchBar from 'components/SearchBar/SearchBar'
-import KenteiItem from './KenteiItem/KenteiItem'
+import KenteiItem from './Card/Card'
 import Spinner from 'components/Spinner/Spinner'
 
 import styles from './Kentei.module.scss'
