@@ -10,13 +10,13 @@ const handleReadings = (id, reading, style) => {
     中 - moderately outdated, something to be aware of,
     高 - not outdated (?), display 高 just in case.
 
-    All tags are displayed via preudo-elements
+    All tags are displayed via pseudo-elements
       so that user would be aware of them.
   */
 
-  const isOutdated = /(［外］)(.+)/,
-    isNotEnoughOutdated = /(.+)(［中］)/,
-    isNotOutdated = /(.+)(［高］)/
+  const isOutdated = /［(外)］(.+)/,
+    isNotEnoughOutdated = /(.+)［(中)］/,
+    isNotOutdated = /(.+)［(高)］/
 
   // divide readings by comma, including tags
   const matched = reading.match(/(?:\([^)]*\)|[^、])+/g)
@@ -37,33 +37,40 @@ const handleReadings = (id, reading, style) => {
     notOutdatedReading && ([, reading, status] = notOutdatedReading)
 
     let key = id + reading,
-      className = `${styles.reading} ${styles[style]}`,
+      className = `${styles.label} ${styles[style]}`,
       content = reading
 
     switch (status) {
-      case '［外］':
-        className = `${styles.reading} ${styles[style]} ${styles.outdated}`
+      case '外':
+        className = `${styles.label} ${styles[style]} ${styles.外}`
         passedDeprecation = true
         break
-      case '［中］':
-        className = `${styles.reading} ${styles[`${style}-neo`]}`
-        break
-      case '［高］':
-        className = `${styles.reading} ${styles[`${style}-no`]}`
+
+      case '中':
+      case '高':
+        className = `${styles.label} ${styles[style]} ${styles.tagged}`
         break
 
       default:
         key = id + element
         if (passedDeprecation === true)
-          className = `${styles.reading} ${styles[style]} ${styles.outdated}`
+          className = `${styles.label} ${styles[style]} ${styles.外}`
         content = element
         break
     }
 
     result.push(
-      <span key={key} className={className}>
-        {content}
-      </span>
+      // TODO: key the <></>
+      <>
+        <span key={key} className={className}>
+          {content}
+        </span>
+        {status && status !== '外' && (
+          <span key={key + 'tag'} className={styles.tag}>
+            {status}
+          </span>
+        )}
+      </>
     )
   })
 
@@ -78,11 +85,11 @@ const ContentController = ({ data }) => {
     <div className={styles['sub-content']}>
       <div className={styles.row}>
         <span className={`${styles.label} ${styles.generic}`}>音読み</span>
-        <p>{onControlled}</p>
+        <div className={styles.readings}>{onControlled}</div>
       </div>
       <div className={styles.row}>
         <span className={`${styles.label} ${styles.generic}`}>訓読み</span>
-        <p>{kunControlled}</p>
+        <div className={styles.readings}>{kunControlled}</div>
       </div>
       {/* <div className={styles.row}>
           <p>{data.meaning}</p>

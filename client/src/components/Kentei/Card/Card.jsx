@@ -8,12 +8,10 @@ const KenteiItem = ({ data, className }) => {
   return (
     <div className={`${styles.card} ${className}`}>
       <div className={styles['card-header']}>
-        <p>
-          <span>Variant: {data.variant ?? 'n/a'}</span>
-          <span>Radical: {data.radical}</span>
-          <span>Strokes: {data.strokes}</span>
-          <span>Level: {data.level}</span>
-        </p>
+        <span>Variant: {data.variant ?? 'n/a'}</span>
+        <span>Radical: {data.radical}</span>
+        <span>{data.strokes}画</span>
+        <span>Level: {data.level}</span>
       </div>
       <div>
         <h2>{data.kanji}</h2>

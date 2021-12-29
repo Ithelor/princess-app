@@ -1,0 +1,10 @@
+@use '~styles/partials/colors.scss';
+
+@mixin tagged-reading($width, $color) {
+  background: linear-gradient(
+    -90deg,
+    colors.$gen-trsp,
+    colors.$gen-trsp $width,
+    $color $width
+  );
+}
