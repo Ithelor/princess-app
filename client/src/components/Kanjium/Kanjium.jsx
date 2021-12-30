@@ -4,7 +4,7 @@ import axios from 'axios'
 import Spinner from 'components/Spinner/Spinner'
 
 import styles from './Kanjium.module.scss'
-import 'styles/anim.scss'
+import 'styles/partials/_anim.scss'
 
 const Home = () => {
   // handling data loading

@@ -14,7 +14,7 @@ import { ReactComponent as Logo } from 'assets/shared/logo.svg'
 
 import styles from './Header.module.scss'
 import 'styles/index.scss'
-import 'styles/anim.scss'
+import 'styles/partials/_anim.scss'
 
 const ICON_SIZE = 24
 

@@ -1,0 +1,87 @@
+@use '~styles/partials/_colors.scss';
+@use '~styles/partials/_fonts.scss';
+@use '~styles/partials/_mixins.scss';
+
+.kd-container {
+  h2 {
+    font-size: 2rem;
+
+    text-align: center;
+    margin: 0.5rem 0;
+
+    .kanji {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 100;
+    }
+    .not-kanji {
+      font-family: 'Poppins' sans-serif;
+      font-weight: 200;
+    }
+  }
+
+  .kd-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    .kd-strokes {
+      font-family: KanjiStrokeOrders;
+      font-weight: 400;
+      font-size: 144px;
+
+      flex: 1;
+      text-align: center;
+
+      background-color: rgba(colors.$bg-primary-color, 0.75);
+      //   border: 2px solid rgba(colors.$light-color, 0.7);
+    }
+
+    .kd-additionals {
+      flex: 1;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 15px 10px;
+
+      .kd-additional {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+
+        font-family: 'Poppins' sans-serif;
+
+        .kda-item {
+          color: colors.$light-color;
+          font-weight: 600;
+        }
+
+        .kda-label {
+          color: rgba(colors.$light-color, 0.7);
+          font-weight: 400;
+        }
+      }
+    }
+  }
+
+  .kd-main {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem 0;
+
+    .kd-row {
+      display: inline-block;
+      justify-content: space-between;
+
+      .label {
+        @include mixins.label($color: colors.$generic-color);
+      }
+
+      .icon {
+        float: right;
+      }
+    }
+  }
+}
