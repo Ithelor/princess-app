@@ -10,7 +10,6 @@ const SearchBar = (props) => {
       autoComplete="off"
       placeholder="サーチ 。。"
       maxLength="10"
-      // defaultValue={props.defaultValue}
       onChange={props.onChange}
     />
   )

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-
-import AdditionalsItem from './AdditionalsItem'
-import MainItem from './MainItem'
+import { BsPencilFill as PenIcon } from 'react-icons/bs'
 
 import styles from './KanjiDetails.module.scss'
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 const KenteiDetails = (props) => {
   const [kanji, setKanji] = useState('')
@@ -13,7 +13,7 @@ const KenteiDetails = (props) => {
     ;(async () => {
       try {
         await axios
-          .get(`http://localhost:5050/kentei?kanji=${props.kanji}`)
+          .get(`${SERVER_URL}/kentei?kanji=${props.kanji}`)
           .then((res) => {
             setKanji(res.data)
             console.log(res.data)
@@ -26,26 +26,47 @@ const KenteiDetails = (props) => {
   }, []) /* fuck off */ // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className={styles['kd-container']}>
+    <div className={styles['container']}>
       <h2>
-        <span className={styles['not-kanji']}>Kanji </span>
-        <span className={styles.kanji}>{props.kanji}</span>
+        <span>Kanji </span>
+        <span>{props.kanji}</span>
       </h2>
-      <div className={styles['kd-header']}>
-        <div className={styles['kd-strokes']}>{props.kanji}</div>
-        <div className={styles['kd-additionals']}>
-          <AdditionalsItem item={kanji.strokes} label="strokes" />
-          <AdditionalsItem item={kanji.level} label="level" />
-          <AdditionalsItem item={kanji.radical} label="radicals" />
-          <AdditionalsItem item={kanji.index} label="index" />
-          <AdditionalsItem item={kanji.variant} label="variant" />
+      <div className={styles['kd-main']}>
+        <div className={styles['kdm-strokes']}>{props.kanji}</div>
+        <div className={styles['kdm-stats']}>
+          <StatsItem item={kanji.strokes} label="strokes" />
+          <StatsItem item={kanji.level} label="level" />
+          <StatsItem item={kanji.radical} label="radicals" />
+          <StatsItem item={kanji.index} label="index" />
+          <StatsItem item={kanji.variant} label="variant" />
         </div>
       </div>
-      <div className={styles['kd-main']}>
-        <MainItem label="意味" content={kanji.meaning} />
-        <MainItem label="音" content={kanji.onyomi} />
-        <MainItem label="訓" content={kanji.kunyomi} />
+      <div className={styles['kd-adds']}>
+        <AddsItem label="意味" content={kanji.meaning} />
+        <AddsItem label="音" content={kanji.onyomi} />
+        <AddsItem label="訓" content={kanji.kunyomi} />
       </div>
+    </div>
+  )
+}
+
+const StatsItem = (props) => {
+  return (
+    <div className={styles['stats-item']}>
+      <span className={styles['item-value']}>{props.item ?? 'n/a'}</span>
+      <span className={styles['item-label']}>{props.label}</span>
+    </div>
+  )
+}
+
+const AddsItem = (props) => {
+  return (
+    <div className={styles['adds-item']}>
+      <span className={styles['item-label']}>{props.label}</span>
+      <span className={styles['item-content']}>{props.content}</span>
+      <span className={styles['item-icon']}>
+        <PenIcon />
+      </span>
     </div>
   )
 }

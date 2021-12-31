@@ -1,4 +1,4 @@
-require('dotenv').config({ path: __dirname + '/.env' })
+require('dotenv').config()
 
 const express = require('express')
 const cors = require('cors')
@@ -10,12 +10,12 @@ const KanjiSchema = require('./models/Kanji')
 const app = express()
 app.use(
   cors({
-    origin: 'http://localhost:5051'
+    origin: process.env.CLIENT_URL
   })
 )
 
-const PORT = process.env['PORT'] || 8080
-const MONGO_URI = process.env['MONGO_URI']
+const PORT = process.env.SERVER_PORT || 8080
+const MONGO_URI = process.env.MONGO_URI
 
 app.get('/kanjium', (req, res) => {
   let page = parseInt(req.query.page) || 1

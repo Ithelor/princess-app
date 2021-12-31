@@ -10,6 +10,8 @@ import Spinner from 'components/Spinner/Spinner'
 import styles from './Kentei.module.scss'
 import 'styles/partials/_anim.scss'
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
+
 // TODO: fix false display on page load
 const Card = () => {
   // query params
@@ -41,7 +43,7 @@ const Card = () => {
     ;(async () => {
       try {
         await axios
-          .get(`http://localhost:5050/kentei?kanji=${searchTerm}`)
+          .get(`${SERVER_URL}/kentei?kanji=${searchTerm}`)
           .then((res) => {
             setSearchResults(res.data)
             console.log(res.data)
@@ -65,9 +67,7 @@ const Card = () => {
       if (fetching) {
         try {
           await axios
-            .get(
-              `http://localhost:5050/kentei?limit=${limit}&page=${currentPage}`
-            )
+            .get(`${SERVER_URL}/kentei?limit=${limit}&page=${currentPage}`)
             .then((res) => {
               setKanjiData([...kanjiData, ...res.data])
               setCurrentPage((prevState) => prevState + 1)

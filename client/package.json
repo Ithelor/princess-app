@@ -1,47 +1,49 @@
 {
-	"name": "princess-app",
-	"version": "0.1.0",
-	"private": true,
-	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
-	},
-	"dependencies": {
-		"@testing-library/jest-dom": "^5.11.4",
-		"@testing-library/react": "^11.1.0",
-		"@testing-library/user-event": "^12.1.10",
-		"axios": "^0.24.0",
-		"mongoose": "^6.0.12",
-		"react": "^17.0.2",
-		"react-dom": "^17.0.2",
-		"react-icons": "^4.3.1",
-		"react-router-dom": "^6.0.2",
-		"react-scripts": "4.0.3",
-		"react-transition-group": "^4.4.2",
-		"web-vitals": "^1.0.1"
-	},
-	"devDependencies": {
-		"prettier": "2.5.1",
-		"sass": "^1.44.0"
-	},
-	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
-	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	}
+  "name": "princess-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "cross-env BROWSER=none react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.24.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0",
+    "mongoose": "^6.0.12",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
+    "react-router-dom": "^6.0.2",
+    "react-scripts": "4.0.3",
+    "react-transition-group": "^4.4.2",
+    "web-vitals": "^1.0.1"
+  },
+  "devDependencies": {
+    "prettier": "2.5.1",
+    "sass": "^1.44.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

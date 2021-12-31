@@ -2,31 +2,32 @@
 @use '~styles/partials/_fonts.scss';
 @use '~styles/partials/_mixins.scss';
 
-.kd-container {
+.container {
   h2 {
     font-size: 2rem;
 
     text-align: center;
     margin: 0.5rem 0;
 
-    .kanji {
-      font-family: 'Noto Sans JP', sans-serif;
-      font-weight: 100;
-    }
-    .not-kanji {
+    span {
       font-family: 'Poppins' sans-serif;
       font-weight: 200;
+
+      + span {
+        font-family: 'Noto Sans JP', sans-serif;
+        font-weight: 100;
+      }
     }
   }
 
-  .kd-header {
+  .kd-main {
     display: flex;
     align-items: center;
     justify-content: center;
 
     overflow: hidden;
 
-    .kd-strokes {
+    .kdm-strokes {
       font-family: KanjiStrokeOrders;
       font-weight: 400;
       font-size: 144px;
@@ -38,7 +39,7 @@
       //   border: 2px solid rgba(colors.$light-color, 0.7);
     }
 
-    .kd-additionals {
+    .kdm-stats {
       flex: 1;
 
       display: grid;
@@ -46,19 +47,19 @@
       grid-template-rows: auto auto;
       gap: 15px 10px;
 
-      .kd-additional {
+      .stats-item {
         display: flex;
         flex-direction: column;
         text-align: center;
 
         font-family: 'Poppins' sans-serif;
 
-        .kda-item {
+        .item-value {
           color: colors.$light-color;
           font-weight: 600;
         }
 
-        .kda-label {
+        .item-label {
           color: rgba(colors.$light-color, 0.7);
           font-weight: 400;
         }
@@ -66,20 +67,23 @@
     }
   }
 
-  .kd-main {
+  .kd-adds {
     display: flex;
     flex-direction: column;
     margin: 2rem 0;
 
-    .kd-row {
+    .adds-item {
       display: inline-block;
       justify-content: space-between;
 
-      .label {
+      .item-label {
         @include mixins.label($color: colors.$generic-color);
       }
 
-      .icon {
+      .item-content {
+      }
+
+      .item-icon {
         float: right;
       }
     }

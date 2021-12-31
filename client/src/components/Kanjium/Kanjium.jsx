@@ -6,6 +6,8 @@ import Spinner from 'components/Spinner/Spinner'
 import styles from './Kanjium.module.scss'
 import 'styles/partials/_anim.scss'
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
+
 const Home = () => {
   // handling data loading
   const [pitchData, setPitchData] = useState([])
@@ -23,9 +25,7 @@ const Home = () => {
       if (fetching) {
         try {
           await axios
-            .get(
-              `http://localhost:5050/kanjium?limit=${limit}&page=${currentPage}`
-            )
+            .get(`${SERVER_URL}/kanjium?limit=${limit}&page=${currentPage}`)
             .then((res) => {
               setPitchData([...pitchData, ...res.data])
               setCurrentPage((prevState) => prevState + 1)
