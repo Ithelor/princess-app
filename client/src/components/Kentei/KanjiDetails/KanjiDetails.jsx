@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { CSSTransition } from 'react-transition-group'
 import axios from 'axios'
 import { BsPencilFill as PenIcon } from 'react-icons/bs'
 
+import ToggleSwitch from 'components/ToggleSwitch/ToggleSwitch'
+
 import styles from './KanjiDetails.module.scss'
+import 'styles/partials/_anim.scss'
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 const KenteiDetails = (props) => {
+  // current data
   const [kanji, setKanji] = useState('')
+
+  // kanji display mode
+  const [strokesActive, setStrokesActive] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -32,7 +40,22 @@ const KenteiDetails = (props) => {
         <span>{props.kanji}</span>
       </h2>
       <div className={styles['kd-main']}>
-        <div className={styles['kdm-strokes']}>{props.kanji}</div>
+        <div className={styles['kanji-container']}>
+          <CSSTransition
+            in={strokesActive === false}
+            timeout={300}
+            classNames="menu-primary">
+            <div className={styles['kanji-normal']}>{props.kanji}</div>
+          </CSSTransition>
+          <CSSTransition
+            in={strokesActive === true}
+            timeout={300}
+            classNames="menu-secondary">
+            <div className={styles['kanji-strokes']}>{props.kanji}</div>
+          </CSSTransition>
+
+          <ToggleSwitch onClick={() => setStrokesActive(!strokesActive)} />
+        </div>
         <div className={styles['kdm-stats']}>
           <StatsItem item={kanji.strokes} label="strokes" />
           <StatsItem item={kanji.level} label="level" />

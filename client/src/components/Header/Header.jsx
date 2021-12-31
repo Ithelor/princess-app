@@ -76,7 +76,7 @@ const DropdownMenu = () => {
     setMenuHeight(dropdownRef.current?.firstChild.offsetHeight)
   }, [])
 
-  function calcHeight(el) {
+  const calcHeight = (el) => {
     const height = el.offsetHeight
     setMenuHeight(height)
   }

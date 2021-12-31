@@ -1,8 +1,8 @@
 import React from 'react'
 
-import styles from './Card.module.scss'
+import CardController from './CardController'
 
-const CardController = require('./CardController.jsx')
+import styles from './Card.module.scss'
 
 const KenteiItem = ({ data, className }) => {
   const CC = new CardController(data)

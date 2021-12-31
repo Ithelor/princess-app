@@ -27,16 +27,30 @@
 
     overflow: hidden;
 
-    .kdm-strokes {
-      font-family: KanjiStrokeOrders;
-      font-weight: 400;
-      font-size: 144px;
+    .kanji-container {
+      font-size: 10rem;
 
       flex: 1;
       text-align: center;
+      overflow: hidden;
 
       background-color: rgba(colors.$bg-primary-color, 0.75);
-      //   border: 2px solid rgba(colors.$light-color, 0.7);
+      border-radius: 1rem;
+      border: 2px solid rgba(colors.$light-color, 0.25);
+
+      .kanji-normal {
+        font-family: 'Noto Serif JP', sans-serif;
+        font-weight: 400;
+
+        transition: opacity 0.2s ease-in-out;
+      }
+
+      .kanji-strokes {
+        font-family: KanjiStrokeOrders;
+        font-weight: 400;
+
+        transition: opacity 0.2s ease-in-out;
+      }
     }
 
     .kdm-stats {
@@ -78,9 +92,6 @@
 
       .item-label {
         @include mixins.label($color: colors.$generic-color);
-      }
-
-      .item-content {
       }
 
       .item-icon {
