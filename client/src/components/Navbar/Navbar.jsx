@@ -12,13 +12,13 @@ import {
 
 import { ReactComponent as Logo } from 'assets/shared/logo.svg'
 
-import styles from './Header.module.scss'
+import styles from './Navbar.module.scss'
 import 'styles/index.scss'
 import 'styles/partials/_anim.scss'
 
 const ICON_SIZE = 24
 
-const Header = () => (
+const Navbar = () => (
   <nav className={styles.navbar}>
     <div className={styles['logo-container']}>
       <Logo className={styles.logo} />
@@ -86,9 +86,7 @@ const DropdownMenu = () => {
       className={styles['menu-item']}
       onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)}>
       <span className={styles['icon-button']}>{props.leftIcon}</span>
-
       {props.children}
-
       <span className={styles['icon-right']}>{props.rightIcon}</span>
     </div>
   )
@@ -134,4 +132,4 @@ const DropdownMenu = () => {
   )
 }
 
-export default Header
+export default Navbar

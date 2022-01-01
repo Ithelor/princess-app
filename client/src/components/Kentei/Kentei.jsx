@@ -46,7 +46,6 @@ const Card = () => {
           .get(`${SERVER_URL}/kentei?kanji=${searchTerm}`)
           .then((res) => {
             setSearchResults(res.data)
-            console.log(res.data)
           })
         // TODO: setLoading(true)
       } catch (err) {
@@ -98,24 +97,23 @@ const Card = () => {
           <KenteiDetails kanji={kanji} />
         ) : (
           <section className={styles['kt-container']} onScroll={onScroll}>
-            {loading
-              ? kanjiData.map((kanji) => (
-                  <KenteiItem
-                    key={kanji._id}
-                    data={kanji}
-                    className="fade-in"
-                  />
-                ))
-              : searchResults &&
-                (<KenteiItem
-                  key={searchResults._id}
-                  data={searchResults}
-                  className="fade-in"
-                />)(fetching || !loading) && (
-                  <div className={styles.fill}>
-                    <Spinner />
-                  </div>
-                )}
+            {searchResults ? (
+              <KenteiItem
+                key={searchResults._id}
+                data={searchResults}
+                className="fade-in"
+              />
+            ) : loading ? (
+              kanjiData.map((kanji) => (
+                <KenteiItem key={kanji._id} data={kanji} className="fade-in" />
+              ))
+            ) : (
+              (fetching || !loading) && (
+                <div className={styles.fill}>
+                  <Spinner />
+                </div>
+              )
+            )}
           </section>
         )}
       </article>
