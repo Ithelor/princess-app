@@ -19,28 +19,21 @@ import 'styles/partials/_anim.scss'
 const ICON_SIZE = 24
 
 const Navbar = () => (
-  <nav className={styles.navbar}>
-    <div className={styles['logo-container']}>
+  <nav className={styles.container}>
+    <div className={styles.logoContainer}>
       <Logo className={styles.logo} />
       <span>Princess</span>
     </div>
 
-    <ul className={styles['navbar-nav']}>
-      <NavItem
-        to="kentei"
-        icon={<KenteiIcon size={ICON_SIZE} />}
-        tooltip="Kentei"
-      />
+    <ul className={styles.navContainer}>
+      <NavItem to="kentei" icon={<KenteiIcon size={ICON_SIZE} />} tooltip="Kentei" />
       <NavItem
         to="kanjium"
         icon={<KanjiumIcon size={ICON_SIZE} />}
         tooltip="Kanjium"
       />
 
-      <NavItem
-        to="#"
-        icon={<DropdownIcon size={ICON_SIZE} />}
-        tooltip="Settings">
+      <NavItem to="#" icon={<DropdownIcon size={ICON_SIZE} />} tooltip="Settings">
         <DropdownMenu />
       </NavItem>
     </ul>
@@ -51,12 +44,12 @@ const NavItem = (props) => {
   const [open, setOpen] = useState(false)
 
   return (
-    <li>
-      <NavLink to={props.to} className={styles.navlink}>
-        <span className={styles['nav-icon']} onClick={() => setOpen(!open)}>
+    <li className={styles.navItem}>
+      <NavLink to={props.to} className={styles.navLink}>
+        <span className={styles.navIcon} onClick={() => setOpen(!open)}>
           {props.icon}
         </span>
-        <span className={styles['nav-tooltip']}>{props.tooltip}</span>
+        <span className={styles.navTooltip}>{props.tooltip}</span>
         {open && props.children}
       </NavLink>
     </li>
@@ -83,32 +76,36 @@ const DropdownMenu = () => {
 
   const DropdownItem = (props) => (
     <div
-      className={styles['menu-item']}
-      onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)}>
-      <span className={styles['icon-button']}>{props.leftIcon}</span>
+      className={styles.dropdownItem}
+      onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)}
+    >
+      <span>{props.leftIcon}</span>
       {props.children}
-      <span className={styles['icon-right']}>{props.rightIcon}</span>
+      <span className={styles.iconRight}>{props.rightIcon}</span>
     </div>
   )
 
   return (
     <div
-      className={styles.dropdown}
+      className={styles.dropdownContainer}
       style={{ height: menuHeight }}
-      ref={dropdownRef}>
+      ref={dropdownRef}
+    >
       <CSSTransition
         in={activeMenu === 'main'}
         unmountOnExit
         timeout={500}
         classNames="menu-primary"
         onEnter={calcHeight}
-        nodeRef={primaryRef}>
-        <div className={styles.menu} ref={primaryRef}>
+        nodeRef={primaryRef}
+      >
+        <div className={styles.dropdownMenu} ref={primaryRef}>
           <DropdownItem>My Profile</DropdownItem>
           <DropdownItem
             leftIcon={<SettingsIcon size={ICON_SIZE} />}
             rightIcon={<ChevronIcon size={ICON_SIZE} />}
-            goToMenu="settings">
+            goToMenu="settings"
+          >
             Settings
           </DropdownItem>
         </div>
@@ -119,8 +116,9 @@ const DropdownMenu = () => {
         timeout={500}
         classNames="menu-secondary"
         onEnter={calcHeight}
-        nodeRef={secondaryRef}>
-        <div className={styles.menu} ref={secondaryRef}>
+        nodeRef={secondaryRef}
+      >
+        <div className={styles.dropdownMenu} ref={secondaryRef}>
           <DropdownItem
             leftIcon={<ArrowLeftIcon size={ICON_SIZE} />}
             goToMenu={'main'}

@@ -10,11 +10,13 @@ function App() {
     <BrowserRouter>
       <Navbar />
 
-      <Routes>
-        <Route path="kentei" element={<Kentei />} />
-        <Route path="kanjium" element={<Kanjium />} />
-        <Route path="#" element={<Kanjium />} />
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="kentei" element={<Kentei />} />
+          <Route path="kanjium" element={<Kanjium />} />
+          <Route path="#" element={<Kanjium />} />
+        </Routes>
+      </main>
     </BrowserRouter>
   )
 }

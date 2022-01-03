@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 
-import KenteiItem from './Card/Card'
-import KenteiDetails from './KanjiDetails/KanjiDetails'
+import KenteiItem from './KenteiCard/KenteiCard'
+import KenteiDetails from './KenteiDetails/KenteiDetails'
 import SearchBar from 'components/SearchBar/SearchBar'
 import Spinner from 'components/Spinner/Spinner'
 
@@ -42,11 +42,9 @@ const Card = () => {
   useEffect(() => {
     ;(async () => {
       try {
-        await axios
-          .get(`${SERVER_URL}/kentei?kanji=${searchTerm}`)
-          .then((res) => {
-            setSearchResults(res.data)
-          })
+        await axios.get(`${SERVER_URL}/kentei?kanji=${searchTerm}`).then((res) => {
+          setSearchResults(res.data)
+        })
         // TODO: setLoading(true)
       } catch (err) {
         console.log(err)
@@ -90,34 +88,32 @@ const Card = () => {
   }
 
   return (
-    <main>
-      <article>
-        <SearchBar onChange={optimisedHandleChange} />
-        {kanji ? (
-          <KenteiDetails kanji={kanji} />
-        ) : (
-          <section className={styles['kt-container']} onScroll={onScroll}>
-            {searchResults ? (
-              <KenteiItem
-                key={searchResults._id}
-                data={searchResults}
-                className="fade-in"
-              />
-            ) : loading ? (
-              kanjiData.map((kanji) => (
-                <KenteiItem key={kanji._id} data={kanji} className="fade-in" />
-              ))
-            ) : (
-              (fetching || !loading) && (
-                <div className={styles.fill}>
-                  <Spinner />
-                </div>
-              )
-            )}
-          </section>
-        )}
-      </article>
-    </main>
+    <article className={styles.container}>
+      <SearchBar onChange={optimisedHandleChange} />
+      {kanji ? (
+        <KenteiDetails kanji={kanji} />
+      ) : (
+        <section className={styles.grid} onScroll={onScroll}>
+          {searchResults ? (
+            <KenteiItem
+              key={searchResults._id}
+              data={searchResults}
+              className="fade-in"
+            />
+          ) : loading ? (
+            kanjiData.map((kanji) => (
+              <KenteiItem key={kanji._id} data={kanji} className="fade-in" />
+            ))
+          ) : (
+            (fetching || !loading) && (
+              <div className={styles.fill}>
+                <Spinner />
+              </div>
+            )
+          )}
+        </section>
+      )}
+    </article>
   )
 }
 

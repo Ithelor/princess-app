@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group'
 import axios from 'axios'
 import { BsPencilFill as PenIcon } from 'react-icons/bs'
 
-import styles from './KanjiDetails.module.scss'
+import styles from './KenteiDetails.module.scss'
 import 'styles/index.scss'
 import 'styles/partials/_anim.scss'
 
@@ -22,11 +22,9 @@ const KenteiDetails = (props) => {
   useEffect(() => {
     ;(async () => {
       try {
-        await axios
-          .get(`${SERVER_URL}/kentei?kanji=${props.kanji}`)
-          .then((res) => {
-            setKanji(res.data)
-          })
+        await axios.get(`${SERVER_URL}/kentei?kanji=${props.kanji}`).then((res) => {
+          setKanji(res.data)
+        })
         // setLoading(true)
       } catch (err) {
         console.log(err)
@@ -60,21 +58,22 @@ const KenteiDetails = (props) => {
   }
 
   return (
-    <div className={styles['container']}>
+    <div className={styles.container}>
       <h2>
         <span>Kanji </span>
         <span>{props.kanji}</span>
       </h2>
-      <div className={styles['kd-main']}>
-        <div className={styles['kanji-container']}>
+      <div className={styles.content}>
+        <div className={styles.kanjiContainer}>
           <div className={styles.kanji}>
             <CSSTransition
               in={!isStrokes}
               unmountOnExit
               timeout={300}
               classNames="normal"
-              nodeRef={normalRef}>
-              <div ref={normalRef} className={styles['normal']}>
+              nodeRef={normalRef}
+            >
+              <div ref={normalRef} className={styles._normal}>
                 {props.kanji}
               </div>
             </CSSTransition>
@@ -83,15 +82,16 @@ const KenteiDetails = (props) => {
               unmountOnExit
               timeout={300}
               classNames="strokes"
-              nodeRef={strokesRef}>
-              <div ref={strokesRef} className={styles['strokes']}>
+              nodeRef={strokesRef}
+            >
+              <div ref={strokesRef} className={styles._strokes}>
                 {props.kanji}
               </div>
             </CSSTransition>
           </div>
           <ToggleSwitch onClick={() => setIsStrokes(!isStrokes)} />
         </div>
-        <div className={styles['kdm-stats']}>
+        <div className={styles.statsContainer}>
           <StatsItem item={kanji.strokes} label="strokes" />
           <StatsItem item={kanji.level} label="level" />
           <StatsItem item={kanji.radical} label="radicals" />
@@ -99,7 +99,7 @@ const KenteiDetails = (props) => {
           <StatsItem item={kanji.variant} label="variant" />
         </div>
       </div>
-      <div className={styles['kd-adds']}>
+      <div className={styles.addsContainer}>
         <AddsItem label="意味" content={kanji.meaning} />
         <AddsItem label="音" content={kanji.onyomi} />
         <AddsItem label="訓" content={kanji.kunyomi} />
@@ -110,19 +110,19 @@ const KenteiDetails = (props) => {
 
 const StatsItem = (props) => {
   return (
-    <div className={styles['stats-item']}>
-      <span className={styles['item-value']}>{props.item ?? 'n/a'}</span>
-      <span className={styles['item-label']}>{props.label}</span>
+    <div className={styles.statsItem}>
+      <span className={styles.statsValue}>{props.item ?? 'n/a'}</span>
+      <span className={styles.statsLabel}>{props.label}</span>
     </div>
   )
 }
 
 const AddsItem = (props) => {
   return (
-    <div className={styles['adds-item']}>
-      <span className={styles['item-label']}>{props.label}</span>
-      <span className={styles['item-content']}>{props.content}</span>
-      <span className={styles['item-icon']}>
+    <div className={styles.addsItem}>
+      <span className={styles.addsLabel}>{props.label}</span>
+      <span className={styles.addsContent}>{props.content}</span>
+      <span className={styles.addsIcon}>
         <PenIcon />
       </span>
     </div>

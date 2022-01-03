@@ -1,0 +1,95 @@
+@use '~styles/partials/_colors.scss';
+@use '~styles/partials/_mixins.scss';
+
+.container {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+
+  box-sizing: border-box;
+  text-align: center;
+  overflow: hidden;
+  border-radius: 1em;
+  padding: 0.5rem;
+
+  color: colors.$light-color;
+  border: solid 3px colors.$bg-primary-color;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  transition: all 0.1s ease-in;
+
+  position: relative;
+  top: 0;
+
+  &:hover {
+    top: -2px;
+    border-color: colors.$primary-color;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 100;
+    font-size: 5rem;
+  }
+
+  .details {
+    margin-top: 1em;
+    display: grid;
+
+    .row {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 400;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .label {
+        display: inline-block;
+        min-width: fit-content;
+        padding: 0.4rem 0.3rem;
+        border-radius: 0.5em;
+      }
+
+      ._generic {
+        background-color: colors.$generic-color;
+      }
+
+      /*
+        Controlled
+      */
+
+      .readings {
+        display: inline-block;
+        margin: 0.25em;
+
+        .tag {
+          display: inline-block;
+          min-width: fit-content;
+          padding: 0.4rem 0.3rem;
+          border-radius: 0 0.5em 0.5em 0;
+          color: rgba(colors.$generic-color, 0.5);
+          background-color: colors.$light-color;
+
+          user-select: none;
+        }
+
+        ._on {
+          background-color: colors.$on-color;
+        }
+
+        ._kun {
+          background-color: colors.$kun-color;
+        }
+
+        ._tagged {
+          border-radius: 0.5em 0 0 0.5em;
+        }
+
+        ._外 {
+          opacity: 0.25;
+        }
+      }
+    }
+  }
+}

@@ -4,6 +4,7 @@
   "semi": false,
   "singleQuote": true,
   "trailingComma": "none",
-  "bracketSameLine": true,
-  "endOfLine": "crlf"
+  "bracketSameLine": false,
+  "endOfLine": "crlf",
+  "printWidth": 85
 }

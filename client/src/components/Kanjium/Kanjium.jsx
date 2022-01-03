@@ -49,42 +49,40 @@ const Home = () => {
   }
 
   return (
-    <main>
-      <article>
-        <h2 className={styles.title}>高低アクセント</h2>
-        <section className={styles['jtp-table']}>
-          {loading ? (
-            <table className="fade-in">
-              <thead>
-                <tr>
-                  <th>Expression</th>
-                  <th>Reading</th>
-                  <th>Pattern</th>
+    <article className={styles.container}>
+      <h2 className={styles.title}>高低アクセント</h2>
+      <section className={styles.jptWrapper}>
+        {loading ? (
+          <table className="fade-in">
+            <thead>
+              <tr>
+                <th>Expression</th>
+                <th>Reading</th>
+                <th>Pattern</th>
+              </tr>
+            </thead>
+            <tbody onScroll={onScroll}>
+              {pitchData.map((pitch) => (
+                <tr key={pitch._id} className="fade-in">
+                  <td>{pitch.expression}</td>
+                  <td>{pitch.reading}</td>
+                  <td>{pitch.accent}</td>
                 </tr>
-              </thead>
-              <tbody onScroll={onScroll}>
-                {pitchData.map((pitch) => (
-                  <tr key={pitch._id} className="fade-in">
-                    <td>{pitch.expression}</td>
-                    <td>{pitch.reading}</td>
-                    <td>{pitch.accent}</td>
-                  </tr>
-                ))}
-                {fetching && (
-                  <tr>
-                    <td>
-                      <Spinner />
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          ) : (
-            <Spinner />
-          )}
-        </section>
-      </article>
-    </main>
+              ))}
+              {fetching && (
+                <tr>
+                  <td>
+                    <Spinner />
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        ) : (
+          <Spinner />
+        )}
+      </section>
+    </article>
   )
 }
 

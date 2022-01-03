@@ -1,12 +1,9 @@
 import React from 'react'
+import classNames from 'classnames'
 
-import styles from './Card.module.scss'
+import styles from './KenteiCard.module.scss'
 
 export default class CardController {
-  constructor(data) {
-    this.data = data
-  }
-
   handleReadings = (id, reading, style) => {
     /*
     The tags below describe a reading's status:
@@ -38,29 +35,28 @@ export default class CardController {
 
       let [, status, reading] = []
       outdatedReading && ([, status, reading] = outdatedReading)
-      notEnoughOutdatedReading &&
-        ([, reading, status] = notEnoughOutdatedReading)
+      notEnoughOutdatedReading && ([, reading, status] = notEnoughOutdatedReading)
       notOutdatedReading && ([, reading, status] = notOutdatedReading)
 
       let key = id + reading,
-        className = `${styles.label} ${styles[style]}`,
+        className = classNames(styles.label, styles[style]),
         content = reading
 
       switch (status) {
         case '外':
-          className = `${styles.label} ${styles[style]} ${styles.外}`
+          className = classNames(styles.label, styles[style], styles._外)
           passedDeprecation = true
           break
 
         case '中':
         case '高':
-          className = `${styles.label} ${styles[style]} ${styles.tagged}`
+          className = classNames(styles.label, styles[style], styles._tagged)
           break
 
         default:
           key = id + element
           if (passedDeprecation === true)
-            className = `${styles.label} ${styles[style]} ${styles.外}`
+            className = classNames(styles.label, styles[style], styles._外)
           content = element
           break
       }

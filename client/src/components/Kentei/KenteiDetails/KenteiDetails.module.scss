@@ -20,12 +20,12 @@
     }
   }
 
-  .kd-main {
+  .content {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    .kanji-container {
+    .kanjiContainer {
       flex: 1;
 
       background-color: rgba(colors.$bg-primary-color, 0.75);
@@ -43,17 +43,21 @@
 
         transition: all 0.2s ease-in-out;
 
-        .normal {
+        ._normal {
           font-size: 10rem;
           font-family: 'Noto Serif JP', sans-serif;
         }
 
-        .strokes {
+        ._strokes {
           // can't TODO: fix this shite, so
           font-size: 10.775rem;
           font-family: KanjiStrokeOrders;
         }
       }
+
+      /*
+        ToggleSwitch component
+      */
 
       fieldset {
         text-align: center;
@@ -66,11 +70,10 @@
 
           &:checked + label {
             color: colors.$light-color;
-            text-shadow: 0 0 5px colors.$light-color,
-              0 0 10px colors.$light-color, 0 0 20px colors.$light-color,
-              0 0 40px colors.$primary-color, 0 0 80px colors.$primary-color,
-              0 0 90px colors.$primary-color, 0 0 100px colors.$primary-color,
-              0 0 150px colors.$primary-color;
+            text-shadow: 0 0 5px colors.$light-color, 0 0 10px colors.$light-color,
+              0 0 20px colors.$light-color, 0 0 40px colors.$primary-color,
+              0 0 80px colors.$primary-color, 0 0 90px colors.$primary-color,
+              0 0 100px colors.$primary-color, 0 0 150px colors.$primary-color;
           }
         }
 
@@ -86,7 +89,11 @@
       }
     }
 
-    .kdm-stats {
+    /*
+      StatsItem component
+    */
+
+    .statsContainer {
       flex: 1;
 
       display: grid;
@@ -94,19 +101,19 @@
       grid-template-rows: auto auto;
       gap: 15px 10px;
 
-      .stats-item {
+      .statsItem {
         display: flex;
         flex-direction: column;
         text-align: center;
 
         font-family: 'Poppins' sans-serif;
 
-        .item-value {
+        .statsValue {
           color: colors.$light-color;
           font-weight: 600;
         }
 
-        .item-label {
+        .statsLabel {
           color: rgba(colors.$light-color, 0.7);
           font-weight: 400;
         }
@@ -114,20 +121,28 @@
     }
   }
 
-  .kd-adds {
+  /*
+    AddsItem component
+  */
+
+  .addsContainer {
     display: flex;
     flex-direction: column;
     margin: 2rem 0;
 
-    .adds-item {
+    .addsItem {
       display: inline-block;
       justify-content: space-between;
 
-      .item-label {
+      .addsLabel {
         @include mixins.label($color: colors.$generic-color);
       }
 
-      .item-icon {
+      .addsContent {
+        display: inline-block;
+      }
+
+      .addsIcon {
         float: right;
       }
     }
