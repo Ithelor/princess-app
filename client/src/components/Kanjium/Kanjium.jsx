@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 
 import Spinner from 'components/Spinner/Spinner'
+import KanjiumGraph from './KanjiumGraph'
 
 import styles from './Kanjium.module.scss'
 import 'styles/partials/_anim.scss'
+
+import { debounce } from 'Utils.js'
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
@@ -37,7 +40,7 @@ const Home = () => {
         }
       }
     })()
-  }, [fetching]) /* fuck off */ // eslint-disable-line react-hooks/exhaustive-deps
+  }, [fetching]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onScroll = (e) => {
     if (
@@ -47,6 +50,34 @@ const Home = () => {
       setFetching(true)
     }
   }
+
+  const graphRef = useRef(null)
+  const [graphWidth, setGraphWidth] = useState(0)
+
+  useEffect(() => {
+    if (graphRef.current) {
+      setGraphWidth(graphRef.current.offsetWidth)
+    }
+  }, [graphRef, loading, fetching])
+
+  /*
+    { Handling window resize graphsのために
+  */
+  const updateDimensions = debounce(() => {
+    if (graphRef.current) {
+      setGraphWidth(graphRef.current.offsetWidth)
+    }
+  }, 50)
+
+  useEffect(() => {
+    window.addEventListener('resize', updateDimensions)
+    return () => {
+      window.removeEventListener('resize', updateDimensions)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  /*
+    }
+  */
 
   return (
     <article className={styles.container}>
@@ -58,7 +89,7 @@ const Home = () => {
               <tr>
                 <th>Expression</th>
                 <th>Reading</th>
-                <th>Pattern</th>
+                <th>Pitch</th>
               </tr>
             </thead>
             <tbody onScroll={onScroll}>
@@ -66,7 +97,9 @@ const Home = () => {
                 <tr key={pitch._id} className="fade-in">
                   <td>{pitch.expression}</td>
                   <td>{pitch.reading}</td>
-                  <td>{pitch.accent}</td>
+                  <td ref={graphRef}>
+                    <KanjiumGraph pattern={pitch.accent} graphWidth={graphWidth} />
+                  </td>
                 </tr>
               ))}
               {fetching && (

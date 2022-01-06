@@ -10,6 +10,8 @@ import Spinner from 'components/Spinner/Spinner'
 import styles from './Kentei.module.scss'
 import 'styles/partials/_anim.scss'
 
+import { debounce } from 'Utils.js'
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 // TODO: fix false display on page load
@@ -21,16 +23,6 @@ const Card = () => {
   // TODO: fix search
   const [searchTerm, setSearchTerm] = useState('')
   const [searchResults, setSearchResults] = useState(undefined) // []
-
-  const debounce = (func, delay) => {
-    let debounceTimer
-    return function () {
-      const context = this
-      const args = arguments
-      clearTimeout(debounceTimer)
-      debounceTimer = setTimeout(() => func.apply(context, args), delay)
-    }
-  }
 
   const handleChange = (event) => {
     event.persist()
@@ -76,7 +68,7 @@ const Card = () => {
         }
       }
     })()
-  }, [fetching]) /* fuck off */ // eslint-disable-line react-hooks/exhaustive-deps
+  }, [fetching]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onScroll = (e) => {
     if (

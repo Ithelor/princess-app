@@ -68,12 +68,14 @@
         input {
           display: none;
 
-          &:checked + label {
-            color: colors.$light-color;
-            text-shadow: 0 0 5px colors.$light-color, 0 0 10px colors.$light-color,
-              0 0 20px colors.$light-color, 0 0 40px colors.$primary-color,
-              0 0 80px colors.$primary-color, 0 0 90px colors.$primary-color,
-              0 0 100px colors.$primary-color, 0 0 150px colors.$primary-color;
+          &:checked {
+            & + label {
+              color: colors.$light-color;
+              text-shadow: 0 0 5px colors.$light-color, 0 0 10px colors.$light-color,
+                0 0 20px colors.$light-color, 0 0 40px colors.$primary-color,
+                0 0 80px colors.$primary-color, 0 0 90px colors.$primary-color,
+                0 0 100px colors.$primary-color, 0 0 150px colors.$primary-color;
+            }
           }
         }
 
@@ -84,7 +86,7 @@
 
           color: colors.$light-color;
 
-          transition: all 0.1s ease-in-out;
+          transition: text-shadow 0.5s ease;
         }
       }
     }

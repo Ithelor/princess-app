@@ -30,7 +30,7 @@ const KenteiDetails = (props) => {
         console.log(err)
       }
     })()
-  }, []) /* fuck off */ // eslint-disable-line react-hooks/exhaustive-deps
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const ToggleSwitch = () => {
     return (
