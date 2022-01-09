@@ -8,108 +8,73 @@ const PitchGraph = ({ pattern, graphWidth }) => {
   const step = 15,
     radius = 5,
     y = 25
+
   let x = graphWidth / 2 - (length * (step + radius)) / 2
+  let yLast = y
 
-  // TODO: include to Point component ?
-  const Path = (props) => {
-    let yLast = y,
-      xPath = x + (step * 3) / 2
+  return (
+    <svg key={pattern._id} width="100%" height="100%">
+      {array.map((pitch, i, arr) => {
+        let key = `${pattern._id}_${i}`
+        // Default point options, High pitch
+        let opts = { cy: y, fill: 'white', stroke: '', strokeWidth: '1' }
+        // Alter point options if Low pitch
+        if (pitch === 'L') {
+          opts = { ...opts, cy: y + step - radius / 2 }
+        }
 
-    return props.array.map((pitch, i) => {
-      // Default point height for High pitch
-      let cy = y
+        // TODO: pitch drop
+        // Last graph point
+        if (i + 1 === arr.length) {
+          opts = {
+            ...opts,
+            fill: 'transparent',
+            stroke: 'white',
+            strokeWidth: '2'
+          }
+        }
 
-      // Alter point height if Low pitch
-      if (pitch === 'L') {
-        cy = y + step - radius / 2
-      }
-
-      return (
-        <>
-          {
-            // Exclude 1st point line
-            i !== 0 && (
+        return (
+          <g key={key}>
+            {i !== 0 && (
+              // Exclude line on 1st point
               <line
-                x1={xPath}
+                x1={x}
                 y1={yLast}
-                x2={(xPath += step)}
-                y2={cy}
+                x2={x + step}
+                y2={opts.cy}
                 stroke="white"
                 // stroke-dasharray="1, 2"
                 strokeWidth="2"
               />
-            )
-          }
-          {(yLast = cy)}
-        </>
-      )
-    })
-  }
-
-  const Point = (props) => {
-    // Default point options for High pitch
-    let opts = { cy: y, fill: 'white', stroke: '', strokeWidth: '1' }
-
-    // Alter point options if Low pitch
-    if (props.pitch === 'L') {
-      opts = { ...opts, cy: y + step - radius / 2 }
-    }
-
-    // Handling alt appearence
-    // (i.e. first / last points or pitch drop)
-    if (props.type === 'last') {
-      opts = {
-        ...opts,
-        fill: 'transparent',
-        stroke: 'white',
-        strokeWidth: '2'
-      }
-    }
-
-    return (
-      <>
-        {
-          // Last point, triangle
-          props.type === 'last' ? (
-            <polygon
-              points={`
+            )}
+            {(yLast = opts.cy)}
+            {i + 1 === arr.length ? (
+              // Last point, triangle
+              <polygon
+                points={`
                 ${x + step - radius},${opts.cy - radius}
                 ${x + step + radius},${opts.cy - radius}
                 ${x + step},${opts.cy + radius}
               `}
-              fill="transparent"
-              stroke="white"
-              strokeWidth="1"
-            />
-          ) : (
-            // Normal point, circle
-            <circle
-              cx={x + step}
-              cy={opts.cy}
-              r={radius}
-              fill={opts.fill}
-              stroke={opts.stroke}
-              strokeWidth={opts.strokeWidth}
-            />
-          )
-        }
-        {(x += step / 2)}
-      </>
-    )
-  }
-
-  return (
-    <svg key={pattern._id} width="100%" height="100%">
-      <Path array={array} />
-      {array.map((pitch, i, arr) => {
-        let key = `${pattern._id}_${i}`,
-          type
-        // Last graph point
-        if (i + 1 === arr.length) {
-          type = 'last'
-        }
-
-        return <Point key={key} pitch={pitch} type={type} />
+                fill="transparent"
+                stroke="white"
+                strokeWidth="1"
+              />
+            ) : (
+              // Normal point, circle
+              <circle
+                cx={x + step}
+                cy={opts.cy}
+                r={radius}
+                fill={opts.fill}
+                stroke={opts.stroke}
+                strokeWidth={opts.strokeWidth}
+              />
+            )}
+            {(x += step)}
+          </g>
+        )
       })}
     </svg>
   )
