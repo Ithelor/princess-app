@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 
 import Spinner from 'components/Spinner/Spinner'
-import KanjiumGraph from './KanjiumGraph'
+import KanjiumGraph from './PitchGraph'
 
 import styles from './Kanjium.module.scss'
 import 'styles/partials/_anim.scss'
