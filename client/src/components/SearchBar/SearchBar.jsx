@@ -1,5 +1,3 @@
-import React from 'react'
-
 import './SearchBar.module.scss'
 
 const SearchBar = (props) => {

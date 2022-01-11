@@ -1,13 +1,18 @@
 import { useState, useEffect, useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import axios from 'axios'
+import classNames from 'classnames'
 import { BsPencilFill as PenIcon } from 'react-icons/bs'
 
-import styles from './KenteiDetails.module.scss'
+import Controller from 'components/Kentei/Controller/Controller'
+import Modal from 'components/Modal/Modal.tsx'
+
+import styles from './Details.module.scss'
 import 'styles/index.scss'
 import 'styles/partials/_anim.scss'
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
+const KC = new Controller()
 
 const KenteiDetails = (props) => {
   // current data
@@ -100,9 +105,20 @@ const KenteiDetails = (props) => {
         </div>
       </div>
       <div className={styles.addsContainer}>
-        <AddsItem label="意味" content={kanji.meaning} />
-        <AddsItem label="音" content={kanji.onyomi} />
-        <AddsItem label="訓" content={kanji.kunyomi} />
+        <AddsItem
+          label="意味"
+          content={kanji.meaning}
+          clickable
+          modalContent={kanji}
+        />
+        <AddsItem
+          label="音"
+          content={kanji && KC.handleReadings(kanji._id, kanji.onyomi, '_on')}
+        />
+        <AddsItem
+          label="訓"
+          content={kanji && KC.handleReadings(kanji._id, kanji.kunyomi, '_kun')}
+        />
       </div>
     </div>
   )
@@ -117,11 +133,32 @@ const StatsItem = (props) => {
   )
 }
 
+// TODO: fix tag placement
+// TODO: fix clickable (wtf how) readings
+// TODO: list controller
 const AddsItem = (props) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   return (
     <div className={styles.addsItem}>
       <span className={styles.addsLabel}>{props.label}</span>
-      <span className={styles.addsContent}>{props.content}</span>
+      <span
+        className={classNames(styles.addsContent, {
+          [styles._clickable]: props.clickable
+        })}
+        onClick={() => setIsModalOpen(true)}
+      >
+        {props.content}
+      </span>
+      {isModalOpen && (
+        <Modal
+          setIsOpen={setIsModalOpen}
+          showExit
+          showClose
+          title="意味"
+          content={props.modalContent.meaning}
+        />
+      )}
       <span className={styles.addsIcon}>
         <PenIcon />
       </span>

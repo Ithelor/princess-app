@@ -1,12 +1,11 @@
-import React from 'react'
 import classNames from 'classnames'
 
-import CardController from './KenteiCardController'
+import Controller from 'components/Kentei/Controller/Controller'
 
-import styles from './KenteiCard.module.scss'
+import styles from './Card.module.scss'
 
 const KenteiItem = ({ data }) => {
-  const CC = new CardController()
+  const KC = new Controller()
 
   return (
     <div className={styles.container}>
@@ -16,13 +15,13 @@ const KenteiItem = ({ data }) => {
         <div className={styles.row}>
           <span className={classNames(styles.label, styles._generic)}>音読み</span>
           <div className={styles.readings}>
-            {CC.handleReadings(data._id, data.onyomi, '_on')}
+            {KC.handleReadings(data._id, data.onyomi, '_on')}
           </div>
         </div>
         <div className={styles.row}>
           <span className={classNames(styles.label, styles._generic)}>訓読み</span>
           <div className={styles.readings}>
-            {CC.handleReadings(data._id, data.kunyomi, '_kun')}
+            {KC.handleReadings(data._id, data.kunyomi, '_kun')}
           </div>
         </div>
       </div>

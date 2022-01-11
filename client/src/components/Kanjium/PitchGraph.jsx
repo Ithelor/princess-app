@@ -1,5 +1,3 @@
-import React from 'react'
-
 // Pitch accent graph, 3rd JPT column
 const PitchGraph = ({ pattern, graphWidth }) => {
   const array = pattern.split(''),

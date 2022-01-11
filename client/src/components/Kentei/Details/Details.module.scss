@@ -3,6 +3,8 @@
 @use '~styles/partials/_mixins.scss';
 
 .container {
+  padding: 0 1rem;
+
   h2 {
     font-size: 2rem;
 
@@ -133,15 +135,35 @@
     margin: 2rem 0;
 
     .addsItem {
-      display: inline-block;
+      display: flex;
       justify-content: space-between;
+      align-items: center;
 
       .addsLabel {
-        @include mixins.label($color: colors.$generic-color);
+        @include mixins.label(
+          $padding-v: 0.25rem,
+          $padding-h: 0.25rem,
+          $color: colors.$generic-color
+        );
+        display: inline-block;
+        text-align: center;
+        width: 6rem;
       }
 
       .addsContent {
         display: inline-block;
+        padding: 0.5rem 0.75rem;
+        width: 100%;
+
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        span {
+          & + span {
+            margin-left: 0.5rem;
+          }
+        }
       }
 
       .addsIcon {
@@ -149,4 +171,8 @@
       }
     }
   }
+}
+
+._clickable {
+  cursor: pointer;
 }

@@ -1,20 +1,18 @@
-import React from 'react'
 import classNames from 'classnames'
 
-import styles from './KenteiCard.module.scss'
+import styles from './Controller.module.scss'
 
-export default class CardController {
+export default class KenteiController {
   handleReadings = (id, reading, style) => {
     /*
-    The tags below describe a reading's status:
+      The tags below describe a reading's status:
 
-    外 - outdated, shouldn't catch much attention,
-    中 - moderately outdated, something to be aware of,
-    高 - not outdated (?), display 高 just in case.
+      外 - outdated, shouldn't catch much attention,
+      中 - moderately outdated, something to be aware of,
+      高 - not outdated (?), display 高 just in case.
 
-    All tags are displayed via pseudo-elements
-      so that user would be aware of them.
-  */
+      All tags are displayed next to their respective readings
+    */
 
     const isOutdated = /［(外)］(.+)/,
       isNotEnoughOutdated = /(.+)［(中)］/,
@@ -62,7 +60,7 @@ export default class CardController {
       }
 
       result.push(
-        // TODO: key the <></>
+        // TODO: key something
         <>
           <span key={key} className={className}>
             {content}

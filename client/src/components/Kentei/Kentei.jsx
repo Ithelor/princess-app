@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 
-import KenteiItem from './KenteiCard/KenteiCard'
-import KenteiDetails from './KenteiDetails/KenteiDetails'
+import KenteiItem from './Card/Card'
+import KenteiDetails from './Details/Details'
 import SearchBar from 'components/SearchBar/SearchBar'
 import Spinner from 'components/Spinner/Spinner'
 
