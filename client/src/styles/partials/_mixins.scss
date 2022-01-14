@@ -1,3 +1,5 @@
+@use '~styles/partials/_colors.scss';
+
 @mixin label(
   $padding-v: 0.5rem,
   $padding-h: 0.5rem,
@@ -12,4 +14,10 @@
   border-radius: $border-radius;
 
   background-color: $color;
+}
+
+@mixin navHover {
+  color: colors.$light-color;
+  background-color: colors.$primary-color;
+  border-radius: 0.75rem;
 }

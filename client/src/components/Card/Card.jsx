@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import Controller from 'components/Kentei/Controller/Controller'
+import Controller from 'domains/Kentei/Controller/Controller'
 
 import styles from './Card.module.scss'
 

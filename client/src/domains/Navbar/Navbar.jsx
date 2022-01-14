@@ -1,16 +1,18 @@
 import { useState, useEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
+import classNames from 'classnames'
 import {
   BsCardHeading as KenteiIcon,
   BsSoundwave as KanjiumIcon,
-  BsArrowDownCircle as DropdownIcon,
+  BsList as DropdownIcon,
   BsArrowLeftShort as ArrowLeftIcon,
   BsGearFill as SettingsIcon,
   BsChevronBarRight as ChevronIcon
 } from 'react-icons/bs'
 
 import { ReactComponent as Logo } from 'assets/shared/logo.svg'
+import ThemeSwitch from './ThemeSwitch/ThemeSwitch'
 
 import styles from './Navbar.module.scss'
 import 'styles/index.scss'
@@ -26,6 +28,7 @@ const Navbar = () => (
     </div>
 
     <ul className={styles.navContainer}>
+      <ThemeSwitch />
       <NavItem to="kentei" icon={<KenteiIcon size={ICON_SIZE} />} tooltip="Kentei" />
       <NavItem
         to="kanjium"
@@ -33,7 +36,11 @@ const Navbar = () => (
         tooltip="Kanjium"
       />
 
-      <NavItem to="#" icon={<DropdownIcon size={ICON_SIZE} />} tooltip="Settings">
+      <NavItem
+        isDropdown
+        icon={<DropdownIcon size={ICON_SIZE} />}
+        tooltip="Settings"
+      >
         <DropdownMenu />
       </NavItem>
     </ul>
@@ -45,13 +52,25 @@ const NavItem = (props) => {
 
   return (
     <li className={styles.navItem}>
-      <NavLink to={props.to} className={styles.navLink}>
-        <span className={styles.navIcon} onClick={() => setOpen(!open)}>
-          {props.icon}
-        </span>
-        <span className={styles.navTooltip}>{props.tooltip}</span>
-        {open && props.children}
-      </NavLink>
+      {props.isDropdown ? (
+        <div className={classNames(styles.navLink, { [styles.active]: open })}>
+          <span
+            className={styles.navIcon}
+            onClick={() => props.isDropdown && setOpen(!open)}
+          >
+            {props.icon}
+          </span>
+          {open && props.children}
+        </div>
+      ) : (
+        <NavLink to={props.to} className={styles.navLink}>
+          <span className={styles.navIcon} onClick={() => setOpen(!open)}>
+            {props.icon}
+          </span>
+          <span className={styles.navTooltip}>{props.tooltip}</span>
+          {open && props.children}
+        </NavLink>
+      )}
     </li>
   )
 }

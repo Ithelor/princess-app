@@ -80,3 +80,19 @@
   transform: translate(110%, -100%);
   transition: all 300ms ease;
 }
+
+// CSSTransition: theme switch icon
+
+.ease-enter {
+  opacity: 0;
+
+  &-active {
+    opacity: 1;
+    transition: opacity 1s;
+  }
+}
+
+.ease-exit-active {
+  opacity: 0;
+  transition: opacity 1s;
+}

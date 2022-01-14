@@ -4,7 +4,7 @@ import axios from 'axios'
 import classNames from 'classnames'
 import { BsPencilFill as PenIcon } from 'react-icons/bs'
 
-import Controller from 'components/Kentei/Controller/Controller'
+import Controller from 'domains/Kentei/Controller/Controller'
 import Modal from 'components/Modal/Modal.tsx'
 
 import styles from './Details.module.scss'

@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import Navbar from 'components/Navbar/Navbar'
-import Kanjium from 'components/Kanjium/Kanjium'
-import Kentei from 'components/Kentei/Kentei'
+import Navbar from 'domains/Navbar/Navbar'
+import Kanjium from 'domains/Kanjium/Kanjium'
+import Kentei from 'domains/Kentei/Kentei'
 
 function App() {
   return (

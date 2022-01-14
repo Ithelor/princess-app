@@ -40,7 +40,7 @@
         font-weight: 400;
         line-height: -50%;
 
-        height: 230px;
+        height: 230px; // TODO: wtf ?
         text-align: center;
 
         transition: all 0.2s ease-in-out;
@@ -51,7 +51,7 @@
         }
 
         ._strokes {
-          // can't TODO: fix this shite, so
+          // can't TODO: fix this shite, so for now
           font-size: 10.775rem;
           font-family: KanjiStrokeOrders;
         }

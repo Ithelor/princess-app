@@ -7,17 +7,21 @@
 }
 
 body {
-  width: 100vw;
-  height: 100vh;
-
   background-attachment: fixed;
+  background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 
-  background-image: url('../assets/shared/sprinkle.svg'),
-    linear-gradient(to top, colors.$primary-color, colors.$bg-primary-color);
-
   scroll-behavior: smooth;
+  transition: background 0.5s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+
+  &.light {
+    background-image: url('~assets/shared/bgLight.svg');
+  }
+
+  &.dark {
+    background-image: url('~assets/shared/bgDark.svg');
+  }
 }
 
 main {

@@ -1,5 +1,6 @@
 @use '~styles/partials/_fonts.scss';
 @use '~styles/partials/_colors.scss';
+@use '~styles/partials/_mixins.scss';
 
 @keyframes logo-spin {
   from {
@@ -42,9 +43,11 @@
     .logo {
       width: 64px;
       height: 64px;
-
-      fill: colors.$primary-color;
       animation: logo-spin infinite 20s linear;
+
+      g {
+        fill: colors.$primary-color;
+      }
     }
   }
 
@@ -116,14 +119,16 @@
         }
 
         &:hover {
-          color: colors.$light-color;
-          background-color: colors.$primary-color;
-          border-radius: 0.75rem;
+          @include mixins.navHover();
 
           .navTooltip {
             transform: scale(1);
           }
         }
+      }
+
+      .active {
+        @include mixins.navHover();
       }
 
       /*
