@@ -11,8 +11,8 @@
   border-radius: 1em;
   padding: 0.5rem;
 
-  color: colors.$light-color;
-  border: solid 3px colors.$bg-primary-color;
+  color: colors.$text-primary;
+  border: solid 3px colors.$bg-primary;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
   transition: all 0.1s ease-in;
@@ -22,7 +22,7 @@
 
   &:hover {
     top: -2px;
-    border-color: colors.$primary-color;
+    border-color: colors.$acc-primary;
     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
   }
 

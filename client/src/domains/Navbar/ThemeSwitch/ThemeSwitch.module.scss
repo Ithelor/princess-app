@@ -5,10 +5,10 @@
   width: 3rem;
   height: 3rem;
 
-  background-color: colors.$bg-secondary-color;
+  background-color: var(--dark);
   border: none;
   border-radius: 1.5rem;
-  color: colors.$primary-color;
+  color: var(--accent);
   cursor: pointer;
 
   transition: color, background-color, border-radius 0.1s linear;

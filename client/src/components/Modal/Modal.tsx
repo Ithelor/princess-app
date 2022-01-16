@@ -5,8 +5,8 @@ import styles from './Modal.module.scss'
 
 interface ModalProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  showExit: PropertyKey
-  showClose: PropertyKey
+  showExit?: PropertyKey
+  showClose?: PropertyKey
   title: String
   content: String
 }

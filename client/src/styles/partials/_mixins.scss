@@ -17,7 +17,7 @@
 }
 
 @mixin navHover {
-  color: colors.$light-color;
-  background-color: colors.$primary-color;
+  color: colors.$text-primary;
+  background-color: colors.$acc-primary;
   border-radius: 0.75rem;
 }

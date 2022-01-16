@@ -30,9 +30,9 @@
     .kanjiContainer {
       flex: 1;
 
-      background-color: rgba(colors.$bg-primary-color, 0.75);
+      background-color: rgba(colors.$bg-primary, 0.75);
       border-radius: 1rem;
-      border: 2px solid rgba(colors.$light-color, 0.25);
+      border: 2px solid rgba(colors.$text-primary, 0.25);
 
       overflow: hidden;
 
@@ -40,7 +40,7 @@
         font-weight: 400;
         line-height: -50%;
 
-        height: 230px; // TODO: wtf ?
+        height: 230px; // TODO: wtf ? UPD 16.01: fuck
         text-align: center;
 
         transition: all 0.2s ease-in-out;
@@ -65,18 +65,19 @@
         text-align: center;
 
         border: none;
-        border-top: 2px solid rgba(colors.$light-color, 0.25);
+        border-top: 2px solid rgba(colors.$text-primary, 0.25);
 
         input {
           display: none;
 
           &:checked {
             & + label {
-              color: colors.$light-color;
-              text-shadow: 0 0 5px colors.$light-color, 0 0 10px colors.$light-color,
-                0 0 20px colors.$light-color, 0 0 40px colors.$primary-color,
-                0 0 80px colors.$primary-color, 0 0 90px colors.$primary-color,
-                0 0 100px colors.$primary-color, 0 0 150px colors.$primary-color;
+              color: colors.$text-primary;
+              text-shadow: 0 0 5px colors.$text-primary,
+                0 0 10px colors.$text-primary, 0 0 20px colors.$text-primary,
+                0 0 40px colors.$acc-primary, 0 0 80px colors.$acc-primary,
+                0 0 90px colors.$acc-primary, 0 0 100px colors.$acc-primary,
+                0 0 150px colors.$acc-primary;
             }
           }
         }
@@ -86,7 +87,7 @@
           font-size: 1em;
           padding: 1em;
 
-          color: colors.$light-color;
+          color: colors.$text-primary;
 
           transition: text-shadow 0.5s ease;
         }
@@ -113,12 +114,12 @@
         font-family: 'Poppins' sans-serif;
 
         .statsValue {
-          color: colors.$light-color;
+          color: colors.$text-primary;
           font-weight: 600;
         }
 
         .statsLabel {
-          color: rgba(colors.$light-color, 0.7);
+          color: rgba(colors.$text-primary, 0.7);
           font-weight: 400;
         }
       }

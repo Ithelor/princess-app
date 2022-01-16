@@ -14,7 +14,7 @@ input[type='search'] {
 
   font-size: 2rem;
 
-  background: colors.$bg-secondary-color;
+  background: colors.$bg-secondary;
   border: none;
   color: #65737e;
   padding: 0 15px;
@@ -22,7 +22,7 @@ input[type='search'] {
   margin: 0.5rem 0;
 
   border-radius: 5px;
-  box-shadow: 0px 0px 0px 2px colors.$bg-primary-color;
+  box-shadow: 0px 0px 0px 2px colors.$bg-primary;
 
   // transition: box-shadow 0.1s ease-in-out;
   transition: color 0.1s ease-in-out;
@@ -36,11 +36,11 @@ input[type='search'] {
   &:focus,
   &:active {
     outline: none;
-    // box-shadow: 0px 0px 0px 2px colors.$primary-color;
-    color: colors.$light-color;
+    // box-shadow: 0px 0px 0px 2px colors.$acc-primary;
+    color: colors.$text-primary;
 
     &::-webkit-input-placeholder {
-      color: colors.$light-color;
+      color: colors.$text-primary;
     }
   }
 }

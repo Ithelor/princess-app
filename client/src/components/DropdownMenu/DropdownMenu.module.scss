@@ -1,0 +1,49 @@
+@use '~styles/partials/colors';
+
+/*
+  DropdownMenu component
+*/
+
+.dropdownContainer {
+  $this: &;
+  position: absolute;
+  top: 58px;
+  width: 300px;
+  transform: translateX(-45%);
+
+  border-radius: 1rem;
+  background-color: colors.$bg-primary;
+
+  overflow: hidden;
+
+  transition: height 0.5s ease;
+
+  .dropdownMenu {
+    width: 100%;
+
+    /*
+      DropdownItem component
+    */
+
+    .dropdownItem {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+
+      height: 50px;
+      padding: 1rem;
+
+      color: inherit;
+
+      transition: background-color 0.5s;
+
+      .iconRight {
+        margin-left: auto;
+      }
+
+      &:hover {
+        background-color: colors.$bg-secondary;
+      }
+    }
+  }
+}

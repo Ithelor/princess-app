@@ -153,8 +153,8 @@ const AddsItem = (props) => {
       {isModalOpen && (
         <Modal
           setIsOpen={setIsModalOpen}
-          showExit
-          showClose
+          // showExit
+          // showClose
           title="意味"
           content={props.modalContent.meaning}
         />
