@@ -8,7 +8,7 @@ import {
 
 import styles from './DropdownMenu.module.scss'
 
-interface DropdownItemProps {
+interface IDropdownItem {
   goToMenu?: string
   leftIcon?: React.ReactElement
   rightIcon?: React.ReactElement
@@ -35,7 +35,7 @@ const DropdownMenu = () => {
     setMenuHeight(height)
   }
 
-  const DropdownItem = (props: DropdownItemProps) => (
+  const DropdownItem = (props: IDropdownItem) => (
     <div
       className={styles.dropdownItem}
       onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)}

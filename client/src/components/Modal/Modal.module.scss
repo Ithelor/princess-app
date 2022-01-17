@@ -20,7 +20,7 @@
     color: colors.$bg-primary;
     background: colors.$text-primary;
     border-radius: 1rem;
-    box-shadow: 0 5px 20px 0 rgba(colors.$acc-primary, 0.5);
+    box-shadow: 0 5px 20px 0 rgba(colors.$accent, 0.5);
     z-index: 10;
 
     .heading {
@@ -61,7 +61,7 @@
       &:hover {
         svg {
           fill: colors.$text-primary;
-          background: colors.$acc-primary;
+          background: colors.$accent;
         }
       }
     }
@@ -87,7 +87,7 @@
 
       &:hover {
         background: colors.$text-primary;
-        color: colors.$acc-primary;
+        color: colors.$accent;
       }
     }
   }

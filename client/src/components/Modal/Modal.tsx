@@ -3,7 +3,7 @@ import { BsXCircleFill as ExitIcon } from 'react-icons/bs'
 
 import styles from './Modal.module.scss'
 
-interface ModalProps {
+interface IModal {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   showExit?: PropertyKey
   showClose?: PropertyKey
@@ -11,7 +11,7 @@ interface ModalProps {
   content: String
 }
 
-const Modal = (props: ModalProps) => {
+const Modal = (props: IModal) => {
   return (
     <>
       <div className={styles.dim} onClick={() => props.setIsOpen(false)}>

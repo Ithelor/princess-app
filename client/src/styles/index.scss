@@ -1,28 +1,36 @@
-@use '~styles/partials/fonts';
-@use '~styles/partials/_colors.scss';
-
 :root {
   --accent: rgb(220, 130, 190);
 
-  --bg-primary: rgb(240, 240, 240);
-  --bg-secondary: var(--bg-primary);
-
-  --text-primary: rgb(30, 30, 30);
-  --text-secondary: rgb(240, 240, 240);
-
-  --light: rgb(240, 240, 240);
-  --dark: rgb(31, 41, 55);
-  --main: rgb(17, 24, 39);
-
-  #{colors.$bg-primary}: rgb(163, 62, 62);
-}
-
-[data-theme='dark'] {
   --bg-primary: rgb(17, 24, 39);
   --bg-secondary: rgb(31, 41, 55);
 
   --text-primary: rgb(240, 240, 240);
   --text-secondary: rgb(30, 30, 30);
+
+  --on: rgb(53, 83, 83);
+  --kun: rgb(39, 67, 82);
+  --generic: rgb(13, 20, 34);
+
+  --light: rgb(240, 240, 240);
+  --dark: rgb(31, 41, 55);
+  --main: rgb(17, 24, 39);
+
+  // well i guess fuck css custom properties
+  --accent-val: 220, 130, 190;
+  --bg-primary-val: 17, 24, 39;
+  --text-primary-val: 240, 240, 240;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-image: url('~assets/shared/bgDark.svg');
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background-image: url('~assets/shared/bgLight.svg');
+  }
 }
 
 * {
@@ -38,14 +46,7 @@ body {
 
   scroll-behavior: smooth;
   transition: background 0.25s cubic-bezier(0.445, 0.05, 0.55, 0.95);
-
-  &.light {
-    background-image: url('~assets/shared/bgLight.svg');
-  }
-
-  &.dark {
-    background-image: url('~assets/shared/bgDark.svg');
-  }
+  // background-color: var(--bg-primary);
 }
 
 main {
@@ -63,9 +64,9 @@ main {
   margin: auto;
 
   border-radius: 1em;
-  box-shadow: 0 0.125em 4em rgba(var(--bg-primary), 0.3);
+  box-shadow: 0 0.125em 4em rgba(var(--bg-primary-val), 0.3);
   color: var(--text-primary);
-  background-color: rgba(var(--main), 0.8);
+  background-color: rgba(var(--bg-primary-val), 0.8);
 
   backdrop-filter: blur(0.5rem);
 }
