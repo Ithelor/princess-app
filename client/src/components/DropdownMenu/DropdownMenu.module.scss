@@ -12,7 +12,7 @@
   transform: translateX(-45%);
 
   border-radius: 1rem;
-  background-color: colors.$bg-primary;
+  background-color: var(--color-bg-primary);
 
   overflow: hidden;
 
@@ -42,7 +42,7 @@
       }
 
       &:hover {
-        background-color: colors.$bg-secondary;
+        background-color: var(--color-secondary);
       }
     }
   }

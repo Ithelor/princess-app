@@ -2,7 +2,7 @@ import { useTheme } from 'hooks/useTheme'
 
 import DropdownSelect from 'components/DropdownSelect/DropdownSelect'
 
-const themes: Array<string> = ['sonokai', 'pulse', 'laser']
+const themes: Array<string> = ['dark', 'iceberg_dark', 'laser', 'pulse', 'sonokai']
 
 const ThemeSwitch = () => {
   const { theme, switchTheme } = useTheme()

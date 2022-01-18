@@ -11,8 +11,8 @@
   border-radius: 1em;
   padding: 0.5rem;
 
-  color: colors.$text-primary;
-  border: solid 3px colors.$bg-primary;
+  color: var(--color-text);
+  border: solid 3px var(--color-bg-primary);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
   transition: all 0.1s ease-in;
@@ -20,16 +20,16 @@
   position: relative;
   top: 0;
 
-  &:hover {
-    top: -2px;
-    border-color: colors.$accent;
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
-  }
-
   h2 {
     font-family: 'Noto Serif JP', serif;
     font-weight: 100;
     font-size: 5rem;
+  }
+
+  &:hover {
+    top: -2px;
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
   }
 
   .details {
@@ -52,7 +52,7 @@
       }
 
       ._generic {
-        background-color: colors.$generic-color;
+        background-color: var(--generic);
       }
     }
   }

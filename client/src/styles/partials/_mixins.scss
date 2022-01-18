@@ -1,6 +1,6 @@
-@use '~styles/partials/_colors.scss';
+@use '~styles/partials/colors';
 
-@mixin label(
+@mixin Label(
   $padding-v: 0.5rem,
   $padding-h: 0.5rem,
   $border-radius: 0.5rem,
@@ -16,8 +16,13 @@
   background-color: $color;
 }
 
-@mixin navHover {
-  color: colors.$text-primary;
-  background-color: colors.$accent;
+@mixin NavHover($color-text, $color-accent) {
+  color: $color-text;
+  background-color: $color-accent;
   border-radius: 0.75rem;
+}
+
+@mixin NeonTextShadow($light, $accent) {
+  text-shadow: 0 0 5px $light, 0 0 10px $light, 0 0 20px $light, 0 0 40px $accent,
+    0 0 80px $accent, 0 0 90px $accent, 0 0 100px $accent, 0 0 150px $accent;
 }

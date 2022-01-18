@@ -1,6 +1,6 @@
 interface IDropdownSelect {
   list: string[]
-  onChange: any
+  onChange: React.ChangeEventHandler<HTMLSelectElement>
   current: string
 }
 

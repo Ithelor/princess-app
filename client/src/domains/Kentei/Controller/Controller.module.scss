@@ -2,7 +2,7 @@
 @use 'styles/partials/mixins';
 
 .label {
-  @include mixins.label(
+  @include mixins.Label(
     $padding-v: 0.25rem,
     $padding-h: 0.25rem,
     $color: colors.$generic-color

@@ -1,7 +1,7 @@
 :root {
-  --accent: #009eaf;
-  --primary: #009eaf;
-  --secondary: #b82356;
-  --bg-primary: #221b44;
-  --text-primary: #e5f4f4;
+  --color-primary: rgb(0, 158, 175);
+  --color-secondary: rgb(184, 35, 86);
+  --color-text: rgb(229, 244, 244);
+
+  --value-bg-primary: 34, 27, 68;
 }

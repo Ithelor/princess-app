@@ -8,7 +8,7 @@ import {
 } from 'react-icons/bs'
 
 import { ReactComponent as Logo } from 'assets/shared/logo.svg'
-import ThemeSwitch from './ThemeSwitch/ThemeSwitch'
+import ThemeSwitch from './ThemeSwitch/ThemeSelect'
 import DropdownMenu from 'components/DropdownMenu/DropdownMenu'
 
 import styles from './Navbar.module.scss'

@@ -1,24 +1,16 @@
 :root {
-  --accent: rgb(220, 130, 190);
+  --color-primary: rgb(220, 130, 190);
 
-  --bg-primary: rgb(17, 24, 39);
-  --bg-secondary: rgb(31, 41, 55);
+  --value-bg-primary: 17, 24, 39;
+  --color-bg-primary: rgb(var(--value-bg-primary));
+  --color-bg-secondary: rgb(31, 41, 55);
 
-  --text-primary: rgb(240, 240, 240);
-  --text-secondary: rgb(30, 30, 30);
+  --color-text: rgb(240, 240, 240);
+  --color-border: rgba(240, 240, 240, 0.25);
 
   --on: rgb(53, 83, 83);
   --kun: rgb(39, 67, 82);
   --generic: rgb(13, 20, 34);
-
-  --light: rgb(240, 240, 240);
-  --dark: rgb(31, 41, 55);
-  --main: rgb(17, 24, 39);
-
-  // well i guess fuck css custom properties
-  --accent-val: 220, 130, 190;
-  --bg-primary-val: 17, 24, 39;
-  --text-primary-val: 240, 240, 240;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -45,8 +37,7 @@ body {
   background-repeat: no-repeat;
 
   scroll-behavior: smooth;
-  transition: background 0.25s cubic-bezier(0.445, 0.05, 0.55, 0.95);
-  // background-color: var(--bg-primary);
+  transition: background 0.25s ease-in-out;
 }
 
 main {
@@ -55,18 +46,20 @@ main {
 
   position: relative;
   top: 5rem;
+  width: 80vw;
 
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-sizing: border-box;
-  width: 80vw;
   margin: auto;
 
   border-radius: 1em;
-  box-shadow: 0 0.125em 4em rgba(var(--bg-primary-val), 0.3);
-  color: var(--text-primary);
-  background-color: rgba(var(--bg-primary-val), 0.8);
 
+  color: var(--color-text);
+  background-color: rgba(var(--value-bg-primary), 0.8);
   backdrop-filter: blur(0.5rem);
+  box-shadow: 0 0.125em 4em rgba(var(--value-bg-primary), 0.3);
+
+  transition: background 0.25s ease-in-out;
 }
