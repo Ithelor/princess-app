@@ -1,4 +1,3 @@
-@use '~styles/partials/colors';
 @use '~styles/partials/mixins';
 
 .container {
@@ -141,7 +140,7 @@
         @include mixins.Label(
           $padding-v: 0.25rem,
           $padding-h: 0.25rem,
-          $color: var(--generic)
+          $color: var(--color-generic)
         );
         display: inline-block;
         text-align: center;

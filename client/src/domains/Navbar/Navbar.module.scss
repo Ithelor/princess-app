@@ -1,8 +1,4 @@
-@use '~styles/partials/fonts';
-@use '~styles/partials/colors';
 @use '~styles/partials/mixins';
-
-@use '~styles/index.scss';
 
 @keyframes logo-spin {
   from {
@@ -21,7 +17,7 @@
   box-sizing: border-box;
   position: fixed;
   top: 0;
-  z-index: 1000;
+  z-index: 100;
 
   display: flex;
   justify-content: space-between;

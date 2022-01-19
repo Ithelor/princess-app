@@ -1,5 +1,4 @@
-@use '~styles/partials/_colors.scss';
-@use '~styles/partials/_mixins.scss';
+@use '~styles/partials/mixins';
 
 .container {
   font-family: 'Noto Sans JP', sans-serif;
@@ -52,7 +51,7 @@
       }
 
       ._generic {
-        background-color: var(--generic);
+        background-color: var(--color-generic);
       }
     }
   }

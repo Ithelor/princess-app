@@ -136,6 +136,8 @@ const StatsItem = (props) => {
 // TODO: fix tag placement
 // TODO: fix clickable (wtf how) readings
 // TODO: list controller
+
+// TODO: display root dim on triggering modal
 const AddsItem = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -153,8 +155,8 @@ const AddsItem = (props) => {
       {isModalOpen && (
         <Modal
           setIsOpen={setIsModalOpen}
-          // showExit
-          // showClose
+          showExit
+          showClose
           title="意味"
           content={props.modalContent.meaning}
         />

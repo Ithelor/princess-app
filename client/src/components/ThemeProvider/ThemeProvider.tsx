@@ -42,10 +42,8 @@ export const ThemeProvider = (props: IThemeProvider) => {
   switchTheme(null)
 
   return (
-    <div data-theme={theme}>
-      <ThemeContext.Provider value={{ theme, switchTheme }}>
-        {props.children}
-      </ThemeContext.Provider>
-    </div>
+    <ThemeContext.Provider value={{ theme, switchTheme }}>
+      {props.children}
+    </ThemeContext.Provider>
   )
 }

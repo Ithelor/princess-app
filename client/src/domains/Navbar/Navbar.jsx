@@ -8,7 +8,7 @@ import {
 } from 'react-icons/bs'
 
 import { ReactComponent as Logo } from 'assets/shared/logo.svg'
-import ThemeSwitch from './ThemeSwitch/ThemeSelect'
+import ThemeSelect from './ThemeSelect/ThemeSelect'
 import DropdownMenu from 'components/DropdownMenu/DropdownMenu'
 
 import styles from './Navbar.module.scss'
@@ -17,7 +17,7 @@ import 'styles/partials/_anim.scss'
 
 const ICON_SIZE = 24
 
-const Navbar = (props) => (
+const Navbar = () => (
   <nav className={styles.container}>
     <div className={styles.logoContainer}>
       <Logo className={styles.logo} />
@@ -25,7 +25,7 @@ const Navbar = (props) => (
     </div>
 
     <ul className={styles.navContainer}>
-      <ThemeSwitch />
+      <ThemeSelect />
       <NavItem to="kentei" icon={<KenteiIcon size={ICON_SIZE} />} tooltip="Kentei" />
       <NavItem
         to="kanjium"

@@ -1,0 +1,17 @@
+.dim {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10000;
+
+  background-color: rgba(0, 0, 0, 0.75);
+
+  menu {
+    display: grid;
+    justify-content: center;
+    align-items: start;
+    padding: 5rem 0;
+  }
+}

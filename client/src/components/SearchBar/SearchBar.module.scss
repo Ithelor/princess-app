@@ -1,46 +1,40 @@
-@use '~styles/partials/_colors.scss';
-
 input[type='search'] {
-  &::-webkit-search-cancel-button {
-    -webkit-appearance: none;
-  }
+  font-size: 2rem;
+
+  width: 100%;
+  height: 50px;
+
+  padding: 0 1rem;
+
+  color: #65737e;
+  background: var(--color-secondary);
+
+  border: 2px solid var(--color-bg-primary);
+  border-radius: 0.5rem 0.5rem 0 0;
+
+  transition: color 0.1s ease-in-out, background 0.25s ease-in-out;
 
   &::placeholder {
     font-size: 1rem;
   }
 
-  width: 100%;
-  height: 50px;
-
-  font-size: 2rem;
-
-  background: var(--color-secondary);
-  border: none;
-  color: #65737e;
-  padding: 0 15px;
-
-  margin: 0.5rem 0;
-
-  border-radius: 5px;
-  box-shadow: 0px 0px 0px 2px var(--color-bg-primary);
-
-  // transition: box-shadow 0.1s ease-in-out;
-  transition: color 0.1s ease-in-out;
-
   &::-webkit-input-placeholder {
-    color: #65737e;
+    color: var(--color-bg-primary);
     transition: color 0.1s ease-in-out;
+  }
+
+  &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
   }
 
   &:hover,
   &:focus,
   &:active {
     outline: none;
-    // box-shadow: 0px 0px 0px 2px colors.$accent;
-    color: colors.$text-primary;
+    color: var(--color-text);
 
     &::-webkit-input-placeholder {
-      color: colors.$text-primary;
+      color: var(--color-text);
     }
   }
 }

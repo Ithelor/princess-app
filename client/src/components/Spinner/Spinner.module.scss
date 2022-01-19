@@ -1,5 +1,3 @@
-@use '~styles/partials/_colors.scss';
-
 @keyframes spinner {
   to {
     transform: rotate(360deg);
@@ -12,7 +10,7 @@
   height: 4em;
   border-radius: 50%;
   border: 0.15em solid white;
-  border-top-color: colors.$accent;
+  border-top-color: var(--color-primary);
   animation: spinner 0.7s linear infinite;
   margin: 2rem auto;
 }

@@ -4,10 +4,12 @@ import { ThemeProvider } from 'components/ThemeProvider/ThemeProvider'
 import Navbar from 'domains/Navbar/Navbar'
 import Kanjium from 'domains/Kanjium/Kanjium'
 import Kentei from 'domains/Kentei/Kentei'
+import CommandMenu from 'domains/CommandMenu/CommandMenu'
 
 function App() {
   return (
     <ThemeProvider>
+      <CommandMenu />
       <BrowserRouter>
         <Navbar />
 
