@@ -9,7 +9,7 @@ input[type='search'] {
   color: #65737e;
   background: var(--color-secondary);
 
-  border: 2px solid var(--color-bg-primary);
+  border: 2px solid var(--color-border);
   border-radius: 0.5rem 0.5rem 0 0;
 
   transition: color 0.1s ease-in-out, background 0.25s ease-in-out;
@@ -19,7 +19,8 @@ input[type='search'] {
   }
 
   &::-webkit-input-placeholder {
-    color: var(--color-bg-primary);
+    user-select: none;
+    color: var(--color-text);
     transition: color 0.1s ease-in-out;
   }
 
@@ -31,10 +32,10 @@ input[type='search'] {
   &:focus,
   &:active {
     outline: none;
-    color: var(--color-text);
+    color: var(--color-primary);
 
     &::-webkit-input-placeholder {
-      color: var(--color-text);
+      color: var(--color-primary);
     }
   }
 }
