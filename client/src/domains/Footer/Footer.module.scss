@@ -1,0 +1,18 @@
+footer {
+  font-family: 'Poppins', serif;
+  text-align: center;
+
+  color: var(--color-text);
+
+  kbd {
+    font-family: 'Exo', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+
+    color: var(--color-bg-primary);
+    background-color: var(--color-text);
+  }
+}

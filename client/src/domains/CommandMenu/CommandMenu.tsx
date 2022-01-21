@@ -11,7 +11,6 @@ import {
 import SearchBar from 'components/SearchBar/SearchBar'
 
 import styles from './CommandMenu.module.scss'
-
 // interface ICommandMenu {}
 
 interface ICommandItem {
@@ -20,18 +19,18 @@ interface ICommandItem {
   goToMenu?: string
 }
 
+const CommandItem = (props: ICommandItem) => {
+  return (
+    <li>
+      {props.icon}
+      {props.title}
+      {<GoToIcon />}
+    </li>
+  )
+}
+
 const CommandMenu = () => {
   // const [activeMenu, setActiveMenu] = React.useState('main')
-
-  const CommandItem = (props: ICommandItem) => {
-    return (
-      <li>
-        {props.icon}
-        {props.title}
-        {<GoToIcon />}
-      </li>
-    )
-  }
 
   const [showCommandMenu, setShowCommandMenu] = React.useState(false)
 
@@ -45,19 +44,18 @@ const CommandMenu = () => {
   )
 
   React.useEffect(() => {
-    document.addEventListener('keydown', handleShowCommandMenu)
+    window.addEventListener('keydown', handleShowCommandMenu)
 
     return () => {
-      document.removeEventListener('keydown', handleShowCommandMenu)
+      window.removeEventListener('keydown', handleShowCommandMenu)
     }
   }, [handleShowCommandMenu])
 
   // TODO: customize the searchbar with search target?, placeholder
-  // TODO: hint, i.e. "esc - command line"
   return (
     showCommandMenu && (
       <div className={styles.dim} onClick={() => setShowCommandMenu(false)}>
-        <menu>
+        <menu onClick={(event) => event.stopPropagation()}>
           <SearchBar />
           <ul>
             <CommandItem title="Theme" icon={<ThemeIcon />} />

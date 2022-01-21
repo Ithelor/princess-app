@@ -6,7 +6,7 @@ interface IThemeProvider {
   children: React.ReactChildren
 }
 
-export const ThemeProvider = (props: IThemeProvider) => {
+const ThemeProvider = (props: IThemeProvider) => {
   const [theme, setTheme] = React.useState(
     localStorage.getItem('theme') ||
       (window.matchMedia('(prefers-color-scheme: dark)').matches && 'dark') ||
@@ -47,3 +47,5 @@ export const ThemeProvider = (props: IThemeProvider) => {
     </ThemeContext.Provider>
   )
 }
+
+export default ThemeProvider
