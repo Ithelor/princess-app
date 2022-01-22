@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 
+import SearchBar from 'components/SearchBar/SearchBar'
 import Spinner from 'components/Spinner/Spinner'
 import KanjiumGraph from './PitchGraph'
 
@@ -81,7 +82,7 @@ const Home = () => {
 
   return (
     <article className={styles.container}>
-      <h2 className={styles.title}>高低アクセント</h2>
+      <SearchBar />
       <section className={styles.jptWrapper}>
         {loading ? (
           <table className="fade-in">

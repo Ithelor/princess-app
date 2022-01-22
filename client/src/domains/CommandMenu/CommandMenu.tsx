@@ -11,6 +11,7 @@ import {
 import SearchBar from 'components/SearchBar/SearchBar'
 
 import styles from './CommandMenu.module.scss'
+
 // interface ICommandMenu {}
 
 interface ICommandItem {
@@ -51,12 +52,12 @@ const CommandMenu = () => {
     }
   }, [handleShowCommandMenu])
 
-  // TODO: customize the searchbar with search target?, placeholder
+  // TODO: customize the searchbar with search target?
   return (
     showCommandMenu && (
       <div className={styles.dim} onClick={() => setShowCommandMenu(false)}>
         <menu onClick={(event) => event.stopPropagation()}>
-          <SearchBar />
+          <SearchBar placeholder="Type to search" />
           <ul>
             <CommandItem title="Theme" icon={<ThemeIcon />} />
             <CommandItem title="Option 1" icon={<OptionOneIcon />} />

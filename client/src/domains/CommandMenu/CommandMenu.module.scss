@@ -6,23 +6,27 @@
   top: 0;
   z-index: 1000;
 
+  display: grid;
+  justify-content: center;
+  padding: 5rem 0;
+
   background-color: rgba(0, 0, 0, 0.75);
 
+  transition: opacity 0.5s ease;
+
   menu {
-    display: grid;
-    justify-content: center;
-    align-items: start;
-    padding: 5rem 0;
+    width: 80vw;
+    height: fit-content;
+    border-radius: 1rem;
 
     ul {
       font-family: 'Poppins' serif;
       font-size: 1rem;
 
+      display: grid;
+
       list-style: none;
       background-color: var(--color-bg-secondary);
-
-      border: 2px solid var(--color-border);
-      border-top: none;
 
       color: var(--color-text);
 
@@ -34,13 +38,13 @@
         display: grid;
         grid-template-columns: auto 1fr auto;
         align-items: center;
-        padding: 0.75rem;
+        padding: 1rem;
 
         transition: background 0.1s ease;
 
         svg {
           &:first-of-type {
-            margin-right: 0.5rem;
+            margin-right: 1rem;
           }
         }
 
@@ -52,5 +56,9 @@
         }
       }
     }
+  }
+
+  ._hidden {
+    opacity: 0;
   }
 }

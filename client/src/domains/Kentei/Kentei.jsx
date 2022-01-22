@@ -84,6 +84,10 @@ const Card = () => {
       <SearchBar onChange={optimisedHandleChange} />
       {kanji ? (
         <KenteiDetails kanji={kanji} />
+      ) : fetching || !loading ? (
+        <div className={styles.fill}>
+          <Spinner />
+        </div>
       ) : (
         <section className={styles.grid} onScroll={onScroll}>
           {searchResults ? (
@@ -92,16 +96,11 @@ const Card = () => {
               data={searchResults}
               className="fade-in"
             />
-          ) : loading ? (
+          ) : (
+            loading &&
             kanjiData.map((kanji) => (
               <KenteiItem key={kanji._id} data={kanji} className="fade-in" />
             ))
-          ) : (
-            (fetching || !loading) && (
-              <div className={styles.fill}>
-                <Spinner />
-              </div>
-            )
           )}
         </section>
       )}
