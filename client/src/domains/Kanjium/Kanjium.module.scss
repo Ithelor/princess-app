@@ -19,8 +19,6 @@
     flex-direction: column;
     justify-content: center;
 
-    border-radius: 0.5rem 0.5rem 0 0;
-
     table {
       border-collapse: collapse;
 
@@ -32,7 +30,8 @@
 
       tbody {
         display: block;
-        max-height: 80vh;
+
+        max-height: 70vh;
         overflow-y: scroll;
 
         &::-webkit-scrollbar {

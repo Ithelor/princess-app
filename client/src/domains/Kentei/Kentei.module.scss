@@ -1,14 +1,7 @@
 .container {
   width: 100%;
 
-  .fill {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
   .grid {
-    max-height: 85vh;
     padding: 0.5rem 0.5rem 0 0;
     margin: 0 auto;
 
@@ -18,7 +11,13 @@
 
     border-radius: 0.5rem 0.5rem 0 0;
 
+    max-height: 75vh;
     overflow-y: scroll;
+
+    .fill {
+      grid-column: 1/-1;
+      margin: 0 auto;
+    }
 
     &::-webkit-scrollbar {
       width: 0.25rem;
