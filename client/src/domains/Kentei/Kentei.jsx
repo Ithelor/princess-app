@@ -14,7 +14,6 @@ import { debounce } from 'Utils.js'
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
-// TODO: fix false display on page load
 const Card = () => {
   // query params
   const search = useLocation().search
@@ -44,11 +43,15 @@ const Card = () => {
     })()
   }, [searchTerm])
 
-  const limit = 15
+  // TODO: make dynamic
+  const limit = 30
+
+  // TODO: get from the server
   const totalCount = 6355
+
   const [kanjiData, setKanjiData] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [fetching, setFetching] = useState(true)
 
   useEffect(() => {
@@ -61,8 +64,10 @@ const Card = () => {
               setKanjiData([...kanjiData, ...res.data])
               setCurrentPage((prevState) => prevState + 1)
             })
-            .finally(() => setFetching(false))
-          setLoading(true)
+            .finally(() => {
+              setLoading(false)
+              setFetching(false)
+            })
         } catch (err) {
           console.log(err)
         }
@@ -84,23 +89,29 @@ const Card = () => {
       <SearchBar onChange={optimisedHandleChange} />
       {kanji ? (
         <KenteiDetails kanji={kanji} />
-      ) : fetching || !loading ? (
-        <div className={styles.fill}>
-          <Spinner />
-        </div>
       ) : (
         <section className={styles.grid} onScroll={onScroll}>
-          {searchResults ? (
+          {loading ? (
+            <div className={styles.fill}>
+              <Spinner />
+            </div>
+          ) : searchResults ? (
             <KenteiItem
               key={searchResults._id}
               data={searchResults}
               className="fade-in"
             />
           ) : (
-            loading &&
-            kanjiData.map((kanji) => (
-              <KenteiItem key={kanji._id} data={kanji} className="fade-in" />
-            ))
+            <>
+              {kanjiData.map((kanji) => (
+                <KenteiItem key={kanji._id} data={kanji} className="fade-in" />
+              ))}
+              {fetching && (
+                <div className={styles.fill}>
+                  <Spinner />
+                </div>
+              )}
+            </>
           )}
         </section>
       )}

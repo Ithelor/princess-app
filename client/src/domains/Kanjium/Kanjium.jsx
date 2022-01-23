@@ -15,7 +15,7 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL
 const Home = () => {
   // handling data loading
   const [pitchData, setPitchData] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   // handling pagination
   // 3546 * 35
@@ -34,8 +34,10 @@ const Home = () => {
               setPitchData([...pitchData, ...res.data])
               setCurrentPage((prevState) => prevState + 1)
             })
-            .finally(() => setFetching(false))
-          setLoading(true)
+            .finally(() => {
+              setLoading(false)
+              setFetching(false)
+            })
         } catch (err) {
           console.log(err)
         }
@@ -84,7 +86,7 @@ const Home = () => {
     <article className={styles.container}>
       <SearchBar />
       <section className={styles.jptWrapper}>
-        {loading ? (
+        {!loading ? (
           <table className="fade-in">
             <thead>
               <tr>
