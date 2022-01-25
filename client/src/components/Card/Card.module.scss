@@ -32,7 +32,7 @@
   }
 
   .details {
-    margin-top: 1em;
+    margin: 1em 0;
     display: grid;
 
     .row {
@@ -43,11 +43,25 @@
       justify-content: space-between;
       align-items: center;
 
+      overflow: hidden;
+
+      + .row {
+        margin-top: 0.25rem;
+      }
+
       .label {
-        display: inline-block;
         min-width: fit-content;
-        padding: 0.4rem 0.3rem;
+        padding: 0.5rem;
+        margin-right: 0.5rem;
         border-radius: 0.5em;
+      }
+
+      .readings {
+        width: 100%;
+        display: flex;
+
+        white-space: nowrap;
+        overflow: hidden;
       }
 
       ._generic {

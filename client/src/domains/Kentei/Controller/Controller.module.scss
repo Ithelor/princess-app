@@ -12,29 +12,32 @@
   Controlled
 */
 
-.tag {
+.reading {
   display: inline-block;
-  min-width: fit-content;
-  padding: 0.4rem 0.3rem;
-  border-radius: 0 0.5em 0.5em 0;
-  color: rgba(var(--value-generic), 0.5);
-  background-color: var(--color-text);
+  padding: 0.25rem;
 
-  user-select: none;
-}
+  .tag {
+    padding: 0.25rem 0.25rem;
+    border-radius: 0 0.5em 0.5em 0;
+    color: rgba(var(--value-generic), 0.5);
+    background-color: var(--color-text);
 
-._on {
-  background-color: var(--on);
-}
+    user-select: none;
+  }
 
-._kun {
-  background-color: var(--kun);
-}
+  ._on {
+    background-color: var(--on);
+  }
 
-._tagged {
-  border-radius: 0.5em 0 0 0.5em;
-}
+  ._kun {
+    background-color: var(--kun);
+  }
 
-._外 {
-  opacity: 0.25;
+  ._tagged {
+    border-radius: 0.5em 0 0 0.5em;
+  }
+
+  ._外 {
+    opacity: 0.25;
+  }
 }

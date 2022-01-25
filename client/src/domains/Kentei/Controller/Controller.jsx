@@ -61,17 +61,12 @@ export default class KenteiController {
         }
 
         result.push(
-          // TODO: key something
-          <>
-            <span key={key} className={className}>
-              {content}
-            </span>
+          <div key={key} className={styles.reading}>
+            <span className={className}>{content}</span>
             {status && status !== '外' && (
-              <span key={key + 'tag'} className={styles.tag}>
-                {status}
-              </span>
+              <span className={styles.tag}>{status}</span>
             )}
-          </>
+          </div>
         )
       })
 
