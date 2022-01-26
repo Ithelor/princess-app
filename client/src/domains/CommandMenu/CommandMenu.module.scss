@@ -1,15 +1,13 @@
 .dim {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1000;
-
-  display: grid;
-  justify-content: center;
-
   background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
 
   transition: opacity 0.5s ease;
 
@@ -56,9 +54,5 @@
         }
       }
     }
-  }
-
-  ._hidden {
-    opacity: 0;
   }
 }

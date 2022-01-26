@@ -2,6 +2,14 @@ import React from 'react'
 
 import { ThemeContext } from 'context/ThemeContext'
 
+export const themes: Array<string> = [
+  'dark',
+  'iceberg_dark',
+  'laser',
+  'pulse',
+  'sonokai'
+]
+
 interface IThemeProvider {
   children: React.ReactChildren
 }
@@ -13,8 +21,8 @@ const ThemeProvider = (props: IThemeProvider) => {
       'light'
   )
 
-  const switchTheme = (e: React.ChangeEvent<HTMLSelectElement> | null) => {
-    if (e) setTheme(e.target.value)
+  const switchTheme = (e: React.ChangeEvent<HTMLLIElement> | null) => {
+    if (e) setTheme(e.target.textContent!)
 
     localStorage.setItem('theme', theme!)
 

@@ -8,7 +8,6 @@ import {
 } from 'react-icons/bs'
 
 import { ReactComponent as Logo } from 'assets/shared/logo.svg'
-import ThemeSelect from './ThemeSelect/ThemeSelect'
 import DropdownMenu from 'components/DropdownMenu/DropdownMenu'
 
 import styles from './Navbar.module.scss'
@@ -25,7 +24,6 @@ const Navbar = () => (
     </div>
 
     <ul className={styles.navContainer}>
-      <ThemeSelect />
       <NavItem to="kentei" icon={<KenteiIcon size={ICON_SIZE} />} tooltip="Kentei" />
       <NavItem
         to="kanjium"
