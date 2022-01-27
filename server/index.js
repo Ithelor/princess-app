@@ -33,11 +33,12 @@ app.get('/kanjium', (req, res) => {
 })
 
 app.get('/kentei', (req, res) => {
-  let page = parseInt(req.query.page)
-  let limit = parseInt(req.query.limit)
-  let kanji = req.query.kanji
+  let page = parseInt(req.query.page) || 2,
+    offset = parseInt(req.query.offset) || 0,
+    limit = parseInt(req.query.limit),
+    kanji = req.query.kanji
 
-  if (page && limit) {
+  if (limit) {
     KanjiSchema.find((err, data) => {
       if (err) {
         console.log(`An error occured: ${err.res}`)
@@ -45,9 +46,9 @@ app.get('/kentei', (req, res) => {
         res.json(data)
       }
     })
-      .skip((page - 1) * limit)
+      .skip((page - 1) * limit - offset)
       .limit(limit)
-  } else {
+  } else if (kanji) {
     KanjiSchema.findOne({ kanji: kanji }, (err, data) => {
       if (err) {
         console.log(`An error occured: ${err.res}`)

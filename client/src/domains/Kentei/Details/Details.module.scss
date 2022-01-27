@@ -1,170 +1,202 @@
 @use '~styles/partials/mixins';
 
 .container {
-  padding: 0 1rem;
+  display: grid;
+  grid-template-columns: 100px minmax(120px, 1fr);
+  grid-template-rows: auto;
 
-  h2 {
-    font-size: 2rem;
+  padding-right: 1rem;
 
-    text-align: center;
-    margin: 0.5rem 0;
+  nav {
+    border-right: 2px solid var(--color-border);
+    height: 35rem;
+    overflow-x: hidden;
+    overflow-y: scroll;
 
-    span {
-      font-family: 'Poppins' sans-serif;
-      font-weight: 200;
+    ul {
+      list-style: none;
+      text-decoration: none;
 
-      + span {
-        font-family: 'Noto Sans JP', sans-serif;
-        font-weight: 100;
-        color: var(--color-primary);
+      li {
+        position: relative;
+        width: 100%;
+        padding: 0.5rem 0;
+
+        cursor: pointer;
+
+        &.selected {
+          background-color: var(--color-bg-secondary);
+        }
+
+        .sideline {
+          position: absolute;
+          right: -10px; // TODO: ok why not -1 ?
+          top: 0;
+          bottom: 0;
+          background: var(--color-primary);
+        }
       }
     }
   }
 
-  .content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  div {
+    padding: 0 0.5rem;
 
-    .kanjiContainer {
-      flex: 1;
+    h2 {
+      font-size: 2rem;
 
-      background-color: rgb(var(--value-bg-primary), 0.75);
-      border-radius: 1rem;
-      border: 2px solid var(--color-border);
+      text-align: center;
+      margin: 0.5rem 0;
 
-      overflow: hidden;
+      span {
+        font-family: 'Poppins' sans-serif;
+        font-weight: 200;
 
-      .kanji {
-        font-weight: 400;
-        line-height: -50%;
+        + span {
+          font-family: 'Noto Sans JP', sans-serif;
+          font-weight: 100;
+          color: var(--color-primary);
+        }
+      }
+    }
 
-        height: 230px; // TODO: wtf? UPD 16.01: fuck
-        text-align: center;
+    .content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-        transition: all 0.2s ease-in-out;
+      .kanjiContainer {
+        flex: 1;
 
-        ._normal {
-          font-size: 10rem;
-          font-family: 'Noto Serif JP', sans-serif;
+        background-color: rgb(var(--value-bg-primary), 0.75);
+        border-radius: 1rem;
+        border: 2px solid var(--color-border);
+
+        overflow: hidden;
+
+        .kanji {
+          font-weight: 400;
+          line-height: -50%;
+
+          height: 230px; // TODO: idk get rid of rtg?
+          text-align: center;
+
+          transition: all 0.2s ease-in-out;
+
+          ._normal {
+            font-size: 10rem;
+            font-family: 'Noto Serif JP', sans-serif;
+          }
+
+          ._strokes {
+            // can't TODO: fix this shite, so for now
+            font-size: 10.775rem;
+            font-family: KanjiStrokeOrders;
+          }
         }
 
-        ._strokes {
-          // can't TODO: fix this shite, so for now
-          font-size: 10.775rem;
-          font-family: KanjiStrokeOrders;
+        fieldset {
+          text-align: center;
+
+          border: none;
+          border-top: 2px solid var(--color-border);
+
+          input {
+            display: none;
+
+            &:checked {
+              & + label {
+                color: var(--color-text);
+
+                @include mixins.NeonTextShadow(#eee, var(--color-primary));
+              }
+            }
+          }
+
+          label {
+            cursor: pointer;
+            font-size: 1em;
+            padding: 1em;
+
+            color: var(--color-text);
+
+            transition: text-shadow 0.5s ease;
+          }
         }
       }
 
       /*
-        ToggleSwitch component
-      */
+      StatsItem component
+    */
 
-      fieldset {
-        text-align: center;
+      .statsContainer {
+        flex: 1;
 
-        border: none;
-        border-top: 2px solid var(--color-border);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 15px 10px;
 
-        input {
-          display: none;
+        .statsItem {
+          display: flex;
+          flex-direction: column;
+          text-align: center;
 
-          &:checked {
-            & + label {
-              color: var(--color-text);
+          font-family: 'Poppins' sans-serif;
 
-              @include mixins.NeonTextShadow(#eee, var(--color-primary));
-            }
+          .statsValue {
+            font-weight: 600;
+            color: var(--color-text);
           }
-        }
 
-        label {
-          cursor: pointer;
-          font-size: 1em;
-          padding: 1em;
-
-          color: var(--color-text);
-
-          transition: text-shadow 0.5s ease;
+          .statsLabel {
+            font-weight: 400;
+            color: rgba(var(--color-text-val), 0.7);
+          }
         }
       }
     }
 
     /*
-      StatsItem component
-    */
-
-    .statsContainer {
-      flex: 1;
-
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto auto;
-      gap: 15px 10px;
-
-      .statsItem {
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-
-        font-family: 'Poppins' sans-serif;
-
-        .statsValue {
-          color: var(--color-text);
-          font-weight: 600;
-        }
-
-        .statsLabel {
-          color: rgba(var(--color-text-val), 0.7);
-          font-weight: 400;
-        }
-      }
-    }
-  }
-
-  /*
     AddsItem component
   */
 
-  .addsContainer {
-    display: flex;
-    flex-direction: column;
-    margin: 2rem 0;
-
-    .addsItem {
+    .addsContainer {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      margin: 2rem 0;
 
-      .addsLabel {
-        @include mixins.Label(
-          $padding-v: 0.25rem,
-          $padding-h: 0.25rem,
-          $color: var(--color-generic)
-        );
-        display: inline-block;
-        text-align: center;
-        width: 6rem;
-      }
+      .addsItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-      .addsContent {
-        display: inline-block;
-        padding: 0.5rem 0.75rem;
-        width: 100%;
+        .addsLabel {
+          @include mixins.Label($padding-v: 0.25rem, $padding-h: 0.25rem, $color: var(--color-generic));
+          display: inline-block;
+          text-align: center;
+          width: 6rem;
+        }
 
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
+        .addsContent {
+          display: inline-block;
+          padding: 0.5rem 0.75rem;
+          width: 100%;
 
-        span {
-          & + span {
-            margin-left: 0.5rem;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+
+          span {
+            & + span {
+              margin-left: 0.5rem;
+            }
           }
         }
-      }
 
-      .addsIcon {
-        float: right;
+        .addsIcon {
+          float: right;
+        }
       }
     }
   }

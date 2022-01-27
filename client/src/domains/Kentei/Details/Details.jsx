@@ -1,8 +1,10 @@
+import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import axios from 'axios'
 import classNames from 'classnames'
 import { BsPencilFill as PenIcon } from 'react-icons/bs'
+import { motion } from 'framer-motion/dist/framer-motion'
 
 import Controller from 'domains/Kentei/Controller/Controller'
 import Modal from 'components/Modal/Modal.tsx'
@@ -16,7 +18,9 @@ const KC = new Controller()
 
 const KenteiDetails = (props) => {
   // current data
-  const [kanji, setKanji] = useState('')
+  const [kanji, setKanji] = useState(props.kanjiCurrent)
+  const [newKanji, setNewKanji] = useState('')
+  // const [kanji, setKanji] = useState('')
 
   // kanji display mode
   const [isStrokes, setIsStrokes] = useState(false)
@@ -27,103 +31,113 @@ const KenteiDetails = (props) => {
   useEffect(() => {
     ;(async () => {
       try {
-        await axios.get(`${SERVER_URL}/kentei?kanji=${props.kanji}`).then((res) => {
-          setKanji(res.data)
+        await axios.get(`${SERVER_URL}/kentei?kanji=${kanji}`).then((res) => setNewKanji(res.data))
+      } catch (err) {
+        console.log(err)
+      }
+    })()
+  }, [kanji]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const [currentPage, setCurrentPage] = useState(2)
+  const offset = 4,
+    limit = 9
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        await axios.get(`${SERVER_URL}/kentei?page=${currentPage}}&offset=${offset}&limit=${limit}`).then((res) => {
+          // spread ... / []
+          setCurrentPage((prevState) => prevState + 1)
         })
-        // setLoading(true)
       } catch (err) {
         console.log(err)
       }
     })()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const ToggleSwitch = () => {
-    return (
-      <fieldset>
-        <input
-          type="radio"
-          id="normal"
-          value="normal"
-          name="display-mode"
-          defaultChecked={!isStrokes}
-          onChange={() => setIsStrokes(!isStrokes)}
-        />
-        <label htmlFor="normal">normal</label>
-        <input
-          type="radio"
-          id="strokes"
-          value="strokes"
-          name="display-mode"
-          defaultChecked={isStrokes}
-          onChange={() => setIsStrokes(!isStrokes)}
-        />
-        <label htmlFor="strokes">strokes</label>
-      </fieldset>
-    )
-  }
+  const [selectedTab, setSelectedTab] = React.useState(props.kanjiCurrent)
 
   return (
     <div className={styles.container}>
-      <h2>
-        <span>Kanji </span>
-        <span>{props.kanji}</span>
-      </h2>
-      <div className={styles.content}>
-        <div className={styles.kanjiContainer}>
-          <div className={styles.kanji}>
-            <CSSTransition
-              in={!isStrokes}
-              unmountOnExit
-              timeout={300}
-              classNames="normal"
-              nodeRef={normalRef}
+      <nav>
+        <ul>
+          {props.kanjiData.map((item) => (
+            <li
+              key={item._id}
+              className={item.kanji === selectedTab && styles.selected}
+              onClick={() => {
+                setSelectedTab(item.kanji)
+                setKanji(item.kanji)
+                console.log(item.kanji)
+              }}
             >
-              <div ref={normalRef} className={styles._normal}>
-                {props.kanji}
-              </div>
-            </CSSTransition>
-            <CSSTransition
-              in={isStrokes}
-              unmountOnExit
-              timeout={300}
-              classNames="strokes"
-              nodeRef={strokesRef}
-            >
-              <div ref={strokesRef} className={styles._strokes}>
-                {props.kanji}
-              </div>
-            </CSSTransition>
+              {item.kanji}
+              {item.kanji === selectedTab && <motion.div className={styles.sideline} layoutId="sideline" />}
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div>
+        <h2>
+          <span>Kanji </span>
+          <span>{newKanji.kanji}</span>
+        </h2>
+        <div className={styles.content}>
+          <div className={styles.kanjiContainer}>
+            <div className={styles.kanji}>
+              <CSSTransition in={!isStrokes} unmountOnExit timeout={300} classNames="normal" nodeRef={normalRef}>
+                <div ref={normalRef} className={styles._normal}>
+                  {newKanji.kanji}
+                </div>
+              </CSSTransition>
+              <CSSTransition in={isStrokes} unmountOnExit timeout={300} classNames="strokes" nodeRef={strokesRef}>
+                <div ref={strokesRef} className={styles._strokes}>
+                  {newKanji.kanji}
+                </div>
+              </CSSTransition>
+            </div>
+            <fieldset>
+              <input
+                type="radio"
+                id="normal"
+                value="normal"
+                name="display-mode"
+                defaultChecked={!isStrokes}
+                onChange={() => setIsStrokes(!isStrokes)}
+              />
+              <label htmlFor="normal">normal</label>
+              <input
+                type="radio"
+                id="strokes"
+                value="strokes"
+                name="display-mode"
+                defaultChecked={isStrokes}
+                onChange={() => setIsStrokes(!isStrokes)}
+              />
+              <label htmlFor="strokes">strokes</label>
+            </fieldset>
           </div>
-          <ToggleSwitch onClick={() => setIsStrokes(!isStrokes)} />
+          <div className={styles.statsContainer}>
+            <StatsItem item={newKanji.strokes} label="strokes" />
+            <StatsItem item={newKanji.level} label="level" />
+            <StatsItem item={newKanji.radical} label="radicals" />
+            <StatsItem item={newKanji.index} label="index" />
+            <StatsItem item={newKanji.variant} label="variant" />
+          </div>
         </div>
-        <div className={styles.statsContainer}>
-          <StatsItem item={kanji.strokes} label="strokes" />
-          <StatsItem item={kanji.level} label="level" />
-          <StatsItem item={kanji.radical} label="radicals" />
-          <StatsItem item={kanji.index} label="index" />
-          <StatsItem item={kanji.variant} label="variant" />
+        <div className={styles.addsContainer}>
+          <AddsItem label="意味" content={newKanji.meaning} clickable modalContent={newKanji} />
+          <AddsItem label="音" content={newKanji && KC.handleReadings(newKanji._id, newKanji.onyomi, '_on')} />
+          <AddsItem label="訓" content={newKanji && KC.handleReadings(newKanji._id, newKanji.kunyomi, '_kun')} />
         </div>
-      </div>
-      <div className={styles.addsContainer}>
-        <AddsItem
-          label="意味"
-          content={kanji.meaning}
-          clickable
-          modalContent={kanji}
-        />
-        <AddsItem
-          label="音"
-          content={kanji && KC.handleReadings(kanji._id, kanji.onyomi, '_on')}
-        />
-        <AddsItem
-          label="訓"
-          content={kanji && KC.handleReadings(kanji._id, kanji.kunyomi, '_kun')}
-        />
       </div>
     </div>
   )
 }
 
+/*
+  StatsItem Component
+*/
 const StatsItem = (props) => {
   return (
     <div className={styles.statsItem}>
@@ -133,9 +147,11 @@ const StatsItem = (props) => {
   )
 }
 
-// TODO: fix tag placement
+/*
+  AddsItem Component
+*/
 // TODO: fix clickable (wtf how) readings
-// TODO: list controller
+// TODO: list controller / upd 25.01: what?
 
 // TODO: display root dim on triggering modal
 const AddsItem = (props) => {
@@ -153,13 +169,7 @@ const AddsItem = (props) => {
         {props.content}
       </span>
       {isModalOpen && (
-        <Modal
-          setIsOpen={setIsModalOpen}
-          showExit
-          showClose
-          title="意味"
-          content={props.modalContent.meaning}
-        />
+        <Modal setIsOpen={setIsModalOpen} showExit showClose title="意味" content={props.modalContent.meaning} />
       )}
       <span className={styles.addsIcon}>
         <PenIcon />

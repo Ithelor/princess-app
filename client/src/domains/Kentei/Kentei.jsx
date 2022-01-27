@@ -14,10 +14,11 @@ import { debounce } from 'Utils.js'
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
-const Card = () => {
+const Kentei = () => {
   // query params
   const search = useLocation().search
-  const kanji = new URLSearchParams(search).get('kanji')
+
+  const queryKanji = new URLSearchParams(search).get('kanji')
 
   // TODO: fix search
   const [searchTerm, setSearchTerm] = useState('')
@@ -76,10 +77,7 @@ const Card = () => {
   }, [fetching]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onScroll = (e) => {
-    if (
-      e.target.scrollHeight - (e.target.scrollTop + window.innerHeight) < 250 &&
-      kanjiData.length < totalCount
-    ) {
+    if (e.target.scrollHeight - (e.target.scrollTop + window.innerHeight) < 250 && kanjiData.length < totalCount) {
       setFetching(true)
     }
   }
@@ -87,8 +85,8 @@ const Card = () => {
   return (
     <article className={styles.container}>
       <SearchBar onChange={optimisedHandleChange} />
-      {kanji ? (
-        <KenteiDetails kanji={kanji} />
+      {queryKanji ? (
+        <KenteiDetails kanjiCurrent={queryKanji} kanjiData={kanjiData} />
       ) : (
         <section className={styles.grid} onScroll={onScroll}>
           {loading ? (
@@ -96,11 +94,7 @@ const Card = () => {
               <Spinner />
             </div>
           ) : searchResults ? (
-            <KenteiItem
-              key={searchResults._id}
-              data={searchResults}
-              className="fade-in"
-            />
+            <KenteiItem key={searchResults._id} data={searchResults} className="fade-in" />
           ) : (
             <>
               {kanjiData.map((kanji) => (
@@ -119,4 +113,4 @@ const Card = () => {
   )
 }
 
-export default Card
+export default Kentei
