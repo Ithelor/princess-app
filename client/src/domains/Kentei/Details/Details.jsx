@@ -1,5 +1,5 @@
-import React from 'react'
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate, createSearchParams } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 import axios from 'axios'
 import classNames from 'classnames'
@@ -17,13 +17,13 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL
 const KC = new Controller()
 
 const KenteiDetails = (props) => {
-  // current data
+  // current data TODO: reduce ?
   const [kanji, setKanji] = useState(props.kanjiCurrent)
-  const [newKanji, setNewKanji] = useState('')
-  // const [kanji, setKanji] = useState('')
+  const [currentKanji, setCurrentKanji] = useState('')
 
   // kanji display mode
   const [isStrokes, setIsStrokes] = useState(false)
+
   // prevent findDOMNode
   const normalRef = useRef(null),
     strokesRef = useRef(null)
@@ -31,31 +31,24 @@ const KenteiDetails = (props) => {
   useEffect(() => {
     ;(async () => {
       try {
-        await axios.get(`${SERVER_URL}/kentei?kanji=${kanji}`).then((res) => setNewKanji(res.data))
+        await axios.get(`${SERVER_URL}/kentei?kanji=${kanji}`).then((res) => {
+          setCurrentKanji(res.data)
+          props.setQuery(res.data)
+        })
       } catch (err) {
         console.log(err)
       }
     })()
   }, [kanji]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [currentPage, setCurrentPage] = useState(2)
-  const offset = 4,
-    limit = 9
+  const navigate = useNavigate()
+  const params = { kanji: kanji }
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        await axios.get(`${SERVER_URL}/kentei?page=${currentPage}}&offset=${offset}&limit=${limit}`).then((res) => {
-          // spread ... / []
-          setCurrentPage((prevState) => prevState + 1)
-        })
-      } catch (err) {
-        console.log(err)
-      }
-    })()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const [selectedTab, setSelectedTab] = React.useState(props.kanjiCurrent)
+  const goToKanji = () =>
+    navigate({
+      pathname: '/kentei',
+      search: `?${createSearchParams(params)}`
+    })
 
   return (
     <div className={styles.container}>
@@ -64,15 +57,14 @@ const KenteiDetails = (props) => {
           {props.kanjiData.map((item) => (
             <li
               key={item._id}
-              className={item.kanji === selectedTab && styles.selected}
+              className={item.kanji === kanji && styles.selected}
               onClick={() => {
-                setSelectedTab(item.kanji)
                 setKanji(item.kanji)
-                console.log(item.kanji)
+                goToKanji()
               }}
             >
               {item.kanji}
-              {item.kanji === selectedTab && <motion.div className={styles.sideline} layoutId="sideline" />}
+              {item.kanji === kanji && <motion.div className={styles.sideline} layoutId="sideline" />}
             </li>
           ))}
         </ul>
@@ -80,19 +72,19 @@ const KenteiDetails = (props) => {
       <div>
         <h2>
           <span>Kanji </span>
-          <span>{newKanji.kanji}</span>
+          <span>{currentKanji.kanji}</span>
         </h2>
         <div className={styles.content}>
           <div className={styles.kanjiContainer}>
             <div className={styles.kanji}>
               <CSSTransition in={!isStrokes} unmountOnExit timeout={300} classNames="normal" nodeRef={normalRef}>
                 <div ref={normalRef} className={styles._normal}>
-                  {newKanji.kanji}
+                  {currentKanji.kanji}
                 </div>
               </CSSTransition>
               <CSSTransition in={isStrokes} unmountOnExit timeout={300} classNames="strokes" nodeRef={strokesRef}>
                 <div ref={strokesRef} className={styles._strokes}>
-                  {newKanji.kanji}
+                  {currentKanji.kanji}
                 </div>
               </CSSTransition>
             </div>
@@ -118,17 +110,23 @@ const KenteiDetails = (props) => {
             </fieldset>
           </div>
           <div className={styles.statsContainer}>
-            <StatsItem item={newKanji.strokes} label="strokes" />
-            <StatsItem item={newKanji.level} label="level" />
-            <StatsItem item={newKanji.radical} label="radicals" />
-            <StatsItem item={newKanji.index} label="index" />
-            <StatsItem item={newKanji.variant} label="variant" />
+            <StatsItem item={currentKanji.strokes} label="strokes" />
+            <StatsItem item={currentKanji.level} label="level" />
+            <StatsItem item={currentKanji.radical} label="radicals" />
+            <StatsItem item={currentKanji.index} label="index" />
+            <StatsItem item={currentKanji.variant} label="variant" />
           </div>
         </div>
         <div className={styles.addsContainer}>
-          <AddsItem label="意味" content={newKanji.meaning} clickable modalContent={newKanji} />
-          <AddsItem label="音" content={newKanji && KC.handleReadings(newKanji._id, newKanji.onyomi, '_on')} />
-          <AddsItem label="訓" content={newKanji && KC.handleReadings(newKanji._id, newKanji.kunyomi, '_kun')} />
+          <AddsItem label="意味" content={currentKanji.meaning} clickable modalContent={currentKanji} />
+          <AddsItem
+            label="音"
+            content={currentKanji && KC.handleReadings(currentKanji._id, currentKanji.onyomi, '_on')}
+          />
+          <AddsItem
+            label="訓"
+            content={currentKanji && KC.handleReadings(currentKanji._id, currentKanji.kunyomi, '_kun')}
+          />
         </div>
       </div>
     </div>
