@@ -16,9 +16,7 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 const Kentei = () => {
   // query params
-  const search = useLocation().search
-
-  const queryKanji = new URLSearchParams(search).get('kanji')
+  const queryKanji = new URLSearchParams(useLocation().search).get('kanji')
 
   // TODO: fix search
   const [searchTerm, setSearchTerm] = useState('')
@@ -28,16 +26,12 @@ const Kentei = () => {
     event.persist()
     setSearchTerm(event.target.value)
   }
-
   const optimisedHandleChange = debounce(handleChange, 500)
 
   useEffect(() => {
     ;(async () => {
       try {
-        await axios.get(`${SERVER_URL}/kentei?kanji=${searchTerm}`).then((res) => {
-          setSearchResults(res.data)
-        })
-        // TODO: setLoading(true)
+        await axios.get(`${SERVER_URL}/kentei?kanji=${searchTerm}`).then((res) => setSearchResults(res.data))
       } catch (err) {
         console.log(err)
       }
@@ -46,11 +40,10 @@ const Kentei = () => {
 
   // TODO: make dynamic
   const limit = 30
-
   // TODO: get from the server
   const totalCount = 6355
 
-  const [kanjiData, setKanjiData] = useState([])
+  const [kanjiArray, setkanjiArray] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(true)
   const [fetching, setFetching] = useState(true)
@@ -62,7 +55,7 @@ const Kentei = () => {
           await axios
             .get(`${SERVER_URL}/kentei?limit=${limit}&page=${currentPage}`)
             .then((res) => {
-              setKanjiData([...kanjiData, ...res.data])
+              setkanjiArray([...kanjiArray, ...res.data])
               setCurrentPage((prevState) => prevState + 1)
             })
             .finally(() => {
@@ -77,7 +70,7 @@ const Kentei = () => {
   }, [fetching]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onScroll = (e) => {
-    if (e.target.scrollHeight - (e.target.scrollTop + window.innerHeight) < 250 && kanjiData.length < totalCount) {
+    if (e.target.scrollHeight - (e.target.scrollTop + window.innerHeight) < 250 && kanjiArray.length < totalCount) {
       setFetching(true)
     }
   }
@@ -86,7 +79,12 @@ const Kentei = () => {
     <article className={styles.container}>
       <SearchBar onChange={optimisedHandleChange} />
       {queryKanji ? (
-        <KenteiDetails kanjiCurrent={queryKanji} kanjiData={kanjiData} />
+        <KenteiDetails
+          kanjiArray={kanjiArray}
+          kanjiCurrent={kanjiArray.find((kanjiData) => {
+            return kanjiData.kanji === queryKanji
+          })}
+        />
       ) : (
         <section className={styles.grid} onScroll={onScroll}>
           {loading ? (
@@ -97,7 +95,7 @@ const Kentei = () => {
             <KenteiItem key={searchResults._id} data={searchResults} className="fade-in" />
           ) : (
             <>
-              {kanjiData.map((kanji) => (
+              {kanjiArray.map((kanji) => (
                 <KenteiItem key={kanji._id} data={kanji} className="fade-in" />
               ))}
               {fetching && (
