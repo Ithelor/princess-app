@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import React from 'react'
 import axios from 'axios'
+import { useLocation } from 'react-router-dom'
 
 import KenteiItem from 'components/Card/Card'
 import KenteiDetails from './Details/Details'
 import SearchBar from 'components/SearchBar/SearchBar'
 import Spinner from 'components/Spinner/Spinner'
 
+import IKanji from 'interfaces/Kanji.interface'
+
 import styles from './Kentei.module.scss'
-import 'styles/partials/_anim.scss'
 
 import { debounce } from 'Utils.js'
 
@@ -19,16 +20,34 @@ const Kentei = () => {
   const queryKanji = new URLSearchParams(useLocation().search).get('kanji')
 
   // TODO: fix search
-  const [searchTerm, setSearchTerm] = useState('')
-  const [searchResults, setSearchResults] = useState(undefined) // []
+  const [searchTerm, setSearchTerm] = React.useState('')
+  const [searchResults, setSearchResults] = React.useState<IKanji>() // []
 
-  const handleChange = (event) => {
+  // TODO: make dynamic ?
+  const limit = 30
+  // TODO: get from the server
+  const totalCount = 6355
+
+  const [kanjiArray, setkanjiArray] = React.useState<IKanji[]>([])
+  const [currentPage, setCurrentPage] = React.useState(1)
+
+  const [loading, setLoading] = React.useState(true)
+  const [fetching, setFetching] = React.useState(true)
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist()
     setSearchTerm(event.target.value)
   }
   const optimisedHandleChange = debounce(handleChange, 500)
 
-  useEffect(() => {
+  const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const container = e.target as HTMLElement
+    if (container.scrollHeight - (container.scrollTop + window.innerHeight) < 250 && kanjiArray.length < totalCount) {
+      setFetching(true)
+    }
+  }
+
+  React.useEffect(() => {
     ;(async () => {
       try {
         await axios.get(`${SERVER_URL}/kentei?kanji=${searchTerm}`).then((res) => setSearchResults(res.data))
@@ -38,17 +57,7 @@ const Kentei = () => {
     })()
   }, [searchTerm])
 
-  // TODO: make dynamic
-  const limit = 30
-  // TODO: get from the server
-  const totalCount = 6355
-
-  const [kanjiArray, setkanjiArray] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const [loading, setLoading] = useState(true)
-  const [fetching, setFetching] = useState(true)
-
-  useEffect(() => {
+  React.useEffect(() => {
     ;(async () => {
       if (fetching) {
         try {
@@ -69,21 +78,17 @@ const Kentei = () => {
     })()
   }, [fetching]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onScroll = (e) => {
-    if (e.target.scrollHeight - (e.target.scrollTop + window.innerHeight) < 250 && kanjiArray.length < totalCount) {
-      setFetching(true)
-    }
-  }
-
   return (
     <article className={styles.container}>
       <SearchBar onChange={optimisedHandleChange} />
       {queryKanji ? (
         <KenteiDetails
           kanjiArray={kanjiArray}
-          kanjiCurrent={kanjiArray.find((kanjiData) => {
-            return kanjiData.kanji === queryKanji
-          })}
+          kanjiCurrent={
+            kanjiArray.find((kanjiData) => {
+              return kanjiData.kanji === queryKanji
+            })!
+          }
         />
       ) : (
         <section className={styles.grid} onScroll={onScroll}>
@@ -92,11 +97,11 @@ const Kentei = () => {
               <Spinner />
             </div>
           ) : searchResults ? (
-            <KenteiItem key={searchResults._id} data={searchResults} className="fade-in" />
+            <KenteiItem key={searchResults._id as React.Key} data={searchResults} />
           ) : (
             <>
               {kanjiArray.map((kanji) => (
-                <KenteiItem key={kanji._id} data={kanji} className="fade-in" />
+                <KenteiItem key={kanji._id as React.Key} data={kanji} />
               ))}
               {fetching && (
                 <div className={styles.fill}>

@@ -1,12 +1,14 @@
-import { useState, useEffect, useRef } from 'react'
+import React from 'react'
+import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
-import { motion } from 'framer-motion/dist/framer-motion'
+import { motion } from 'framer-motion'
 import { BsPencilFill as PenIcon } from 'react-icons/bs'
-import classNames from 'classnames'
 
 import Controller from 'domains/Kentei/Controller/Controller'
-import Modal from 'components/Modal/Modal.tsx'
+import Modal from 'components/Modal/Modal'
+
+import IKanji from 'interfaces/Kanji.interface'
 
 import styles from './Details.module.scss'
 import 'styles/index.scss'
@@ -14,18 +16,23 @@ import 'styles/partials/_anim.scss'
 
 const KC = new Controller()
 
-const KenteiDetails = (props) => {
-  const [kanjiData, setKanjiData] = useState('')
-  useEffect(() => setKanjiData(props.kanjiCurrent), [props.kanjiCurrent])
+interface IKenteiDetails {
+  kanjiArray: IKanji[]
+  kanjiCurrent: IKanji
+}
 
-  const [isStrokes, setIsStrokes] = useState(false)
+const KenteiDetails = (props: IKenteiDetails) => {
+  const [kanjiData, setKanjiData] = React.useState<IKanji>()
+  React.useEffect(() => setKanjiData(props.kanjiCurrent), [props.kanjiCurrent])
+
+  const [isStrokes, setIsStrokes] = React.useState(false)
 
   // prevent findDOMNode
-  const normalRef = useRef(null),
-    strokesRef = useRef(null)
+  const normalRef = React.useRef(null),
+    strokesRef = React.useRef(null)
 
   const navigate = useNavigate()
-  const goToKanji = (kanji) => navigate(`../kentei?kanji=${kanji}`, { replace: true })
+  const goToKanji = (kanji: String) => navigate(`../kentei?kanji=${kanji}`, { replace: true })
 
   return (
     <div className={styles.container}>
@@ -35,7 +42,7 @@ const KenteiDetails = (props) => {
             <ul>
               {props.kanjiArray.map((item) => (
                 <li
-                  key={item._id}
+                  key={item._id as React.Key}
                   className={classNames({ [styles.selected]: item.kanji === kanjiData.kanji })}
                   onClick={() => {
                     setKanjiData(item)
@@ -98,8 +105,11 @@ const KenteiDetails = (props) => {
             </div>
             <div className={styles.addsContainer}>
               <AddsItem label="意味" content={kanjiData.meaning} clickable modalContent={kanjiData} />
-              <AddsItem label="音" content={kanjiData && KC.handleReadings(kanjiData._id, kanjiData.onyomi, '_on')} />
-              <AddsItem label="訓" content={kanjiData && KC.handleReadings(kanjiData._id, kanjiData.kunyomi, '_kun')} />
+              <AddsItem label="音" content={kanjiData && KC.handleReadings(kanjiData._id, kanjiData.onyomi, '_on')!} />
+              <AddsItem
+                label="訓"
+                content={kanjiData && KC.handleReadings(kanjiData._id, kanjiData.kunyomi, '_kun')!}
+              />
             </div>
           </div>
         </>
@@ -111,7 +121,7 @@ const KenteiDetails = (props) => {
 /*
   StatsItem Component
 */
-const StatsItem = (props) => {
+const StatsItem = (props: { item?: Number | String; label: String }) => {
   return (
     <div className={styles.statsItem}>
       <span className={styles.statsValue}>{props.item ?? 'n/a'}</span>
@@ -125,8 +135,13 @@ const StatsItem = (props) => {
 */
 // TODO: fix clickable (wtf how) readings
 // TODO: display root dim on triggering modal
-const AddsItem = (props) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+const AddsItem = (props: {
+  label: String
+  clickable?: boolean
+  content: String | HTMLDivElement[]
+  modalContent?: IKanji
+}) => {
+  const [isModalOpen, setIsModalOpen] = React.useState(false)
 
   return (
     <div className={styles.addsItem}>
@@ -140,7 +155,7 @@ const AddsItem = (props) => {
         {props.content}
       </span>
       {isModalOpen && (
-        <Modal setIsOpen={setIsModalOpen} showExit showClose title="意味" content={props.modalContent.meaning} />
+        <Modal setIsOpen={setIsModalOpen} showExit showClose title="意味" content={props.modalContent!.meaning} />
       )}
       <span className={styles.addsIcon}>
         <PenIcon />
