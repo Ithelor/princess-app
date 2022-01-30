@@ -3,15 +3,16 @@ import classNames from 'classnames'
 import Controller from 'domains/Kentei/Controller/Controller'
 
 import styles from './Card.module.scss'
+import 'styles/partials/_anim.scss'
 
-const KenteiItem = ({ data }) => {
+const KenteiItem = (props) => {
   const KC = new Controller(),
-    onyomi = KC.handleReadings(data._id, data.onyomi, '_on'),
-    kunyomi = KC.handleReadings(data._id, data.kunyomi, '_kun')
+    onyomi = KC.handleReadings(props.data._id, props.data.onyomi, '_on'),
+    kunyomi = KC.handleReadings(props.data._id, props.data.kunyomi, '_kun')
 
   return (
-    <div className={styles.container}>
-      <h2>{data.kanji}</h2>
+    <div className={classNames(styles.container, 'fade-in')}>
+      <h2>{props.data.kanji}</h2>
       <hr />
       <div className={styles.details}>
         {onyomi && (
