@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { BsPencilFill as PenIcon } from 'react-icons/bs'
 
 import Controller from 'domains/Kentei/Controller/Controller'
@@ -17,7 +17,7 @@ import 'styles/partials/_anim.scss'
 const KC = new Controller()
 
 interface IKenteiDetails {
-  kanjiArray: IKanji[]
+  kanjiArray?: IKanji[]
   kanjiCurrent: IKanji
 }
 
@@ -38,80 +38,93 @@ const KenteiDetails = (props: IKenteiDetails) => {
     <div className={styles.container}>
       {kanjiData && (
         <>
-          <nav>
-            <ul>
-              {props.kanjiArray.map((item) => (
-                <li
-                  key={item._id as React.Key}
-                  className={classNames({ [styles.selected]: item.kanji === kanjiData.kanji })}
-                  onClick={() => {
-                    setKanjiData(item)
-                    goToKanji(item.kanji)
-                  }}
-                >
-                  {item.kanji}
-                  {item.kanji === kanjiData.kanji && <motion.div className={styles.sideline} layoutId="sideline" />}
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <div>
-            <h2>
-              <span>Kanji </span>
-              <span>{kanjiData.kanji}</span>
-            </h2>
-            <div className={styles.content}>
-              <div className={styles.kanjiContainer}>
-                <div className={styles.kanji}>
-                  <CSSTransition in={!isStrokes} unmountOnExit timeout={300} classNames="normal" nodeRef={normalRef}>
-                    <div ref={normalRef} className={styles._normal}>
-                      {kanjiData.kanji}
-                    </div>
-                  </CSSTransition>
-                  <CSSTransition in={isStrokes} unmountOnExit timeout={300} classNames="strokes" nodeRef={strokesRef}>
-                    <div ref={strokesRef} className={styles._strokes}>
-                      {kanjiData.kanji}
-                    </div>
-                  </CSSTransition>
+          {props.kanjiArray && (
+            <nav>
+              <ul>
+                {props.kanjiArray.map((item) => (
+                  <li
+                    key={item._id as React.Key}
+                    className={classNames({ [styles.selected]: item.kanji === kanjiData.kanji })}
+                    onClick={() => {
+                      setKanjiData(item)
+                      goToKanji(item.kanji)
+                    }}
+                  >
+                    {item.kanji}
+                    {item.kanji === kanjiData.kanji && <motion.div className={styles.sideline} layoutId="sideline" />}
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
+          <AnimatePresence exitBeforeEnter>
+            <motion.div
+              key={kanjiData.kanji as React.Key}
+              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.15 }}
+            >
+              <h2>
+                <span>Kanji </span>
+                <span>{kanjiData.kanji}</span>
+              </h2>
+              <div className={styles.content}>
+                <div className={styles.kanjiContainer}>
+                  <div className={styles.kanji}>
+                    <CSSTransition in={!isStrokes} unmountOnExit timeout={300} classNames="normal" nodeRef={normalRef}>
+                      <div ref={normalRef} className={styles._normal}>
+                        {kanjiData.kanji}
+                      </div>
+                    </CSSTransition>
+                    <CSSTransition in={isStrokes} unmountOnExit timeout={300} classNames="strokes" nodeRef={strokesRef}>
+                      <div ref={strokesRef} className={styles._strokes}>
+                        {kanjiData.kanji}
+                      </div>
+                    </CSSTransition>
+                  </div>
+                  <fieldset>
+                    <input
+                      type="radio"
+                      id="normal"
+                      value="normal"
+                      name="display-mode"
+                      defaultChecked={!isStrokes}
+                      onChange={() => setIsStrokes(!isStrokes)}
+                    />
+                    <label htmlFor="normal">normal</label>
+                    <input
+                      type="radio"
+                      id="strokes"
+                      value="strokes"
+                      name="display-mode"
+                      defaultChecked={isStrokes}
+                      onChange={() => setIsStrokes(!isStrokes)}
+                    />
+                    <label htmlFor="strokes">strokes</label>
+                  </fieldset>
                 </div>
-                <fieldset>
-                  <input
-                    type="radio"
-                    id="normal"
-                    value="normal"
-                    name="display-mode"
-                    defaultChecked={!isStrokes}
-                    onChange={() => setIsStrokes(!isStrokes)}
-                  />
-                  <label htmlFor="normal">normal</label>
-                  <input
-                    type="radio"
-                    id="strokes"
-                    value="strokes"
-                    name="display-mode"
-                    defaultChecked={isStrokes}
-                    onChange={() => setIsStrokes(!isStrokes)}
-                  />
-                  <label htmlFor="strokes">strokes</label>
-                </fieldset>
+                <div className={styles.statsContainer}>
+                  <StatsItem item={kanjiData.strokes} label="strokes" />
+                  <StatsItem item={kanjiData.level} label="level" />
+                  <StatsItem item={kanjiData.radical} label="radicals" />
+                  <StatsItem item={kanjiData.index} label="index" />
+                  <StatsItem item={kanjiData.variant} label="variant" />
+                </div>
               </div>
-              <div className={styles.statsContainer}>
-                <StatsItem item={kanjiData.strokes} label="strokes" />
-                <StatsItem item={kanjiData.level} label="level" />
-                <StatsItem item={kanjiData.radical} label="radicals" />
-                <StatsItem item={kanjiData.index} label="index" />
-                <StatsItem item={kanjiData.variant} label="variant" />
+              <div className={styles.addsContainer}>
+                <AddsItem label="意味" content={kanjiData.meaning} clickable modalContent={kanjiData} />
+                <AddsItem
+                  label="音"
+                  content={kanjiData && KC.handleReadings(kanjiData._id, kanjiData.onyomi, '_on')!}
+                />
+                <AddsItem
+                  label="訓"
+                  content={kanjiData && KC.handleReadings(kanjiData._id, kanjiData.kunyomi, '_kun')!}
+                />
               </div>
-            </div>
-            <div className={styles.addsContainer}>
-              <AddsItem label="意味" content={kanjiData.meaning} clickable modalContent={kanjiData} />
-              <AddsItem label="音" content={kanjiData && KC.handleReadings(kanjiData._id, kanjiData.onyomi, '_on')!} />
-              <AddsItem
-                label="訓"
-                content={kanjiData && KC.handleReadings(kanjiData._id, kanjiData.kunyomi, '_kun')!}
-              />
-            </div>
-          </div>
+            </motion.div>
+          </AnimatePresence>
         </>
       )}
     </div>
