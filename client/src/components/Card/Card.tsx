@@ -1,11 +1,18 @@
+import React from 'react'
 import classNames from 'classnames'
 
 import Controller from 'domains/Kentei/Controller/Controller'
 
+import IKanji from 'interfaces/Kanji.interface'
+
 import styles from './Card.module.scss'
 import 'styles/partials/_anim.scss'
 
-const KenteiItem = (props) => {
+interface ICard {
+  data: IKanji
+}
+
+const Card = (props: ICard) => {
   const KC = new Controller(),
     onyomi = KC.handleReadings(props.data._id, props.data.onyomi, '_on'),
     kunyomi = KC.handleReadings(props.data._id, props.data.kunyomi, '_kun')
@@ -32,4 +39,4 @@ const KenteiItem = (props) => {
   )
 }
 
-export default KenteiItem
+export default Card
