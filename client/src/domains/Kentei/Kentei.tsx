@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { useLocation } from 'react-router-dom'
 
-import KenteiItem from 'components/Card/Card'
+import Card from 'components/Card/Card'
 import KenteiDetails from './Details/Details'
 import SearchBar from 'components/SearchBar/SearchBar'
 import Spinner from 'components/Spinner/Spinner'
@@ -33,6 +33,8 @@ const Kentei = () => {
 
   const [loading, setLoading] = React.useState(true)
   const [fetching, setFetching] = React.useState(true)
+
+  const [expandedKanji, setExpandedKanji] = React.useState<IKanji | undefined>()
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist()
@@ -97,11 +99,23 @@ const Kentei = () => {
               <Spinner />
             </div>
           ) : searchResults ? (
-            <KenteiItem key={searchResults._id as React.Key} data={searchResults} />
+            <Card
+              key={searchResults._id as React.Key}
+              data={searchResults}
+              disabled={expandedKanji?.kanji !== searchResults?.kanji && expandedKanji !== undefined}
+              onExpand={() => setExpandedKanji(expandedKanji)}
+              onCollapse={() => setExpandedKanji(undefined)}
+            />
           ) : (
             <>
-              {kanjiArray.map((kanji) => (
-                <KenteiItem key={kanji._id as React.Key} data={kanji} />
+              {kanjiArray.map((kanjiData) => (
+                <Card
+                  key={kanjiData._id as React.Key}
+                  data={kanjiData}
+                  disabled={expandedKanji?.kanji !== kanjiData.kanji && expandedKanji !== undefined}
+                  onExpand={() => setExpandedKanji(kanjiData)}
+                  onCollapse={() => setExpandedKanji(undefined)}
+                />
               ))}
               {fetching && (
                 <div className={styles.fill}>
