@@ -8,7 +8,7 @@
   background-color: $color;
 }
 
-@mixin NavHover($color-text, $color-accent) {
+@mixin NavHover($color-text: var(--color-text), $color-accent: var(--color-primary)) {
   color: $color-text;
   background-color: $color-accent;
   border-radius: 0.75rem;
@@ -23,16 +23,19 @@
   &::-webkit-scrollbar {
     width: 0.25rem;
   }
+
   &::-webkit-scrollbar-track {
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
     border-radius: 1em;
   }
+
   &::-webkit-scrollbar-thumb {
     background-color: var(--color-text);
 
     border-radius: 1em;
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
   }
+
   &:hover {
     &::-webkit-scrollbar-thumb {
       background-color: var(--color-primary);
