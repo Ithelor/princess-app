@@ -112,6 +112,7 @@ const Kentei = () => {
                 <Card
                   key={kanjiData._id as React.Key}
                   data={kanjiData}
+                  array={kanjiArray}
                   disabled={expandedKanji?.kanji !== kanjiData.kanji && expandedKanji !== undefined}
                   onExpand={() => setExpandedKanji(kanjiData)}
                   onCollapse={() => setExpandedKanji(undefined)}
