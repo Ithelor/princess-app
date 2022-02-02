@@ -118,7 +118,7 @@
 
   transition: opacity 0.5s ease;
 
-  .maximized {
+  .container {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -127,32 +127,43 @@
 
     width: 100%;
     display: flex;
-    justify-content: baseline;
+    justify-content: center;
+    align-items: center;
 
-    overflow-x: scroll;
+    ul {
+      display: flex;
+      justify-content: baseline;
 
-    .card {
-      cursor: pointer;
+      overflow-x: scroll;
+      scroll-behavior: smooth;
 
-      h3 {
-        font-family: 'Noto Serif JP', serif;
-        font-weight: 400;
-        font-size: 8rem;
+      &::-webkit-scrollbar {
+        appearance: none;
       }
 
-      + .card {
-        margin-left: 1rem;
+      .card {
+        cursor: pointer;
+
+        h3 {
+          font-family: 'Noto Serif JP', serif;
+          font-weight: 400;
+          font-size: 8rem;
+        }
+
+        + .card {
+          margin-left: 1rem;
+        }
+
+        padding: 1rem;
+        border-radius: 1rem;
+        background-color: var(--color-bg-secondary);
+        text-align: center;
+        width: fit-content;
       }
 
-      padding: 1rem;
-      border-radius: 1rem;
-      background-color: var(--color-bg-secondary);
-      text-align: center;
-      width: fit-content;
-    }
-
-    .additional {
-      opacity: 0.2;
+      .additional {
+        opacity: 0.2;
+      }
     }
   }
 }

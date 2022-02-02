@@ -1,7 +1,13 @@
 import React from 'react'
 import classNames from 'classnames'
 import { AnimateSharedLayout, motion } from 'framer-motion'
-import { BsWindow as ExpandIcon, BsArrowDown as UnfoldIcon } from 'react-icons/bs'
+import { InView } from 'react-intersection-observer'
+import {
+  BsWindow as ExpandIcon,
+  BsArrowDown as UnfoldIcon,
+  BsArrowLeftShort as ScrollLeftIcon,
+  BsArrowRightShort as ScrollRightIcon
+} from 'react-icons/bs'
 
 import Controller from 'domains/Kentei/Controller/Controller'
 import KenteiDetails from 'domains/Kentei/Details/Details'
@@ -79,24 +85,73 @@ interface IMaximizedCard {
 }
 const MaximizedCard = (props: IMaximizedCard) => {
   const [currentCard] = React.useState(props.kanjiData)
-  const ref = React.useRef(null)
+
+  const scrollRef = React.useRef<HTMLUListElement>(null)
+  const [scrollX, setScrollX] = React.useState(0)
+  const [scrollEnd, setScrollEnd] = React.useState(false)
+
+  const checkScroll = () => {
+    if (Math.floor(scrollRef.current!.scrollWidth - scrollRef.current!.scrollLeft) <= scrollRef.current!.offsetWidth)
+      setScrollEnd(true)
+    else setScrollEnd(false)
+  }
+
+  const slide = (shift: number) => {
+    scrollRef.current!.scrollLeft += shift
+    setScrollX(scrollX + shift)
+
+    checkScroll()
+  }
 
   return (
     <div className={styles.dim} onClick={props.onCollapse}>
-      <div
-        ref={ref}
-        className={styles.maximized}
-        onClick={(event) => {
-          event.stopPropagation()
-        }}
-      >
-        {props.kanjiArray?.map((item) => {
-          return (
-            <motion.div className={classNames(styles.card, { [styles.additional]: item !== currentCard })}>
-              <h3>{item.kanji}</h3>
-            </motion.div>
-          )
-        })}
+      <div className={styles.container}>
+        {scrollX !== 0 && (
+          <button
+            onClick={(event) => {
+              event.stopPropagation()
+              slide(-200)
+            }}
+          >
+            <ScrollLeftIcon />
+          </button>
+        )}
+        <ul
+          ref={scrollRef}
+          onClick={(event) => event.stopPropagation()}
+          onScroll={() => {
+            setScrollX(scrollRef.current!.scrollLeft)
+            checkScroll()
+          }}
+        >
+          {props.kanjiArray?.map((item) => {
+            return (
+              <InView threshold={0.25}>
+                {({ ref, inView }) => (
+                  <motion.li
+                    ref={ref}
+                    className={classNames(styles.card, { [styles.additional]: item !== currentCard })}
+                    initial={{ opacity: 0 }}
+                    animate={inView ? { opacity: 1 } : { opacity: 0 }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <h3>{item.kanji}</h3>
+                  </motion.li>
+                )}
+              </InView>
+            )
+          })}
+        </ul>
+        {!scrollEnd && (
+          <button
+            onClick={(event) => {
+              event.stopPropagation()
+              slide(200)
+            }}
+          >
+            <ScrollRightIcon />
+          </button>
+        )}
       </div>
     </div>
   )
