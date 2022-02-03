@@ -96,11 +96,13 @@ const MaximizedCard = (props: IMaximizedCard) => {
     else setScrollEnd(false)
   }
 
-  const slide = (shift: number) => {
-    scrollRef.current!.scrollLeft += shift
-    setScrollX(scrollX + shift)
+  const cardRefs = React.useRef<HTMLLIElement[]>(new Array(props.kanjiArray?.length))
 
-    checkScroll()
+  const scrollToCard = (id: number) => {
+    cardRefs.current[id].scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center'
+    })
   }
 
   return (
@@ -110,7 +112,7 @@ const MaximizedCard = (props: IMaximizedCard) => {
           <button
             onClick={(event) => {
               event.stopPropagation()
-              slide(-200)
+              scrollRef.current!.scrollLeft = 0
             }}
           >
             <ScrollLeftIcon />
@@ -126,16 +128,17 @@ const MaximizedCard = (props: IMaximizedCard) => {
         >
           {props.kanjiArray?.map((item) => {
             return (
-              <InView threshold={0.25}>
+              <InView threshold={1}>
                 {({ ref, inView }) => (
                   <motion.li
-                    ref={ref}
+                    ref={(el) => (cardRefs.current[item.index] = el!)}
                     className={classNames(styles.card, { [styles.additional]: item !== currentCard })}
+                    onClick={() => scrollToCard(item.index)}
                     initial={{ opacity: 0 }}
                     animate={inView ? { opacity: 1 } : { opacity: 0 }}
                     transition={{ duration: 0.8 }}
                   >
-                    <h3>{item.kanji}</h3>
+                    <h3 ref={ref}>{item.kanji}</h3>
                   </motion.li>
                 )}
               </InView>
@@ -146,7 +149,7 @@ const MaximizedCard = (props: IMaximizedCard) => {
           <button
             onClick={(event) => {
               event.stopPropagation()
-              slide(200)
+              scrollRef.current!.scrollLeft = scrollRef.current!.scrollWidth
             }}
           >
             <ScrollRightIcon />
