@@ -1,6 +1,6 @@
 export default interface IKanji {
   _id: String
-  index: Number
+  index: number
   kanji: String
   variant?: String
   onyomi?: String
