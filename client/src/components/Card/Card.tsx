@@ -5,8 +5,8 @@ import { InView } from 'react-intersection-observer'
 import {
   BsWindow as ExpandIcon,
   BsArrowDown as UnfoldIcon,
-  BsArrowLeftShort as ScrollLeftIcon,
-  BsArrowRightShort as ScrollRightIcon
+  BsChevronLeft as ScrollLeftIcon,
+  BsChevronRight as ScrollRightIcon
 } from 'react-icons/bs'
 
 import Controller from 'domains/Kentei/Controller/Controller'
@@ -21,7 +21,7 @@ import 'styles/partials/_anim.scss'
  * CompactCard Component
  */
 interface ICompactCard {
-  kanji: String
+  data: IKanji
   readings: { onyomi: HTMLDivElement[]; kunyomi: HTMLDivElement[] }
   onExpand: React.MouseEventHandler<HTMLButtonElement>
   onMaximize: React.MouseEventHandler<HTMLButtonElement>
@@ -29,7 +29,7 @@ interface ICompactCard {
 }
 const CompactCard = (props: ICompactCard) => {
   return (
-    <motion.div className={classNames(styles.container, styles.compact, { [styles._disabled]: props.disabled })}>
+    <motion.div className={classNames(styles.compact, { [styles._disabled]: props.disabled })}>
       <span className={styles.controls}>
         <button onClick={props.onExpand}>
           <UnfoldIcon />
@@ -38,7 +38,7 @@ const CompactCard = (props: ICompactCard) => {
           <ExpandIcon />
         </button>
       </span>
-      <h2>{props.kanji}</h2>
+      <h2>{props.data.kanji}</h2>
       <hr />
       <div className={styles.details}>
         {props.readings.onyomi && (
@@ -68,7 +68,7 @@ interface IUnfoldedCard {
 }
 const UnfoldedCard = (props: IUnfoldedCard) => {
   return (
-    <motion.div className={classNames(styles.container, styles.expanded)} onClick={props.onCollapse}>
+    <motion.div className={classNames(styles.container)} onClick={props.onCollapse}>
       <KenteiDetails kanjiCurrent={props.kanjiData} />
     </motion.div>
   )
@@ -84,19 +84,17 @@ interface IMaximizedCard {
   onCollapse: React.MouseEventHandler<HTMLDivElement>
 }
 const MaximizedCard = (props: IMaximizedCard) => {
-  const [currentCard] = React.useState(props.kanjiData)
-
-  const scrollRef = React.useRef<HTMLUListElement>(null)
   const [scrollX, setScrollX] = React.useState(0)
   const [scrollEnd, setScrollEnd] = React.useState(false)
+
+  const scrollRef = React.useRef<HTMLUListElement>(null)
+  const cardRefs = React.useRef<HTMLLIElement[]>(new Array(props.kanjiArray?.length))
 
   const checkScroll = () => {
     if (Math.floor(scrollRef.current!.scrollWidth - scrollRef.current!.scrollLeft) <= scrollRef.current!.offsetWidth)
       setScrollEnd(true)
     else setScrollEnd(false)
   }
-
-  const cardRefs = React.useRef<HTMLLIElement[]>(new Array(props.kanjiArray?.length))
 
   const scrollToCard = (id: number) => {
     cardRefs.current[id].scrollIntoView({
@@ -105,57 +103,59 @@ const MaximizedCard = (props: IMaximizedCard) => {
     })
   }
 
+  React.useEffect(() => {
+    scrollToCard(props.kanjiData.index)
+  }, [props.kanjiData.index])
+
   return (
     <div className={styles.dim} onClick={props.onCollapse}>
-      <div className={styles.container}>
-        {scrollX !== 0 && (
-          <button
-            onClick={(event) => {
-              event.stopPropagation()
-              scrollRef.current!.scrollLeft = 0
-            }}
-          >
-            <ScrollLeftIcon />
-          </button>
-        )}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className={styles.maximized}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          className={classNames({ [styles._disabled]: scrollX === 0 })}
+          onClick={() => (scrollRef.current!.scrollLeft = 0)}
+        >
+          <ScrollLeftIcon />
+        </button>
         <ul
           ref={scrollRef}
-          onClick={(event) => event.stopPropagation()}
           onScroll={() => {
             setScrollX(scrollRef.current!.scrollLeft)
             checkScroll()
           }}
+          onWheel={(event) => (scrollRef.current!.scrollLeft += event.deltaY * 3)}
         >
           {props.kanjiArray?.map((item) => {
             return (
-              <InView threshold={1}>
+              <InView threshold={0.9}>
                 {({ ref, inView }) => (
                   <motion.li
                     ref={(el) => (cardRefs.current[item.index] = el!)}
-                    className={classNames(styles.card, { [styles.additional]: item !== currentCard })}
+                    className={styles.card}
                     onClick={() => scrollToCard(item.index)}
-                    initial={{ opacity: 0 }}
-                    animate={inView ? { opacity: 1 } : { opacity: 0 }}
-                    transition={{ duration: 0.8 }}
+                    animate={inView ? { opacity: 1 } : { opacity: 0.25 }}
+                    transition={{ duration: 0.1 }}
                   >
-                    <h3 ref={ref}>{item.kanji}</h3>
+                    <h3 ref={ref} className={classNames({ [styles._inView]: inView })}>
+                      {item.kanji}
+                    </h3>
                   </motion.li>
                 )}
               </InView>
             )
           })}
         </ul>
-        {!scrollEnd && (
-          <button
-            onClick={(event) => {
-              event.stopPropagation()
-              scrollRef.current!.scrollLeft = scrollRef.current!.scrollWidth
-            }}
-          >
-            <ScrollRightIcon />
-          </button>
-        )}
-      </div>
+        <button
+          className={classNames({ [styles._disabled]: scrollEnd })}
+          onClick={() => (scrollRef.current!.scrollLeft = scrollRef.current!.scrollWidth)}
+        >
+          <ScrollRightIcon />
+        </button>
+      </motion.div>
     </div>
   )
 }
@@ -196,11 +196,11 @@ const Card = (props: ICard) => {
     <AnimateSharedLayout>
       {cardType === 'compact' && (
         <CompactCard
+          data={props.data}
+          readings={{ onyomi, kunyomi }}
           onExpand={unfoldCard}
           onMaximize={maximizeCard}
           disabled={props.disabled}
-          kanji={props.data.kanji}
-          readings={{ onyomi, kunyomi }}
         />
       )}
       {cardType === 'unfolded' && (

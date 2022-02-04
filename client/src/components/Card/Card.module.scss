@@ -3,7 +3,7 @@
 /*
  * Compact Card Component
  */
-.container {
+.compact {
   box-sizing: border-box;
   text-align: center;
   overflow: hidden;
@@ -62,9 +62,6 @@
     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
   }
 
-  /*
-  * Details Component
-  */
   .details {
     margin: 1em 0;
     display: grid;
@@ -109,16 +106,17 @@
 * MaximizedCard Component
 */
 .dim {
-  position: absolute;
-  left: 0;
+  position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1000;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.5);
 
   transition: opacity 0.5s ease;
 
-  .container {
+  .maximized {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -129,45 +127,87 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0;
+
+    background-color: var(--color-bg-primary);
+
+    button {
+      cursor: pointer;
+      height: 300px;
+
+      color: #eee;
+      background: none;
+      border: none;
+      outline: none;
+
+      svg {
+        width: 24px;
+        height: 100%;
+
+        transition: background 0.2s ease;
+
+        &:hover,
+        &:active {
+          background: var(--color-primary);
+        }
+      }
+    }
 
     ul {
-      display: flex;
-      justify-content: baseline;
+      list-style: none;
 
-      overflow-x: scroll;
+      display: grid;
+      gap: 1rem;
+      grid-auto-flow: column;
+      scroll-snap-type: inline mandatory;
+      padding: 0 1rem;
+
+      overflow-x: auto;
       scroll-behavior: smooth;
 
-      &::-webkit-scrollbar {
-        appearance: none;
+      @include mixins.ScrollBar();
+
+      & > * {
+        scroll-snap-align: center;
       }
 
       .card {
         cursor: pointer;
+        inline-size: fit-content;
+
+        text-align: center;
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 1rem;
+
+        box-shadow: 8px 8px 1px 1px rgba(0, 0, 0, 0.2);
+        background-color: var(--color-bg-secondary);
+
+        &:hover {
+          h3._inView {
+            text-shadow: 4px 4px var(--color-bg-primary);
+            color: var(--color-primary);
+          }
+        }
 
         h3 {
           font-family: 'Noto Serif JP', serif;
           font-weight: 400;
           font-size: 8rem;
+
+          width: 100%;
+          height: 100%;
+
+          &._inView {
+            transition: color 0.1s ease-in-out, text-shadow 0.1s ease-in-out;
+          }
         }
-
-        + .card {
-          margin-left: 1rem;
-        }
-
-        padding: 1rem;
-        border-radius: 1rem;
-        background-color: var(--color-bg-secondary);
-        text-align: center;
-        width: fit-content;
-      }
-
-      .additional {
-        opacity: 0.2;
       }
     }
   }
 }
 
 ._disabled {
+  pointer-events: none;
   opacity: 0.2;
 }
