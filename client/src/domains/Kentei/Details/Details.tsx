@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 import { AnimatePresence, motion } from 'framer-motion'
-import { BsPencilFill as PenIcon } from 'react-icons/bs'
+import { BsPencilFill as PenIcon, BsXCircleFill as ModalExitIcon } from 'react-icons/bs'
 
 import Controller from 'domains/Kentei/Controller/Controller'
 import Modal from 'components/Modal/Modal'
@@ -16,12 +16,14 @@ import 'styles/partials/_anim.scss'
 
 const KC = new Controller()
 
-interface IKenteiDetails {
+/*
+ * Details Component
+ */
+interface IDetails {
   kanjiArray?: IKanji[]
   kanjiCurrent: IKanji
 }
-
-const KenteiDetails = (props: IKenteiDetails) => {
+const Details = (props: IDetails) => {
   const [kanjiData, setKanjiData] = React.useState<IKanji>()
   React.useEffect(() => setKanjiData(props.kanjiCurrent), [props.kanjiCurrent])
 
@@ -64,6 +66,7 @@ const KenteiDetails = (props: IKenteiDetails) => {
               initial={{ opacity: 0, y: 20 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.15 }}
+              className={styles.detailsContainer}
             >
               <h2>
                 <span>Kanji </span>
@@ -113,15 +116,15 @@ const KenteiDetails = (props: IKenteiDetails) => {
                 </div>
               </div>
               <div className={styles.addsContainer}>
-                <AddsItem label="意味" content={kanjiData.meaning} clickable modalContent={kanjiData} />
-                <AddsItem
-                  label="音"
-                  content={kanjiData && KC.handleReadings(kanjiData._id, kanjiData.onyomi, '_on')!}
-                />
-                <AddsItem
-                  label="訓"
-                  content={kanjiData && KC.handleReadings(kanjiData._id, kanjiData.kunyomi, '_kun')!}
-                />
+                <AddsItem label="意味" clickable noSelect modalContent={kanjiData}>
+                  {kanjiData.meaning}
+                </AddsItem>
+                <AddsItem label="音">
+                  {kanjiData && KC.handleReadings(kanjiData._id, kanjiData.onyomi, '_on')!}
+                </AddsItem>
+                <AddsItem label="訓">
+                  {kanjiData && KC.handleReadings(kanjiData._id, kanjiData.kunyomi, '_kun')!}
+                </AddsItem>
               </div>
             </motion.div>
           </AnimatePresence>
@@ -132,9 +135,13 @@ const KenteiDetails = (props: IKenteiDetails) => {
 }
 
 /*
-  StatsItem Component
-*/
-const StatsItem = (props: { item?: Number | String; label: String }) => {
+ * StatsItem Component
+ */
+interface IStatsItem {
+  item?: Number | String
+  label: String
+}
+const StatsItem = (props: IStatsItem) => {
   return (
     <div className={styles.statsItem}>
       <span className={styles.statsValue}>{props.item ?? 'n/a'}</span>
@@ -144,16 +151,16 @@ const StatsItem = (props: { item?: Number | String; label: String }) => {
 }
 
 /*
-  AddsItem Component
-*/
-// TODO: fix clickable (wtf how) readings
-// TODO: display root dim on triggering modal
-const AddsItem = (props: {
+ * AddsItem Component
+ */
+interface IAddsItem {
   label: String
   clickable?: boolean
-  content: String | HTMLDivElement[]
+  noSelect?: boolean
+  children: JSX.Element[] | String
   modalContent?: IKanji
-}) => {
+}
+const AddsItem = (props: IAddsItem) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false)
 
   return (
@@ -161,14 +168,24 @@ const AddsItem = (props: {
       <span className={styles.addsLabel}>{props.label}</span>
       <span
         className={classNames(styles.addsContent, {
-          [styles._clickable]: props.clickable
+          [styles._clickable]: props.clickable,
+          [styles._noSelect]: props.noSelect
         })}
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => props.clickable && setIsModalOpen(true)}
       >
-        {props.content}
+        {props.children}
       </span>
       {isModalOpen && (
-        <Modal setIsOpen={setIsModalOpen} showExit showClose title="意味" content={props.modalContent!.meaning} />
+        <Modal setIsModalOpen={() => setIsModalOpen(false)}>
+          <h5 className={styles.heading}>意味</h5>
+          <button className={styles.exitBtn} onClick={() => setIsModalOpen(false)}>
+            <ModalExitIcon />
+          </button>
+          <div className={styles.content}>{props.modalContent!.meaning}</div>
+          <button className={styles.closeBtn} onClick={() => setIsModalOpen(false)}>
+            Close
+          </button>
+        </Modal>
       )}
       <span className={styles.addsIcon}>
         <PenIcon />
@@ -177,4 +194,4 @@ const AddsItem = (props: {
   )
 }
 
-export default KenteiDetails
+export default Details

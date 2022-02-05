@@ -1,23 +1,22 @@
 @use '~styles/partials/mixins';
 
 .label {
-  @include mixins.Label(
-    $padding-v: 0.25rem,
-    $padding-h: 0.25rem,
-    $color: var(--color-generic)
-  );
+  @include mixins.Label($padding-v: 0.25rem, $padding-h: 0.25rem, $color: var(--color-generic));
 }
 
 /*
-  Controlled
-*/
+ * Controlled
+ */
 
 .reading {
-  display: inline-block;
-  padding: 0.25rem;
+  display: flex;
+
+  + .reading {
+    margin-left: 0.5rem;
+  }
 
   .tag {
-    padding: 0.25rem 0.25rem;
+    padding: 0.25rem;
     border-radius: 0 0.5em 0.5em 0;
     color: rgba(var(--value-generic), 0.5);
     background-color: var(--color-text);
@@ -28,15 +27,12 @@
   ._on {
     background-color: var(--on);
   }
-
   ._kun {
     background-color: var(--kun);
   }
-
   ._tagged {
     border-radius: 0.5em 0 0 0.5em;
   }
-
   ._外 {
     opacity: 0.25;
   }
