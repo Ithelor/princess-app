@@ -1,14 +1,7 @@
+@use '~styles/partials/mixins';
+
 .dim {
-  width: 100vw;
-  height: 100vh;
-
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 0;
-  transform: translate(-50%, -50%);
-
-  background-color: rgba(0, 0, 0, 0.5);
+  @include mixins.Dim(0.5);
 
   .container {
     position: fixed;
@@ -23,69 +16,5 @@
     // border: 2px solid var(--color-primary);
     border-radius: 1rem;
     box-shadow: 0 0 20px 0 var(--color-primary);
-
-    .heading {
-      font-family: 'Noto Sans JP', sans-serif;
-      font-size: 2rem;
-      font-weight: 100;
-
-      padding: 0.5rem;
-      text-align: center;
-    }
-
-    .exitBtn {
-      cursor: pointer;
-      font-size: 1.5rem;
-
-      position: absolute;
-      right: 0;
-      top: 0;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      border: none;
-      border-radius: 50%;
-
-      svg {
-        fill: var(--color-bg-primary);
-        border-radius: 50%;
-
-        transition: fill 0.2s ease-in-out;
-      }
-
-      &:hover {
-        svg {
-          fill: var(--color-text);
-          background: var(--color-primary);
-        }
-      }
-    }
-
-    .content {
-      font-size: 14px;
-      text-align: center;
-      padding: 10px;
-    }
-
-    .closeBtn {
-      cursor: pointer;
-      width: 100%;
-      padding: 1rem 2rem;
-
-      border: none;
-      border-radius: 0 0 0.75rem 0.75rem;
-
-      color: var(--color-text);
-      background: var(--color-bg-primary);
-
-      transition: all 0.2s ease;
-
-      &:hover {
-        background: var(--color-text);
-        color: var(--color-primary);
-      }
-    }
   }
 }
