@@ -14,3 +14,7 @@
   animation: spinner 0.7s linear infinite;
   margin: 2rem auto;
 }
+
+.fillGrid {
+  grid-column: 1/-1;
+}

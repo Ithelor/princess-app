@@ -2,7 +2,7 @@
   width: 100%;
 
   .grid {
-    padding: 0.5rem 0.5rem 0 0;
+    padding: 0.5rem;
     margin: 0 auto;
 
     display: grid;
@@ -13,11 +13,6 @@
 
     max-height: 75vh;
     overflow-y: scroll;
-
-    .fill {
-      grid-column: 1/-1;
-      margin: 0 auto;
-    }
 
     &::-webkit-scrollbar {
       width: 0.25rem;

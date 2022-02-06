@@ -25,7 +25,7 @@ const Kentei = () => {
 
   // TODO: make dynamic ?
   const limit = 30
-  // TODO: get from the server
+  // TODO: get from the server ?
   const totalCount = 6355
 
   const [kanjiArray, setkanjiArray] = React.useState<IKanji[]>([])
@@ -95,9 +95,7 @@ const Kentei = () => {
       ) : (
         <section className={styles.grid} onScroll={onScroll}>
           {loading ? (
-            <div className={styles.fill}>
-              <Spinner />
-            </div>
+            <Spinner fillGrid />
           ) : searchResults ? (
             <Card
               key={searchResults._id as React.Key}
@@ -118,11 +116,7 @@ const Kentei = () => {
                   onCollapse={() => setExpandedKanji(undefined)}
                 />
               ))}
-              {fetching && (
-                <div className={styles.fill}>
-                  <Spinner />
-                </div>
-              )}
+              {fetching && <Spinner fillGrid />}
             </>
           )}
         </section>
