@@ -7,7 +7,9 @@ import { BsPencilFill as PenIcon, BsXCircleFill as ModalExitIcon } from 'react-i
 
 import Controller from 'domains/Kentei/Controller/Controller'
 import Modal from 'components/Modal/Modal'
+import Spinner from 'components/Spinner/Spinner'
 
+import useModal from 'hooks/useModal'
 import IKanji from 'interfaces/Kanji.interface'
 
 import styles from './Details.module.scss'
@@ -38,7 +40,7 @@ const Details = (props: IDetails) => {
 
   return (
     <div className={styles.container}>
-      {kanjiData && (
+      {kanjiData ? (
         <>
           {props.kanjiArray && (
             <nav>
@@ -129,6 +131,8 @@ const Details = (props: IDetails) => {
             </motion.div>
           </AnimatePresence>
         </>
+      ) : (
+        <Spinner fillGrid />
       )}
     </div>
   )
@@ -161,7 +165,7 @@ interface IAddsItem {
   modalContent?: IKanji
 }
 const AddsItem = (props: IAddsItem) => {
-  const [isModalOpen, setIsModalOpen] = React.useState(false)
+  const { isModalOpen, openModal, closeModal } = useModal()
 
   return (
     <div className={styles.addsItem}>
@@ -171,18 +175,18 @@ const AddsItem = (props: IAddsItem) => {
           [styles._clickable]: props.clickable,
           [styles._noSelect]: props.noSelect
         })}
-        onClick={() => props.clickable && setIsModalOpen(true)}
+        onClick={() => props.clickable && openModal()}
       >
         {props.children}
       </span>
       {isModalOpen && (
-        <Modal setIsModalOpen={() => setIsModalOpen(false)}>
+        <Modal handleClose={closeModal}>
           <h5 className={styles.heading}>意味</h5>
-          <button className={styles.exitBtn} onClick={() => setIsModalOpen(false)}>
+          <button className={styles.exitBtn} onClick={closeModal}>
             <ModalExitIcon />
           </button>
           <div className={styles.content}>{props.modalContent!.meaning}</div>
-          <button className={styles.closeBtn} onClick={() => setIsModalOpen(false)}>
+          <button className={styles.closeBtn} onClick={closeModal}>
             Close
           </button>
         </Modal>
