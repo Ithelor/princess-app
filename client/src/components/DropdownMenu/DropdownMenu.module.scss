@@ -1,6 +1,6 @@
 /*
-  DropdownMenu component
-*/
+ * Dropdown Component
+ */
 
 .dropdownContainer {
   $this: &;
@@ -20,8 +20,8 @@
     width: 100%;
 
     /*
-      DropdownItem component
-    */
+     * DropdownItem Component
+     */
 
     .dropdownItem {
       display: flex;

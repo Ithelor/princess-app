@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import { ReactComponent as Logo } from 'assets/shared/logo.svg'
 import { BsCardHeading as KenteiIcon, BsSoundwave as KanjiumIcon, BsPersonFill as UserIcon } from 'react-icons/bs'
 
-import Auth from 'domains/Auth/Auth'
+import Auth from 'components/Auth/Auth'
 
 import styles from './styles.module.scss'
 

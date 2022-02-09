@@ -9,10 +9,10 @@ import {
   BsArrowLeftCircleFill as GoPrev
 } from 'react-icons/bs'
 
-import SearchBar from 'components/SearchBar/SearchBar'
+import Searchbar from 'components/Searchbar/Searchbar'
 
 import { useTheme } from 'hooks/useTheme'
-import { themes } from 'domains/ThemeProvider/ThemeProvider'
+import { themes } from 'layouts/ThemeProvider/ThemeProvider'
 
 import styles from './CommandMenu.module.scss'
 
@@ -59,7 +59,7 @@ const CommandMenu = () => {
     }
   }, [handleShowCommandMenu])
 
-  // TODO: customize the searchbar with search target?
+  // TODO: customize the Searchbar with search target?
   return (
     showCommandMenu && (
       <div
@@ -69,7 +69,7 @@ const CommandMenu = () => {
         }}
       >
         <menu onClick={(event) => event.stopPropagation()}>
-          <SearchBar placeholder="Type to search" />
+          <Searchbar placeholder="Type to search" />
           {activeMenu === 'main' && (
             <ul>
               <CommandItem
@@ -78,34 +78,15 @@ const CommandMenu = () => {
                 onClick={() => setActiveMenu('themes')}
                 iconRight={<GoNext />}
               />
-              <CommandItem
-                iconLeft={<OptionOneIcon />}
-                title="Option 1"
-                iconRight={<GoNext />}
-              />
-              <CommandItem
-                iconLeft={<OptionTwoIcon />}
-                title="Option 2"
-                iconRight={<GoNext />}
-              />
-              <CommandItem
-                iconLeft={<OptionThreeIcon />}
-                title="Option 3"
-                iconRight={<GoNext />}
-              />
-              <CommandItem
-                iconLeft={<OptionFourIcon />}
-                title="Option 4"
-                iconRight={<GoNext />}
-              />
+              <CommandItem iconLeft={<OptionOneIcon />} title="Option 1" iconRight={<GoNext />} />
+              <CommandItem iconLeft={<OptionTwoIcon />} title="Option 2" iconRight={<GoNext />} />
+              <CommandItem iconLeft={<OptionThreeIcon />} title="Option 3" iconRight={<GoNext />} />
+              <CommandItem iconLeft={<OptionFourIcon />} title="Option 4" iconRight={<GoNext />} />
             </ul>
           )}
           {activeMenu === 'themes' && (
             <ul defaultValue={theme} defaultChecked={theme}>
-              <CommandItem
-                iconLeft={<GoPrev />}
-                onClick={() => setActiveMenu('main')}
-              />
+              <CommandItem iconLeft={<GoPrev />} onClick={() => setActiveMenu('main')} />
               {themes.map((item) => (
                 <li onClick={switchTheme} key={item}>
                   {item}

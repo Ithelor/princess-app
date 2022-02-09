@@ -9,8 +9,6 @@
   grid-template-columns: 100px minmax(120px, 1fr);
   grid-template-rows: auto;
 
-  padding-right: 1rem;
-
   nav {
     border-right: 2px solid var(--color-border);
     height: 32rem;
@@ -97,7 +95,7 @@
           }
 
           ._strokes {
-            // can't TODO: fix this shite, so for now
+            // can't FIXME: this shite, so for now
             font-size: 10.775rem;
             font-family: KanjiStrokeOrders;
           }

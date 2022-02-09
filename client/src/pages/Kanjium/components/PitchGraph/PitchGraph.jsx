@@ -5,13 +5,13 @@ const PitchGraph = ({ pattern, graphWidth }) => {
 
   const step = 15,
     radius = 5,
-    y = 25
+    y = 10
 
   let x = graphWidth / 2 - (length * (step + radius)) / 2
   let yLast = y
 
   // TODO: move path to background ? dont want to map 2 same arrays tho
-  // TODO: replace transparent to background color
+  // TODO: replace transparent to background color ?
   return (
     <svg key={pattern._id} width="100%" height="100%">
       {array.map((pitch, i, arr) => {

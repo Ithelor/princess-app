@@ -1,14 +1,8 @@
 import React from 'react'
 
-import { ThemeContext } from 'context/ThemeContext'
+import { ThemeContext } from 'contexts/ThemeContext'
 
-export const themes: Array<string> = [
-  'dark',
-  'iceberg_dark',
-  'laser',
-  'pulse',
-  'sonokai'
-]
+export const themes: Array<string> = ['dark', 'iceberg_dark', 'laser', 'pulse', 'sonokai']
 
 interface IThemeProvider {
   children: React.ReactChildren
@@ -16,9 +10,7 @@ interface IThemeProvider {
 
 const ThemeProvider = (props: IThemeProvider) => {
   const [theme, setTheme] = React.useState(
-    localStorage.getItem('theme') ||
-      (window.matchMedia('(prefers-color-scheme: dark)').matches && 'dark') ||
-      'light'
+    localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches && 'dark') || 'light'
   )
 
   const switchTheme = (e: React.ChangeEvent<HTMLLIElement> | null) => {
@@ -49,11 +41,7 @@ const ThemeProvider = (props: IThemeProvider) => {
 
   switchTheme(null)
 
-  return (
-    <ThemeContext.Provider value={{ theme, switchTheme }}>
-      {props.children}
-    </ThemeContext.Provider>
-  )
+  return <ThemeContext.Provider value={{ theme, switchTheme }}>{props.children}</ThemeContext.Provider>
 }
 
 export default ThemeProvider

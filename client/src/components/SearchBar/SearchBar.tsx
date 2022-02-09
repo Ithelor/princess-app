@@ -1,32 +1,27 @@
 import React from 'react'
 import { BsSearch as SearchIcon } from 'react-icons/bs'
 
-import styles from './SearchBar.module.scss'
+import styles from './Searchbar.module.scss'
 
-interface SearchBarProps {
+interface SearchbarProps {
   placeholder?: string
   onChange?: React.ChangeEventHandler<HTMLInputElement>
 }
 
 // nope, no FC.defaultValue 'cause it doesn't re-render props on change
-const defaultProps: SearchBarProps = {
+const defaultProps: SearchbarProps = {
   placeholder: 'サーチ。。'
 }
 
-const SearchBar = (props: SearchBarProps) => {
+const Searchbar = (props: SearchbarProps) => {
   props = { ...defaultProps, ...props }
 
   return (
     <div className={styles.container}>
       <SearchIcon />
-      <input
-        type="search"
-        autoComplete="off"
-        placeholder={props.placeholder}
-        onChange={props.onChange}
-      />
+      <input type="search" autoComplete="off" placeholder={props.placeholder} onChange={props.onChange} />
     </div>
   )
 }
 
-export default SearchBar
+export default Searchbar

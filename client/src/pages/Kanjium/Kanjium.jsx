@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 
-import SearchBar from 'components/SearchBar/SearchBar'
+import Searchbar from 'components/Searchbar/Searchbar'
 import Spinner from 'components/Spinner/Spinner'
-import KanjiumGraph from './PitchGraph'
+import KanjiumGraph from './components/PitchGraph/PitchGraph'
 
 import styles from './Kanjium.module.scss'
 import 'styles/partials/_anim.scss'
@@ -46,10 +46,7 @@ const Home = () => {
   }, [fetching]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onScroll = (e) => {
-    if (
-      e.target.scrollHeight - (e.target.scrollTop + window.innerHeight) < 250 &&
-      pitchData.length < totalCount
-    ) {
+    if (e.target.scrollHeight - (e.target.scrollTop + window.innerHeight) < 250 && pitchData.length < totalCount) {
       setFetching(true)
     }
   }
@@ -64,8 +61,8 @@ const Home = () => {
   }, [graphRef, loading, fetching])
 
   /*
-    { Handling window resize graphsのために
-  */
+   * { Handling window resize graphsのために
+   */
   const updateDimensions = debounce(() => {
     if (graphRef.current) {
       setGraphWidth(graphRef.current.offsetWidth)
@@ -79,12 +76,12 @@ const Home = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   /*
-    }
-  */
+   * }
+   */
 
   return (
     <article className={styles.container}>
-      <SearchBar />
+      <Searchbar />
       <section className={styles.jptWrapper}>
         {!loading ? (
           <table className="fade-in">

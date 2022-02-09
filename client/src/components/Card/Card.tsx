@@ -9,8 +9,9 @@ import {
   BsChevronRight as ScrollRightIcon
 } from 'react-icons/bs'
 
-import Controller from 'domains/Kentei/Controller/Controller'
-import KenteiDetails from 'domains/Kentei/Details/Details'
+import KenteiDetails from 'pages/Kentei/components/Details/Details'
+
+import handleReadings from 'helpers/handleReadings'
 
 import IKanji from 'interfaces/Kanji.interface'
 
@@ -27,36 +28,34 @@ interface ICompactCard {
   onMaximize: React.MouseEventHandler<HTMLButtonElement>
   disabled: boolean
 }
-const CompactCard = (props: ICompactCard) => {
-  return (
-    <motion.div className={classNames(styles.compact, { [styles._disabled]: props.disabled })}>
-      <span className={styles.controls}>
-        <button onClick={props.onExpand}>
-          <UnfoldIcon />
-        </button>
-        <button onClick={props.disabled ? undefined : props.onMaximize}>
-          <ExpandIcon />
-        </button>
-      </span>
-      <h2>{props.data.kanji}</h2>
-      <hr />
-      <div className={styles.details}>
-        {props.readings.onyomi && (
-          <div className={styles.row}>
-            <span className={classNames(styles.label, styles._generic)}>音読み</span>
-            <div className={styles.readings}>{props.readings.onyomi}</div>
-          </div>
-        )}
-        {props.readings.kunyomi && (
-          <div className={styles.row}>
-            <span className={classNames(styles.label, styles._generic)}>訓読み</span>
-            <div className={styles.readings}>{props.readings.kunyomi}</div>
-          </div>
-        )}
-      </div>
-    </motion.div>
-  )
-}
+const CompactCard = (props: ICompactCard) => (
+  <motion.div className={classNames(styles.compact, { [styles._disabled]: props.disabled })}>
+    <span className={styles.controls}>
+      <button onClick={props.onExpand}>
+        <UnfoldIcon />
+      </button>
+      <button onClick={props.disabled ? undefined : props.onMaximize}>
+        <ExpandIcon />
+      </button>
+    </span>
+    <h2>{props.data.kanji}</h2>
+    <hr />
+    <div className={styles.details}>
+      {props.readings.onyomi && (
+        <div className={styles.row}>
+          <span className={classNames(styles.label, styles._generic)}>音読み</span>
+          <div className={styles.readings}>{props.readings.onyomi}</div>
+        </div>
+      )}
+      {props.readings.kunyomi && (
+        <div className={styles.row}>
+          <span className={classNames(styles.label, styles._generic)}>訓読み</span>
+          <div className={styles.readings}>{props.readings.kunyomi}</div>
+        </div>
+      )}
+    </div>
+  </motion.div>
+)
 
 /*
  * UnfoldedCard Component
@@ -66,13 +65,11 @@ interface IUnfoldedCard {
   readings: { onyomi: HTMLDivElement[]; kunyomi: HTMLDivElement[] }
   onCollapse: React.MouseEventHandler<HTMLDivElement>
 }
-const UnfoldedCard = (props: IUnfoldedCard) => {
-  return (
-    <motion.div className={classNames(styles.container)} onClick={props.onCollapse}>
-      <KenteiDetails kanjiCurrent={props.kanjiData} />
-    </motion.div>
-  )
-}
+const UnfoldedCard = (props: IUnfoldedCard) => (
+  <motion.div className={classNames(styles.container)} onClick={props.onCollapse}>
+    <KenteiDetails kanjiCurrent={props.kanjiData} />
+  </motion.div>
+)
 
 /*
  * MaximizedCard Component
@@ -171,9 +168,8 @@ interface ICard {
   onExpand: () => void
 }
 const Card = (props: ICard) => {
-  const KC = new Controller(),
-    onyomi = KC.handleReadings(props.data._id, props.data.onyomi, '_on') as HTMLDivElement[],
-    kunyomi = KC.handleReadings(props.data._id, props.data.kunyomi, '_kun') as HTMLDivElement[]
+  const onyomi = handleReadings(props.data._id, props.data.onyomi, '_on') as HTMLDivElement[],
+    kunyomi = handleReadings(props.data._id, props.data.kunyomi, '_kun') as HTMLDivElement[]
 
   const [cardType, setCardType] = React.useState('compact')
 

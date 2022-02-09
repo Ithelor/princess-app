@@ -1,5 +1,25 @@
 @use '~styles/partials/fonts';
 
+@media (prefers-color-scheme: dark) {
+  body {
+    background-image: url('~assets/shared/bgDark.svg');
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background-image: url('~assets/shared/bgLight.svg');
+  }
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 :root {
   --color-primary: rgb(220, 130, 190);
 
@@ -15,23 +35,6 @@
 
   --value-generic: 13, 20, 34;
   --color-generic: rgb(var(--value-generic));
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background-image: url('~assets/shared/bgDark.svg');
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  body {
-    background-image: url('~assets/shared/bgLight.svg');
-  }
-}
-
-* {
-  margin: 0;
-  padding: 0;
 }
 
 html,
@@ -57,6 +60,7 @@ body {
     align-items: center;
 
     main {
+      padding: 0;
       font-family: 'Poppins', sans-serif;
       font-weight: 400;
 
@@ -64,16 +68,13 @@ body {
       display: block;
 
       margin-top: 5rem;
-      width: 80vw;
-      overflow: hidden;
+      width: 90vw;
 
       border-radius: 0.5rem;
 
       color: var(--color-text);
       background-color: rgba(var(--value-bg-primary), 0.8);
-      backdrop-filter: blur(10px);
       box-shadow: 0 0.125em 4em rgba(var(--value-bg-primary), 0.3);
-
       transition: background 0.25s ease-in-out;
     }
   }

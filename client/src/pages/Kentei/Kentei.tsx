@@ -3,8 +3,8 @@ import axios from 'axios'
 import { useLocation } from 'react-router-dom'
 
 import Card from 'components/Card/Card'
-import KenteiDetails from './Details/Details'
-import SearchBar from 'components/SearchBar/SearchBar'
+import KenteiDetails from './components/Details/Details'
+import Searchbar from 'components/Searchbar/Searchbar'
 import Spinner from 'components/Spinner/Spinner'
 
 import IKanji from 'interfaces/Kanji.interface'
@@ -19,7 +19,7 @@ const Kentei = () => {
   // query params
   const queryKanji = new URLSearchParams(useLocation().search).get('kanji')
 
-  // TODO: fix search
+  // FIXME: search
   const [searchTerm, setSearchTerm] = React.useState('')
   const [searchResults, setSearchResults] = React.useState<IKanji>() // []
 
@@ -82,7 +82,7 @@ const Kentei = () => {
 
   return (
     <article className={styles.container}>
-      <SearchBar onChange={optimisedHandleChange} />
+      <Searchbar onChange={optimisedHandleChange} />
       {queryKanji ? (
         <KenteiDetails
           kanjiArray={kanjiArray}

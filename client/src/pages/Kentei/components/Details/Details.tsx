@@ -5,9 +5,10 @@ import { CSSTransition } from 'react-transition-group'
 import { AnimatePresence, motion } from 'framer-motion'
 import { BsPencilFill as PenIcon, BsXCircleFill as ModalExitIcon } from 'react-icons/bs'
 
-import Controller from 'domains/Kentei/Controller/Controller'
 import Modal from 'components/Modal/Modal'
 import Spinner from 'components/Spinner/Spinner'
+
+import handleReadings from 'helpers/handleReadings'
 
 import useModal from 'hooks/useModal'
 import IKanji from 'interfaces/Kanji.interface'
@@ -15,8 +16,6 @@ import IKanji from 'interfaces/Kanji.interface'
 import styles from './Details.module.scss'
 import 'styles/index.scss'
 import 'styles/partials/_anim.scss'
-
-const KC = new Controller()
 
 /*
  * Details Component
@@ -121,12 +120,8 @@ const Details = (props: IDetails) => {
                 <AddsItem label="意味" clickable noSelect modalContent={kanjiData}>
                   {kanjiData.meaning}
                 </AddsItem>
-                <AddsItem label="音">
-                  {kanjiData && KC.handleReadings(kanjiData._id, kanjiData.onyomi, '_on')!}
-                </AddsItem>
-                <AddsItem label="訓">
-                  {kanjiData && KC.handleReadings(kanjiData._id, kanjiData.kunyomi, '_kun')!}
-                </AddsItem>
+                <AddsItem label="音">{kanjiData && handleReadings(kanjiData._id, kanjiData.onyomi, '_on')!}</AddsItem>
+                <AddsItem label="訓">{kanjiData && handleReadings(kanjiData._id, kanjiData.kunyomi, '_kun')!}</AddsItem>
               </div>
             </motion.div>
           </AnimatePresence>

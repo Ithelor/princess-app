@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import Navbar from 'domains/Navbar/Navbar'
-import ThemeProvider from 'domains/ThemeProvider/ThemeProvider'
-import CommandMenu from 'domains/CommandMenu/CommandMenu'
-import Kentei from 'domains/Kentei/Kentei'
-import Kanjium from 'domains/Kanjium/Kanjium'
-import Footer from 'domains/Footer/Footer'
+import ThemeProvider from 'layouts/ThemeProvider/ThemeProvider'
+import Navbar from 'layouts/Navbar/Navbar'
+import Footer from 'layouts/Footer/Footer'
+import Kentei from 'pages/Kentei/Kentei'
+import Kanjium from 'pages/Kanjium/Kanjium'
+import CommandMenu from 'components/CommandMenu/CommandMenu'
 
 function App() {
   return (
