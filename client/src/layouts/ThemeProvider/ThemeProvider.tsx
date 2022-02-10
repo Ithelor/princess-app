@@ -13,8 +13,8 @@ const ThemeProvider = (props: IThemeProvider) => {
     localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches && 'dark') || 'light'
   )
 
-  const switchTheme = (e: React.ChangeEvent<HTMLLIElement> | null) => {
-    if (e) setTheme(e.target.textContent!)
+  const switchTheme = (newTheme: string | null) => {
+    if (newTheme) setTheme(newTheme!)
 
     localStorage.setItem('theme', theme!)
 

@@ -12,28 +12,12 @@ import {
 import Searchbar from 'components/Searchbar/Searchbar'
 
 import { useTheme } from 'hooks/useTheme'
+import { useKeyPress } from 'hooks/useKeyPress'
 import { themes } from 'layouts/ThemeProvider/ThemeProvider'
+// import reducer from 'reducers/keyReducer'
 
 import styles from './CommandMenu.module.scss'
-
-// interface ICommandMenu {}
-
-interface ICommandItem {
-  iconLeft?: React.ReactElement
-  title?: string
-  onClick?: React.MouseEventHandler<HTMLLIElement>
-  iconRight?: React.ReactElement
-}
-
-const CommandItem = (props: ICommandItem) => {
-  return (
-    <li onClick={props.onClick}>
-      {props.iconLeft}
-      {props.title}
-      {props.iconRight}
-    </li>
-  )
-}
+import classNames from 'classnames'
 
 const CommandMenu = () => {
   const [showCommandMenu, setShowCommandMenu] = React.useState(false)
@@ -59,7 +43,45 @@ const CommandMenu = () => {
     }
   }, [handleShowCommandMenu])
 
-  // TODO: customize the Searchbar with search target?
+  const initialState = { selectedIndex: 0 }
+  const [state, dispatch] = React.useReducer(reducer, initialState)
+
+  const arrowUpPressed = useKeyPress('ArrowUp')
+  const arrowDownPressed = useKeyPress('ArrowDown')
+
+  React.useEffect(() => {
+    if (arrowUpPressed) dispatch({ type: 'arrowUp' })
+  }, [arrowUpPressed])
+
+  React.useEffect(() => {
+    if (arrowDownPressed) dispatch({ type: 'arrowDown' })
+  }, [arrowDownPressed])
+
+  function reducer(state: { selectedIndex: number }, action: { type: String; payload?: any }) {
+    let selectedIndex
+
+    switch (action.type) {
+      case 'arrowUp':
+        selectedIndex = state.selectedIndex !== 0 ? state.selectedIndex - 1 : themes.length - 1
+
+        switchTheme(themes[selectedIndex])
+        return {
+          selectedIndex
+        }
+      case 'arrowDown':
+        selectedIndex = state.selectedIndex !== themes.length - 1 ? state.selectedIndex + 1 : 0
+
+        switchTheme(themes[selectedIndex])
+        return {
+          selectedIndex
+        }
+      case 'select':
+        return { selectedIndex: action.payload }
+      default:
+        throw new Error()
+    }
+  }
+
   return (
     showCommandMenu && (
       <div
@@ -87,8 +109,12 @@ const CommandMenu = () => {
           {activeMenu === 'themes' && (
             <ul defaultValue={theme} defaultChecked={theme}>
               <CommandItem iconLeft={<GoPrev />} onClick={() => setActiveMenu('main')} />
-              {themes.map((item) => (
-                <li onClick={switchTheme} key={item}>
+              {themes.map((item, index) => (
+                <li
+                  key={item}
+                  className={classNames({ [styles.active]: index === state.selectedIndex })}
+                  onClick={() => switchTheme(item)}
+                >
                   {item}
                 </li>
               ))}
@@ -97,6 +123,23 @@ const CommandMenu = () => {
         </menu>
       </div>
     )
+  )
+}
+
+interface ICommandItem {
+  iconLeft?: React.ReactElement
+  title?: string
+  onClick?: React.MouseEventHandler<HTMLLIElement>
+  iconRight?: React.ReactElement
+}
+
+const CommandItem = (props: ICommandItem) => {
+  return (
+    <li onClick={props.onClick}>
+      {props.iconLeft}
+      {props.title}
+      {props.iconRight}
+    </li>
   )
 }
 
