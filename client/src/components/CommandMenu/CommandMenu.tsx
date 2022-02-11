@@ -1,35 +1,88 @@
 import React from 'react'
+import classNames from 'classnames'
 import {
   BsPaletteFill as ThemeIcon,
   BsChatSquareTextFill as OptionOneIcon,
   BsHourglassTop as OptionTwoIcon,
   BsInfoCircleFill as OptionThreeIcon,
   BsStopwatchFill as OptionFourIcon,
-  BsArrowRightCircleFill as GoNext,
-  BsArrowLeftCircleFill as GoPrev
+  BsArrowRightCircleFill as OpenIcon,
+  BsArrowLeftCircleFill as ReturnIcon
 } from 'react-icons/bs'
 
 import Searchbar from 'components/Searchbar/Searchbar'
 
 import { useTheme } from 'hooks/useTheme'
 import { useKeyPress } from 'hooks/useKeyPress'
-import { themes } from 'layouts/ThemeProvider/ThemeProvider'
-// import reducer from 'reducers/keyReducer'
 
 import styles from './CommandMenu.module.scss'
-import classNames from 'classnames'
+
+interface IMenuItem {
+  id: number
+  name: string
+  icon?: React.ReactElement
+  children?: IMenu
+}
+interface IMenu {
+  content: IMenuItem[]
+  action?: Function
+}
+
+interface ICommandItem {
+  item: IMenuItem
+  active?: boolean
+  onClick?: React.MouseEventHandler<HTMLLIElement>
+}
 
 const CommandMenu = () => {
-  const [showCommandMenu, setShowCommandMenu] = React.useState(false)
-  const [activeMenu, setActiveMenu] = React.useState('main')
-
   const { theme, switchTheme } = useTheme()
 
+  // TODO: smh with switchTheme, want to move to constants
+  const themes: IMenu = {
+    content: [
+      { id: 1, name: 'dark' },
+      { id: 2, name: 'iceberg_dark' },
+      { id: 3, name: 'laser' },
+      { id: 4, name: 'pulse' },
+      { id: 5, name: 'sonokai' }
+    ],
+    action: switchTheme
+  }
+
+  const mainMenu: IMenu = {
+    content: [
+      { id: 1, name: 'Themes', icon: <ThemeIcon />, children: themes },
+      { id: 2, name: 'Option 1', icon: <OptionOneIcon /> },
+      { id: 3, name: 'Option 2', icon: <OptionTwoIcon /> },
+      { id: 4, name: 'Option 3', icon: <OptionThreeIcon /> },
+      { id: 5, name: 'Option 4', icon: <OptionFourIcon /> }
+    ]
+  }
+
+  const [showCommandMenu, setShowCommandMenu] = React.useState(false)
+  const [activeMenu, setActiveMenu] = React.useState(mainMenu)
+
+  const CommandItem = (props: ICommandItem) => {
+    // TODO: <ReturnIcon />
+    return (
+      <li
+        className={classNames({ [styles.active]: props.active })}
+        onClick={props.onClick}
+        onMouseEnter={() => setHovered(props.item)}
+      >
+        {props.item.icon}
+        {props.item.name + (props.item.children ? '...' : '')}
+        {props.item.children && <OpenIcon />}
+      </li>
+    )
+  }
+
+  // TODO: ? move to useKeyPress
   const handleShowCommandMenu = React.useCallback(
     (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setShowCommandMenu(!showCommandMenu)
-        setActiveMenu('main')
+        setActiveMenu(mainMenu)
       }
     },
     [showCommandMenu]
@@ -43,44 +96,43 @@ const CommandMenu = () => {
     }
   }, [handleShowCommandMenu])
 
-  const initialState = { selectedIndex: 0 }
-  const [state, dispatch] = React.useReducer(reducer, initialState)
-
-  const arrowUpPressed = useKeyPress('ArrowUp')
-  const arrowDownPressed = useKeyPress('ArrowDown')
-
-  React.useEffect(() => {
-    if (arrowUpPressed) dispatch({ type: 'arrowUp' })
-  }, [arrowUpPressed])
+  // TODO: reducer
+  const upPress = useKeyPress('ArrowUp')
+  const downPress = useKeyPress('ArrowDown')
+  const enterPress = useKeyPress('Enter')
+  const [cursor, setCursor] = React.useState(0)
+  const [hovered, setHovered] = React.useState<IMenuItem>()
 
   React.useEffect(() => {
-    if (arrowDownPressed) dispatch({ type: 'arrowDown' })
-  }, [arrowDownPressed])
-
-  function reducer(state: { selectedIndex: number }, action: { type: String; payload?: any }) {
-    let selectedIndex
-
-    switch (action.type) {
-      case 'arrowUp':
-        selectedIndex = state.selectedIndex !== 0 ? state.selectedIndex - 1 : themes.length - 1
-
-        switchTheme(themes[selectedIndex])
-        return {
-          selectedIndex
-        }
-      case 'arrowDown':
-        selectedIndex = state.selectedIndex !== themes.length - 1 ? state.selectedIndex + 1 : 0
-
-        switchTheme(themes[selectedIndex])
-        return {
-          selectedIndex
-        }
-      case 'select':
-        return { selectedIndex: action.payload }
-      default:
-        throw new Error()
+    if (activeMenu.content.length && upPress) {
+      setCursor((prevState) => (prevState > 0 ? prevState - 1 : activeMenu.content.length - 1))
     }
-  }
+  }, [upPress])
+
+  React.useEffect(() => {
+    if (activeMenu.content.length && downPress) {
+      setCursor((prevState) => (prevState < activeMenu.content.length - 1 ? prevState + 1 : 0))
+    }
+  }, [downPress])
+
+  React.useEffect(() => {
+    if (activeMenu.content.length && enterPress) {
+      if (activeMenu.content[cursor].children) setActiveMenu(activeMenu.content[cursor].children!)
+      else if (activeMenu.action) {
+        // TODO: if action, open on current option
+        // TODO: when return, open on last menuItem
+        setActiveMenu(mainMenu)
+        setCursor(0)
+      }
+    }
+  }, [enterPress])
+
+  React.useEffect(() => {
+    if (activeMenu.content.length && hovered) {
+      setCursor(activeMenu.content.indexOf(hovered))
+      activeMenu.action?.call(this, hovered.name.toLowerCase())
+    }
+  }, [hovered])
 
   return (
     showCommandMenu && (
@@ -92,54 +144,14 @@ const CommandMenu = () => {
       >
         <menu onClick={(event) => event.stopPropagation()}>
           <Searchbar placeholder="Type to search" />
-          {activeMenu === 'main' && (
-            <ul>
-              <CommandItem
-                iconLeft={<ThemeIcon />}
-                title="Theme"
-                onClick={() => setActiveMenu('themes')}
-                iconRight={<GoNext />}
-              />
-              <CommandItem iconLeft={<OptionOneIcon />} title="Option 1" iconRight={<GoNext />} />
-              <CommandItem iconLeft={<OptionTwoIcon />} title="Option 2" iconRight={<GoNext />} />
-              <CommandItem iconLeft={<OptionThreeIcon />} title="Option 3" iconRight={<GoNext />} />
-              <CommandItem iconLeft={<OptionFourIcon />} title="Option 4" iconRight={<GoNext />} />
-            </ul>
-          )}
-          {activeMenu === 'themes' && (
-            <ul defaultValue={theme} defaultChecked={theme}>
-              <CommandItem iconLeft={<GoPrev />} onClick={() => setActiveMenu('main')} />
-              {themes.map((item, index) => (
-                <li
-                  key={item}
-                  className={classNames({ [styles.active]: index === state.selectedIndex })}
-                  onClick={() => switchTheme(item)}
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          )}
+          <ul>
+            {activeMenu.content.map((item, index) => (
+              <CommandItem key={item.id} item={item} active={index === cursor} />
+            ))}
+          </ul>
         </menu>
       </div>
     )
-  )
-}
-
-interface ICommandItem {
-  iconLeft?: React.ReactElement
-  title?: string
-  onClick?: React.MouseEventHandler<HTMLLIElement>
-  iconRight?: React.ReactElement
-}
-
-const CommandItem = (props: ICommandItem) => {
-  return (
-    <li onClick={props.onClick}>
-      {props.iconLeft}
-      {props.title}
-      {props.iconRight}
-    </li>
   )
 }
 
