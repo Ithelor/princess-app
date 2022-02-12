@@ -17,15 +17,17 @@ import { useKeyPress } from 'hooks/useKeyPress'
 
 import styles from './CommandMenu.module.scss'
 
+// TODO: ? collate IMenu property
 interface IMenuItem {
   id: number
   name: string
   icon?: React.ReactElement
-  children?: IMenu
+  goToMenu?: IMenu
 }
 interface IMenu {
   content: IMenuItem[]
   action?: Function
+  property?: string
 }
 
 interface ICommandItem {
@@ -38,7 +40,8 @@ const CommandMenu = () => {
   const { theme, switchTheme } = useTheme()
 
   // TODO: smh with switchTheme, want to move to constants
-  const themes: IMenu = {
+  const themesMenu: IMenu = {
+    property: 'theme',
     content: [
       { id: 1, name: 'dark' },
       { id: 2, name: 'iceberg_dark' },
@@ -51,7 +54,7 @@ const CommandMenu = () => {
 
   const mainMenu: IMenu = {
     content: [
-      { id: 1, name: 'Themes', icon: <ThemeIcon />, children: themes },
+      { id: 1, name: 'Theme', icon: <ThemeIcon />, goToMenu: themesMenu },
       { id: 2, name: 'Option 1', icon: <OptionOneIcon /> },
       { id: 3, name: 'Option 2', icon: <OptionTwoIcon /> },
       { id: 4, name: 'Option 3', icon: <OptionThreeIcon /> },
@@ -63,7 +66,6 @@ const CommandMenu = () => {
   const [activeMenu, setActiveMenu] = React.useState(mainMenu)
 
   const CommandItem = (props: ICommandItem) => {
-    // TODO: <ReturnIcon />
     return (
       <li
         className={classNames({ [styles.active]: props.active })}
@@ -71,21 +73,23 @@ const CommandMenu = () => {
         onMouseEnter={() => setHovered(props.item)}
       >
         {props.item.icon}
-        {props.item.name + (props.item.children ? '...' : '')}
-        {props.item.children && <OpenIcon />}
+        {props.item.name + (props.item.goToMenu ? '...' : '')}
+        {props.item.goToMenu && <OpenIcon />}
       </li>
     )
   }
 
   // TODO: ? move to useKeyPress
+  // TODO: apply option on enter, use cursor change only for preview, add a tip
   const handleShowCommandMenu = React.useCallback(
     (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setShowCommandMenu(!showCommandMenu)
+        // FIXME: cursor
+        !activeMenu.action && setShowCommandMenu(!showCommandMenu)
         setActiveMenu(mainMenu)
       }
     },
-    [showCommandMenu]
+    [showCommandMenu, activeMenu]
   )
 
   React.useEffect(() => {
@@ -103,34 +107,60 @@ const CommandMenu = () => {
   const [cursor, setCursor] = React.useState(0)
   const [hovered, setHovered] = React.useState<IMenuItem>()
 
+  // not including other deps => states update after re-render => can't access the ones needed => retard coding time ↓↓↓
+
+  // upPress
   React.useEffect(() => {
     if (activeMenu.content.length && upPress) {
       setCursor((prevState) => (prevState > 0 ? prevState - 1 : activeMenu.content.length - 1))
+
+      // call action with option name as an argument
+      activeMenu.action?.call(
+        this,
+        activeMenu.content[cursor > 0 ? cursor - 1 : activeMenu.content.length - 1].name?.toLowerCase()
+      )
     }
   }, [upPress])
 
+  // downPress
   React.useEffect(() => {
     if (activeMenu.content.length && downPress) {
       setCursor((prevState) => (prevState < activeMenu.content.length - 1 ? prevState + 1 : 0))
+
+      // call action with option name as an argument
+      activeMenu.action?.call(
+        this,
+        activeMenu.content[cursor < activeMenu.content.length - 1 ? cursor + 1 : 0].name?.toLowerCase()
+      )
     }
   }, [downPress])
 
+  // enterPress
   React.useEffect(() => {
     if (activeMenu.content.length && enterPress) {
-      if (activeMenu.content[cursor].children) setActiveMenu(activeMenu.content[cursor].children!)
-      else if (activeMenu.action) {
-        // TODO: if action, open on current option
-        // TODO: when return, open on last menuItem
+      if (activeMenu.content[cursor].goToMenu) {
+        setActiveMenu(activeMenu.content[cursor].goToMenu!)
+
+        // set current option active
+        setCursor(
+          activeMenu.content[cursor].goToMenu!.content.findIndex((item) => {
+            return item.name === localStorage.getItem(activeMenu.content[cursor].goToMenu!.property!)
+          })
+        )
+      } else if (activeMenu.action) {
         setActiveMenu(mainMenu)
-        setCursor(0)
+
+        // set current menu active
+        setCursor(mainMenu.content.findIndex((item) => item.name?.toLowerCase() === activeMenu.property))
       }
     }
   }, [enterPress])
 
+  // hovered
   React.useEffect(() => {
     if (activeMenu.content.length && hovered) {
       setCursor(activeMenu.content.indexOf(hovered))
-      activeMenu.action?.call(this, hovered.name.toLowerCase())
+      activeMenu.action?.call(this, hovered.name?.toLowerCase())
     }
   }, [hovered])
 
@@ -143,7 +173,7 @@ const CommandMenu = () => {
         }}
       >
         <menu onClick={(event) => event.stopPropagation()}>
-          <Searchbar placeholder="Type to search" />
+          <Searchbar />
           <ul>
             {activeMenu.content.map((item, index) => (
               <CommandItem key={item.id} item={item} active={index === cursor} />
