@@ -6,8 +6,8 @@ import {
   BsHourglassTop as OptionTwoIcon,
   BsInfoCircleFill as OptionThreeIcon,
   BsStopwatchFill as OptionFourIcon,
-  BsArrowRightCircleFill as OpenIcon,
-  BsArrowLeftCircleFill as ReturnIcon
+  BsCheck as CurrentIcon,
+  BsArrowRightCircleFill as OpenIcon
 } from 'react-icons/bs'
 
 import Searchbar from 'components/Searchbar/Searchbar'
@@ -17,7 +17,7 @@ import { useKeyPress } from 'hooks/useKeyPress'
 
 import styles from './CommandMenu.module.scss'
 
-// TODO: ? collate IMenu property
+// TODO: ? collate IMenu's property
 interface IMenuItem {
   id: number
   name: string
@@ -32,29 +32,32 @@ interface IMenu {
 
 interface ICommandItem {
   item: IMenuItem
+  current?: boolean
   active?: boolean
-  onClick?: React.MouseEventHandler<HTMLLIElement>
 }
 
 const CommandMenu = () => {
-  const { theme, switchTheme } = useTheme()
+  const { switchTheme } = useTheme()
 
   // TODO: smh with switchTheme, want to move to constants
-  const themesMenu: IMenu = {
-    property: 'theme',
-    content: [
-      { id: 1, name: 'dark' },
-      { id: 2, name: 'iceberg_dark' },
-      { id: 3, name: 'laser' },
-      { id: 4, name: 'pulse' },
-      { id: 5, name: 'sonokai' }
-    ],
-    action: switchTheme
-  }
-
   const mainMenu: IMenu = {
     content: [
-      { id: 1, name: 'Theme', icon: <ThemeIcon />, goToMenu: themesMenu },
+      {
+        id: 1,
+        name: 'Theme',
+        icon: <ThemeIcon />,
+        goToMenu: {
+          property: 'theme',
+          content: [
+            { id: 1, name: 'dark' },
+            { id: 2, name: 'iceberg_dark' },
+            { id: 3, name: 'laser' },
+            { id: 4, name: 'pulse' },
+            { id: 5, name: 'sonokai' }
+          ],
+          action: switchTheme
+        }
+      },
       { id: 2, name: 'Option 1', icon: <OptionOneIcon /> },
       { id: 3, name: 'Option 2', icon: <OptionTwoIcon /> },
       { id: 4, name: 'Option 3', icon: <OptionThreeIcon /> },
@@ -67,71 +70,56 @@ const CommandMenu = () => {
 
   const CommandItem = (props: ICommandItem) => {
     return (
-      <li
-        className={classNames({ [styles.active]: props.active })}
-        onClick={props.onClick}
-        onMouseEnter={() => setHovered(props.item)}
-      >
-        {props.item.icon}
+      <li className={classNames({ [styles.active]: props.active })} onMouseEnter={() => setHovered(props.item)}>
+        {props.item.icon || <CurrentIcon visibility={props.current ? 'visible' : 'hidden'} />}
         {props.item.name + (props.item.goToMenu ? '...' : '')}
         {props.item.goToMenu && <OpenIcon />}
       </li>
     )
   }
 
-  // TODO: ? move to useKeyPress
-  // TODO: apply option on enter, use cursor change only for preview, add a tip
-  const handleShowCommandMenu = React.useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        // FIXME: cursor
-        !activeMenu.action && setShowCommandMenu(!showCommandMenu)
-        setActiveMenu(mainMenu)
-      }
-    },
-    [showCommandMenu, activeMenu]
-  )
-
-  React.useEffect(() => {
-    window.addEventListener('keydown', handleShowCommandMenu)
-
-    return () => {
-      window.removeEventListener('keydown', handleShowCommandMenu)
-    }
-  }, [handleShowCommandMenu])
-
   // TODO: reducer
+  const escPress = useKeyPress('Escape')
   const upPress = useKeyPress('ArrowUp')
   const downPress = useKeyPress('ArrowDown')
   const enterPress = useKeyPress('Enter')
+  const [currentOption, setCurrentOption] = React.useState<string | null>()
   const [cursor, setCursor] = React.useState(0)
   const [hovered, setHovered] = React.useState<IMenuItem>()
 
   // not including other deps => states update after re-render => can't access the ones needed => retard coding time ↓↓↓
 
+  // escPress
+  React.useEffect(() => {
+    if (escPress) {
+      if (!activeMenu.action) setShowCommandMenu(!showCommandMenu)
+
+      activeMenu.action?.call(this, currentOption)
+      // FIXME: cursor
+      setCursor(0)
+      setActiveMenu(mainMenu)
+    }
+  }, [escPress])
+
   // upPress
   React.useEffect(() => {
     if (activeMenu.content.length && upPress) {
-      setCursor((prevState) => (prevState > 0 ? prevState - 1 : activeMenu.content.length - 1))
+      const newCursor = cursor > 0 ? cursor - 1 : activeMenu.content.length - 1
 
+      setCursor(newCursor)
       // call action with option name as an argument
-      activeMenu.action?.call(
-        this,
-        activeMenu.content[cursor > 0 ? cursor - 1 : activeMenu.content.length - 1].name?.toLowerCase()
-      )
+      activeMenu.action?.call(this, activeMenu.content[newCursor].name?.toLowerCase())
     }
   }, [upPress])
 
   // downPress
   React.useEffect(() => {
     if (activeMenu.content.length && downPress) {
-      setCursor((prevState) => (prevState < activeMenu.content.length - 1 ? prevState + 1 : 0))
+      const newCursor = cursor < activeMenu.content.length - 1 ? cursor + 1 : 0
 
+      setCursor(newCursor)
       // call action with option name as an argument
-      activeMenu.action?.call(
-        this,
-        activeMenu.content[cursor < activeMenu.content.length - 1 ? cursor + 1 : 0].name?.toLowerCase()
-      )
+      activeMenu.action?.call(this, activeMenu.content[newCursor].name?.toLowerCase())
     }
   }, [downPress])
 
@@ -140,6 +128,8 @@ const CommandMenu = () => {
     if (activeMenu.content.length && enterPress) {
       if (activeMenu.content[cursor].goToMenu) {
         setActiveMenu(activeMenu.content[cursor].goToMenu!)
+
+        setCurrentOption(localStorage.getItem(activeMenu.content[cursor].goToMenu!.property!))
 
         // set current option active
         setCursor(
@@ -166,17 +156,17 @@ const CommandMenu = () => {
 
   return (
     showCommandMenu && (
-      <div
-        className={styles.dim}
-        onClick={() => {
-          setShowCommandMenu(false)
-        }}
-      >
+      <div className={styles.dim} onClick={() => setShowCommandMenu(false)}>
         <menu onClick={(event) => event.stopPropagation()}>
           <Searchbar />
           <ul>
             {activeMenu.content.map((item, index) => (
-              <CommandItem key={item.id} item={item} active={index === cursor} />
+              <CommandItem
+                key={item.id}
+                item={item}
+                active={index === cursor}
+                current={item.name.toLowerCase() === currentOption}
+              />
             ))}
           </ul>
         </menu>
