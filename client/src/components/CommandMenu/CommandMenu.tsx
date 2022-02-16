@@ -14,7 +14,7 @@ import Searchbar from 'components/Searchbar/Searchbar'
 
 import { IMenuItem, IMainMenu, ISubMenu } from 'interfaces/Menu.interface'
 import { useTheme } from 'hooks/useTheme'
-import { useKeyPress } from 'hooks/useKeyPress'
+import { useKeyDown } from 'hooks/useKeyDown'
 import MenuReducer from 'reducers/menuReducer'
 
 import styles from './CommandMenu.module.scss'
@@ -48,6 +48,7 @@ const CommandItem = (props: ICommandItem) => (
 const CommandMenu = () => {
   const { switchTheme } = useTheme()
 
+  // TODO: ? smh with switchTheme & move to constants
   const themesMenu: ISubMenu = {
     content: [
       { id: 0, name: 'dark' },
@@ -70,44 +71,20 @@ const CommandMenu = () => {
     ]
   }
 
-  const escPress = useKeyPress('Escape')
-  const upPress = useKeyPress('ArrowUp')
-  const downPress = useKeyPress('ArrowDown')
-  const enterPress = useKeyPress('Enter')
-  const [hovered, setHovered] = React.useState<IMenuItem>()
-
   const initialState = { showMenu: false, activeMenu: mainMenu, cursor: 0, current: null }
   const [state, dispatch] = React.useReducer(MenuReducer, initialState)
-
-  React.useEffect(() => {
-    if (escPress) {
-      dispatch({ type: 'ESC_PRESS', payload: { mainMenu: mainMenu } })
-    }
-  }, [escPress]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  React.useEffect(() => {
-    if (state.activeMenu!.content.length && upPress && state.showMenu) {
-      dispatch({ type: 'UP_PRESS' })
-    }
-  }, [upPress]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  React.useEffect(() => {
-    if (state.activeMenu!.content.length && downPress && state.showMenu) {
-      dispatch({ type: 'DOWN_PRESS' })
-    }
-  }, [downPress]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  React.useEffect(() => {
-    if (state.activeMenu!.content.length && enterPress && state.showMenu) {
-      dispatch({ type: 'ENTER_PRESS', payload: { mainMenu: mainMenu } })
-    }
-  }, [enterPress]) // eslint-disable-line react-hooks/exhaustive-deps
+  const [hovered, setHovered] = React.useState<IMenuItem>()
 
   React.useEffect(() => {
     if (state.activeMenu!.content.length && hovered) {
       dispatch({ type: 'HOVERED', payload: { hovered: hovered } })
     }
   }, [hovered]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useKeyDown('ArrowUp', () => dispatch({ type: 'UP_PRESS' }))
+  useKeyDown('ArrowDown', () => dispatch({ type: 'DOWN_PRESS' }))
+  useKeyDown('Enter', () => dispatch({ type: 'ENTER_PRESS', payload: { mainMenu: mainMenu } }))
+  useKeyDown('Escape', () => dispatch({ type: 'ESC_PRESS', payload: { mainMenu: mainMenu } }))
 
   return (
     state.showMenu && (
