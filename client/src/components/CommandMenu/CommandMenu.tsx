@@ -88,11 +88,11 @@ const CommandMenu = () => {
 
   return (
     state.showMenu && (
-      <div className={styles.dim} onClick={() => dispatch({ type: 'OUTER_CLICK' })}>
+      <div className={styles.dim} onClick={() => dispatch({ type: 'OUTER_CLICK', payload: { mainMenu: mainMenu } })}>
         <menu onClick={(event) => event.stopPropagation()}>
           <Searchbar />
           <ul>
-            {state.activeMenu!.content.map((item, index) => (
+            {state.activeMenu.content.map((item, index) => (
               <CommandItem
                 key={item.id}
                 item={item}

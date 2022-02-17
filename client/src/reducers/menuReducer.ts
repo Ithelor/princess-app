@@ -8,11 +8,9 @@ type State = {
 }
 
 type Action =
-  | { type: 'OUTER_CLICK' }
-  | { type: 'ESC_PRESS'; payload: { mainMenu: IMainMenu } }
-  | { type: 'UP_PRESS' | 'DOWN_PRESS' }
-  | { type: 'ENTER_PRESS'; payload: { mainMenu: IMainMenu } }
   | { type: 'HOVERED'; payload: { hovered: IMenuItem } }
+  | { type: 'UP_PRESS' | 'DOWN_PRESS' }
+  | { type: 'ENTER_PRESS' | 'ESC_PRESS' | 'OUTER_CLICK'; payload: { mainMenu: IMainMenu } }
 
 const findCurrentMenu = (content: IMenuItem[], property: string) => {
   return content.findIndex((item) => item.name.toLowerCase() === property)
@@ -41,7 +39,8 @@ export default function MenuReducer(state: State, action: Action): State {
 
       return {
         ...state,
-        showMenu: false
+        showMenu: false,
+        activeMenu: action.payload.mainMenu
       }
 
     case 'ESC_PRESS':
@@ -57,22 +56,20 @@ export default function MenuReducer(state: State, action: Action): State {
       }
 
     case 'UP_PRESS':
-      return (
-        callAction(state.activeMenu, state.cursor > 0 ? state.cursor - 1 : state.activeMenu.content.length - 1),
-        {
-          ...state,
-          cursor: state.cursor > 0 ? state.cursor - 1 : state.activeMenu.content.length - 1
-        }
-      )
+      callAction(state.activeMenu, state.cursor > 0 ? state.cursor - 1 : state.activeMenu.content.length - 1)
+
+      return {
+        ...state,
+        cursor: state.cursor > 0 ? state.cursor - 1 : state.activeMenu.content.length - 1
+      }
 
     case 'DOWN_PRESS':
-      return (
-        callAction(state.activeMenu, state.cursor < state.activeMenu.content.length - 1 ? state.cursor + 1 : 0),
-        {
-          ...state,
-          cursor: state.cursor < state.activeMenu.content.length - 1 ? state.cursor + 1 : 0
-        }
-      )
+      callAction(state.activeMenu, state.cursor < state.activeMenu.content.length - 1 ? state.cursor + 1 : 0)
+
+      return {
+        ...state,
+        cursor: state.cursor < state.activeMenu.content.length - 1 ? state.cursor + 1 : 0
+      }
 
     case 'ENTER_PRESS':
       return {
