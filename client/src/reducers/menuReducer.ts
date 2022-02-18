@@ -5,12 +5,15 @@ type State = {
   activeMenu: IMainMenu | ISubMenu
   cursor: number
   current: number | null
+  searchResult: IMenuItem[] | []
 }
 
 type Action =
-  | { type: 'HOVERED'; payload: { hovered: IMenuItem } }
   | { type: 'UP_PRESS' | 'DOWN_PRESS' }
-  | { type: 'ENTER_PRESS' | 'ESC_PRESS' | 'OUTER_CLICK'; payload: { mainMenu: IMainMenu } }
+  | { type: 'ENTER_PRESS' | 'OUTER_CLICK'; payload: { mainMenu: IMainMenu } }
+  | { type: 'ESC_PRESS'; payload: { mainMenu: IMainMenu; searchRef: React.RefObject<HTMLInputElement> } }
+  | { type: 'HOVERED'; payload: { hovered: IMenuItem } }
+  | { type: 'SEARCH_CHANGE' }
 
 const findCurrentMenu = (content: IMenuItem[], property: string) => {
   return content.findIndex((item) => item.name.toLowerCase() === property)
@@ -34,17 +37,29 @@ const callAction = (activeMenu: IMainMenu | ISubMenu, index: number) => {
 
 export default function MenuReducer(state: State, action: Action): State {
   switch (action.type) {
+    case 'SEARCH_CHANGE':
+      state.searchResult?.length && state.activeMenu.action && callAction(state.activeMenu, 0)
+
+      return {
+        ...state,
+        activeMenu: state.searchResult ? { ...state.activeMenu, content: state.searchResult } : state.activeMenu,
+        cursor: 0
+      }
+
     case 'OUTER_CLICK':
-      state.activeMenu.action && callAction(state.activeMenu, state.current || 0)
+      state.searchResult?.length && state.activeMenu.action && callAction(state.activeMenu, state.current || 0)
 
       return {
         ...state,
         showMenu: false,
-        activeMenu: action.payload.mainMenu
+        activeMenu: action.payload.mainMenu,
+        searchResult: []
       }
 
     case 'ESC_PRESS':
-      state.activeMenu.action && callAction(state.activeMenu, state.current || 0)
+      state.searchResult?.length && state.activeMenu.action && callAction(state.activeMenu, state.current || 0)
+
+      if (action.payload.searchRef.current) action.payload.searchRef.current.value = ''
 
       return {
         ...state,

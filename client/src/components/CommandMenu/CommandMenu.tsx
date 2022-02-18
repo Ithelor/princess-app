@@ -71,9 +71,10 @@ const CommandMenu = () => {
     ]
   }
 
-  const initialState = { showMenu: false, activeMenu: mainMenu, cursor: 0, current: null }
+  const initialState = { showMenu: false, activeMenu: mainMenu, cursor: 0, current: null, searchResult: [] }
   const [state, dispatch] = React.useReducer(MenuReducer, initialState)
   const [hovered, setHovered] = React.useState<IMenuItem>()
+  const searchRef = React.useRef<HTMLInputElement>(null)
 
   React.useEffect(() => {
     if (state.activeMenu!.content.length && hovered) {
@@ -84,24 +85,35 @@ const CommandMenu = () => {
   useKeyDown('ArrowUp', () => dispatch({ type: 'UP_PRESS' }))
   useKeyDown('ArrowDown', () => dispatch({ type: 'DOWN_PRESS' }))
   useKeyDown('Enter', () => dispatch({ type: 'ENTER_PRESS', payload: { mainMenu: mainMenu } }))
-  useKeyDown('Escape', () => dispatch({ type: 'ESC_PRESS', payload: { mainMenu: mainMenu } }))
+  useKeyDown('Escape', () => dispatch({ type: 'ESC_PRESS', payload: { mainMenu: mainMenu, searchRef: searchRef } }))
 
   return (
     state.showMenu && (
       <div className={styles.dim} onClick={() => dispatch({ type: 'OUTER_CLICK', payload: { mainMenu: mainMenu } })}>
         <menu onClick={(event) => event.stopPropagation()}>
-          <Searchbar />
+          <Searchbar
+            innerRef={searchRef}
+            autoFocus
+            onChange={(event) => {
+              state.searchResult = state.activeMenu.content.filter((item) => item.name.includes(event.target.value))
+              dispatch({ type: 'SEARCH_CHANGE' })
+            }}
+          />
           <ul>
-            {state.activeMenu.content.map((item, index) => (
-              <CommandItem
-                key={item.id}
-                item={item}
-                active={index === state.cursor}
-                current={item.id === state.current}
-                onMouseEnter={() => setHovered(item)}
-                onClick={() => dispatch({ type: 'ENTER_PRESS', payload: { mainMenu: mainMenu } })}
-              />
-            ))}
+            {searchRef.current?.value.length && !state.searchResult.length ? (
+              <li>No results</li>
+            ) : (
+              (state.searchResult.length ? state.searchResult : state.activeMenu.content).map((item, index) => (
+                <CommandItem
+                  key={item.id}
+                  item={item}
+                  active={index === state.cursor}
+                  current={item.id === state.current}
+                  onMouseEnter={() => setHovered(item)}
+                  onClick={() => dispatch({ type: 'ENTER_PRESS', payload: { mainMenu: mainMenu } })}
+                />
+              ))
+            )}
           </ul>
         </menu>
       </div>
