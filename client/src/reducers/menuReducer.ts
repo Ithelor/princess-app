@@ -1,19 +1,23 @@
+import React from 'react'
 import { IMenuItem, IMainMenu, ISubMenu } from 'interfaces/Menu.interface'
 
 type State = {
   showMenu: boolean
   activeMenu: IMainMenu | ISubMenu
+  filteredMenu: IMainMenu | ISubMenu | null
   cursor: number
   current: number | null
   searchResult: IMenuItem[] | []
 }
 
 type Action =
-  | { type: 'UP_PRESS' | 'DOWN_PRESS' }
-  | { type: 'ENTER_PRESS' | 'OUTER_CLICK'; payload: { mainMenu: IMainMenu } }
-  | { type: 'ESC_PRESS'; payload: { mainMenu: IMainMenu; searchRef: React.RefObject<HTMLInputElement> } }
   | { type: 'HOVERED'; payload: { hovered: IMenuItem } }
-  | { type: 'SEARCH_CHANGE' }
+  | { type: 'OUTER_CLICK'; payload: { mainMenu: IMainMenu } }
+  | { type: 'UP_PRESS' | 'DOWN_PRESS' | 'SEARCH_CHANGE'; payload: { searchRef: React.RefObject<HTMLInputElement> } }
+  | {
+      type: 'ESC_PRESS' | 'ENTER_PRESS'
+      payload: { mainMenu: IMainMenu; searchRef: React.RefObject<HTMLInputElement> }
+    }
 
 const findCurrentMenu = (content: IMenuItem[], property: string) => {
   return content.findIndex((item) => item.name.toLowerCase() === property)
@@ -35,31 +39,45 @@ const callAction = (activeMenu: IMainMenu | ISubMenu, index: number) => {
   return activeMenu.action?.call(activeMenu, activeMenu.content[index].name?.toLowerCase())
 }
 
+const clearSearch = (state: State, payload: { searchRef: React.RefObject<HTMLInputElement> }) => {
+  if (payload.searchRef.current) {
+    state.searchResult = []
+    state.filteredMenu = null
+    payload.searchRef.current!.value = ''
+  }
+}
+
 export default function MenuReducer(state: State, action: Action): State {
+  let cursorPos
+
   switch (action.type) {
     case 'SEARCH_CHANGE':
-      state.searchResult?.length && state.activeMenu.action && callAction(state.activeMenu, 0)
+      state.filteredMenu?.content.length && state.activeMenu.action && callAction(state.filteredMenu, 0)
 
       return {
         ...state,
-        activeMenu: state.searchResult ? { ...state.activeMenu, content: state.searchResult } : state.activeMenu,
+        filteredMenu:
+          state.searchResult && action.payload.searchRef.current?.value.length
+            ? { ...state.activeMenu, content: state.searchResult }
+            : state.activeMenu,
         cursor: 0
       }
 
     case 'OUTER_CLICK':
-      state.searchResult?.length && state.activeMenu.action && callAction(state.activeMenu, state.current || 0)
+      state.activeMenu.action && callAction(state.filteredMenu || state.activeMenu, state.current || 0)
 
       return {
         ...state,
         showMenu: false,
-        activeMenu: action.payload.mainMenu,
-        searchResult: []
+        activeMenu: action.payload.mainMenu
       }
 
     case 'ESC_PRESS':
-      state.searchResult?.length && state.activeMenu.action && callAction(state.activeMenu, state.current || 0)
+      state.activeMenu.action && callAction(state.filteredMenu || state.activeMenu, state.current || 0)
 
       if (action.payload.searchRef.current) action.payload.searchRef.current.value = ''
+
+      clearSearch(state, action.payload)
 
       return {
         ...state,
@@ -71,22 +89,34 @@ export default function MenuReducer(state: State, action: Action): State {
       }
 
     case 'UP_PRESS':
-      callAction(state.activeMenu, state.cursor > 0 ? state.cursor - 1 : state.activeMenu.content.length - 1)
+      cursorPos =
+        state.cursor > 0
+          ? state.cursor - 1
+          : (state.filteredMenu?.content.length || state.activeMenu.content.length) - 1
+      ;(state.searchResult.length > 0 || !action.payload.searchRef.current?.value) &&
+        callAction(state.activeMenu, cursorPos)
 
       return {
         ...state,
-        cursor: state.cursor > 0 ? state.cursor - 1 : state.activeMenu.content.length - 1
+        cursor: cursorPos
       }
 
     case 'DOWN_PRESS':
-      callAction(state.activeMenu, state.cursor < state.activeMenu.content.length - 1 ? state.cursor + 1 : 0)
+      cursorPos =
+        state.cursor < (state.filteredMenu?.content.length || state.activeMenu.content.length) - 1
+          ? state.cursor + 1
+          : 0
+      ;(state.searchResult.length > 0 || !action.payload.searchRef.current?.value) &&
+        callAction(state.activeMenu, cursorPos)
 
       return {
         ...state,
-        cursor: state.cursor < state.activeMenu.content.length - 1 ? state.cursor + 1 : 0
+        cursor: cursorPos
       }
 
     case 'ENTER_PRESS':
+      clearSearch(state, action.payload)
+
       return {
         ...state,
         activeMenu: state.activeMenu.content[state.cursor].goToMenu || action.payload.mainMenu,
