@@ -8,6 +8,7 @@ interface SearchbarProps {
   autoFocus?: boolean
   placeholder?: string
   onChange?: React.ChangeEventHandler<HTMLInputElement>
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>
 }
 
 const Searchbar = (props: SearchbarProps) => (
@@ -20,6 +21,7 @@ const Searchbar = (props: SearchbarProps) => (
       autoComplete="off"
       placeholder={props.placeholder || 'サーチ。。'}
       onChange={props.onChange}
+      onKeyDown={props.onKeyDown}
     />
   </div>
 )
