@@ -36,7 +36,9 @@ const findCurrent = (state: State, payload: { mainMenu: IMainMenu }) => {
 }
 
 const callAction = (activeMenu: IMainMenu | ISubMenu, index: number) => {
-  return activeMenu.action?.call(activeMenu, activeMenu.content[index].name?.toLowerCase())
+  const option = activeMenu.content[index].name?.toLowerCase()
+
+  return localStorage.getItem(activeMenu.property!) !== option && activeMenu.action?.call(activeMenu, option)
 }
 
 const clearSearch = (state: State, payload: { searchRef: React.RefObject<HTMLInputElement> }) => {
@@ -52,19 +54,21 @@ export default function MenuReducer(state: State, action: Action): State {
 
   switch (action.type) {
     case 'SEARCH_CHANGE':
-      state.filteredMenu?.content.length && state.activeMenu.action && callAction(state.filteredMenu, 0)
+      const newFilteredMenu =
+        state.searchResult && action.payload.searchRef.current?.value.length
+          ? { ...state.activeMenu, content: state.searchResult }
+          : state.activeMenu
+
+      newFilteredMenu.content.length && state.activeMenu.action && callAction(newFilteredMenu, 0)
 
       return {
         ...state,
-        filteredMenu:
-          state.searchResult && action.payload.searchRef.current?.value.length
-            ? { ...state.activeMenu, content: state.searchResult }
-            : state.activeMenu,
+        filteredMenu: newFilteredMenu,
         cursor: 0
       }
 
     case 'OUTER_CLICK':
-      state.activeMenu.action && callAction(state.filteredMenu || state.activeMenu, state.current || 0)
+      state.activeMenu.action && callAction(state.activeMenu, state.current || 0)
 
       return {
         ...state,
@@ -73,7 +77,7 @@ export default function MenuReducer(state: State, action: Action): State {
       }
 
     case 'ESC_PRESS':
-      state.activeMenu.action && callAction(state.filteredMenu || state.activeMenu, state.current || 0)
+      state.activeMenu.action && callAction(state.activeMenu, state.current || 0)
 
       if (action.payload.searchRef.current) action.payload.searchRef.current.value = ''
 
@@ -94,7 +98,7 @@ export default function MenuReducer(state: State, action: Action): State {
           ? state.cursor - 1
           : (state.filteredMenu?.content.length || state.activeMenu.content.length) - 1
       ;(state.searchResult.length > 0 || !action.payload.searchRef.current?.value) &&
-        callAction(state.activeMenu, cursorPos)
+        callAction(state.filteredMenu || state.activeMenu, cursorPos)
 
       return {
         ...state,
@@ -107,7 +111,7 @@ export default function MenuReducer(state: State, action: Action): State {
           ? state.cursor + 1
           : 0
       ;(state.searchResult.length > 0 || !action.payload.searchRef.current?.value) &&
-        callAction(state.activeMenu, cursorPos)
+        callAction(state.filteredMenu || state.activeMenu, cursorPos)
 
       return {
         ...state,
@@ -125,11 +129,12 @@ export default function MenuReducer(state: State, action: Action): State {
       }
 
     case 'HOVERED':
+      // FIXME: reset on other actions
       callAction(state.activeMenu, action.payload.hovered.id)
 
       return {
         ...state,
-        cursor: state.activeMenu.content.indexOf(action.payload.hovered)
+        cursor: (state.filteredMenu || state.activeMenu).content.indexOf(action.payload.hovered)
       }
 
     default:
