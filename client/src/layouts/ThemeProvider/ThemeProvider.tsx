@@ -2,8 +2,6 @@ import React from 'react'
 
 import { ThemeContext } from 'contexts/ThemeContext'
 
-export const themes: Array<string> = ['dark', 'iceberg_dark', 'laser', 'pulse', 'sonokai']
-
 interface IThemeProvider {
   children: React.ReactChildren
 }
