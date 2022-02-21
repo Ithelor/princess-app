@@ -100,7 +100,7 @@ const CommandMenu = () => {
             autoFocus
             onChange={(event) => {
               state.searchResult = state.activeMenu.content.filter((item) => item.name.includes(event.target.value))
-              dispatch({ type: 'SEARCH_CHANGE', payload: { searchRef: searchRef } })
+              dispatch({ type: 'SEARCH_CHANGE', payload: { mainMenu: mainMenu, searchRef: searchRef } })
             }}
             onKeyDown={(event) => {
               if (event.key === 'ArrowUp' || event.key === 'ArrowDown') event.preventDefault()

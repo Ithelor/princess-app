@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { IMenuItem, IMainMenu, ISubMenu } from 'interfaces/Menu.interface'
 
 type State = {
@@ -12,9 +13,9 @@ type State = {
 
 type Action =
   | { type: 'HOVER'; payload: { hovered: IMenuItem } }
-  | { type: 'SEARCH_CHANGE' | 'UP_PRESS' | 'DOWN_PRESS'; payload: { searchRef: React.RefObject<HTMLInputElement> } }
+  | { type: 'UP_PRESS' | 'DOWN_PRESS'; payload: { searchRef: React.RefObject<HTMLInputElement> } }
   | {
-      type: 'ENTER_PRESS' | 'ESC_PRESS' | 'OUTER_CLICK'
+      type: 'ENTER_PRESS' | 'ESC_PRESS' | 'OUTER_CLICK' | 'SEARCH_CHANGE'
       payload: { mainMenu: IMainMenu; searchRef: React.RefObject<HTMLInputElement> }
     }
 
@@ -26,31 +27,40 @@ const findCurrentOption = (menu: IMainMenu | ISubMenu) => {
   return menu.content.findIndex((item) => item.name === localStorage.getItem(menu.property!))
 }
 
-const findCurrent = (state: State, payload: { mainMenu: IMainMenu }) => {
+const findCurrent = (state: State, mainMenu: IMainMenu) => {
   return state.activeMenu.content[state.cursor].goToMenu
     ? findCurrentOption(state.activeMenu.content[state.cursor].goToMenu!)
     : state.activeMenu.property
-    ? findCurrentMenu(payload.mainMenu.content, state.activeMenu.property!)
+    ? findCurrentMenu(mainMenu.content, state.activeMenu.property!)
     : state.cursor
 }
 
+// NOTE: test lastOption functioning on multiple menus
+let lastOption = ''
 const callAction = (activeMenu: IMainMenu | ISubMenu, index: number) => {
   if (activeMenu.action) {
     const option = activeMenu.content[index].name?.toLowerCase()
-    return localStorage.getItem(activeMenu.property!) !== option && activeMenu.action?.call(activeMenu, option)
+
+    lastOption !== option && activeMenu.action?.call(activeMenu, option)
+    lastOption = option
   }
 }
 
-const clearSearch = (state: State, payload: { searchRef: React.RefObject<HTMLInputElement> }) => {
-  if (payload.searchRef.current) {
+const clearSearch = (state: State, searchRef: React.RefObject<HTMLInputElement>) => {
+  if (searchRef.current) {
     state.searchResult = []
     state.filteredMenu = null
-    payload.searchRef.current!.value = ''
+    searchRef.current!.value = ''
   }
+}
+
+const saveOption = (state: State) => {
+  state.activeMenu.action &&
+    localStorage.setItem(state.activeMenu.property!, state.activeMenu.content[state.cursor].name?.toLowerCase())
 }
 
 export default function MenuReducer(state: State, action: Action): State {
-  let cursorPos
+  let newCursor: number, newFilteredMenu
 
   switch (action.type) {
     case 'HOVER':
@@ -61,80 +71,89 @@ export default function MenuReducer(state: State, action: Action): State {
         cursor: (state.filteredMenu || state.activeMenu).content.indexOf(action.payload.hovered)
       }
 
-    case 'SEARCH_CHANGE':
-      const newFilteredMenu =
-        state.searchResult && action.payload.searchRef.current?.value.length
-          ? { ...state.activeMenu, content: state.searchResult }
-          : state.activeMenu
-
-      if (newFilteredMenu.content.length > 0) callAction(newFilteredMenu, 0)
-      else callAction(state.activeMenu, state.current || 0)
-
-      return {
-        ...state,
-        filteredMenu: newFilteredMenu,
-        cursor: 0
-      }
-
     case 'UP_PRESS':
-      cursorPos =
+      newCursor =
         state.cursor > 0
           ? state.cursor - 1
           : (state.filteredMenu?.content.length || state.activeMenu.content.length) - 1
 
       if (state.searchResult.length > 0 || !action.payload.searchRef.current?.value)
-        callAction(state.filteredMenu || state.activeMenu, cursorPos)
+        callAction(state.filteredMenu || state.activeMenu, newCursor)
 
       return {
         ...state,
-        cursor: cursorPos
+        cursor: newCursor
       }
 
     case 'DOWN_PRESS':
-      cursorPos =
+      newCursor =
         state.cursor < (state.filteredMenu?.content.length || state.activeMenu.content.length) - 1
           ? state.cursor + 1
           : 0
 
       if (state.searchResult.length > 0 || !action.payload.searchRef.current?.value)
-        callAction(state.filteredMenu || state.activeMenu, cursorPos)
+        callAction(state.filteredMenu || state.activeMenu, newCursor)
 
       return {
         ...state,
-        cursor: cursorPos
+        cursor: newCursor
       }
 
     case 'ENTER_PRESS':
-      clearSearch(state, action.payload)
+      saveOption(state)
+      clearSearch(state, action.payload.searchRef)
 
       return {
         ...state,
         activeMenu: state.activeMenu.content[state.cursor].goToMenu || action.payload.mainMenu,
-        cursor: findCurrent(state, action.payload),
-        current: findCurrent(state, action.payload)
+        cursor: findCurrent(state, action.payload.mainMenu),
+        current: findCurrent(state, action.payload.mainMenu)
       }
 
     case 'ESC_PRESS':
+      newCursor = state.activeMenu.action
+        ? findCurrentMenu(action.payload.mainMenu.content, state.activeMenu.property!)
+        : 0
+
       callAction(state.activeMenu, state.current || 0)
-      clearSearch(state, action.payload)
+      clearSearch(state, action.payload.searchRef)
 
       return {
         ...state,
         showMenu: state.activeMenu.action ? state.showMenu : !state.showMenu,
-        cursor: state.activeMenu.action
-          ? findCurrentMenu(action.payload.mainMenu.content, state.activeMenu.property!)
-          : 0,
+        cursor: newCursor,
         activeMenu: state.activeMenu.action ? action.payload.mainMenu : state.activeMenu
       }
 
     case 'OUTER_CLICK':
       callAction(state.activeMenu, state.current || 0)
-      clearSearch(state, action.payload)
+      clearSearch(state, action.payload.searchRef)
 
       return {
         ...state,
         showMenu: false,
         activeMenu: action.payload.mainMenu
+      }
+
+    case 'SEARCH_CHANGE':
+      newFilteredMenu =
+        state.searchResult && action.payload.searchRef.current?.value.length
+          ? { ...state.activeMenu, content: state.searchResult }
+          : state.activeMenu
+
+      newCursor =
+        state.activeMenu.action && !action.payload.searchRef.current?.value.length
+          ? findCurrentOption(state.activeMenu)
+          : 0
+
+      if (state.searchResult.length > 0 || !action.payload.searchRef.current?.value)
+        callAction(newFilteredMenu, newCursor)
+      else callAction(state.activeMenu, findCurrentOption(state.activeMenu) ?? 0)
+
+      return {
+        ...state,
+        filteredMenu: newFilteredMenu,
+        cursor: newCursor
       }
 
     default:

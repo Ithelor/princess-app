@@ -11,10 +11,8 @@ const ThemeProvider = (props: IThemeProvider) => {
     localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches && 'dark') || 'light'
   )
 
-  const switchTheme = (newTheme: string | null) => {
+  const switchTheme = (newTheme?: string) => {
     if (newTheme) setTheme(newTheme!)
-
-    localStorage.setItem('theme', theme!)
 
     const head = document.getElementsByTagName('head')[0]
     let link = document.getElementById('theme') as HTMLLinkElement
@@ -37,7 +35,8 @@ const ThemeProvider = (props: IThemeProvider) => {
     }
   }
 
-  switchTheme(null)
+  switchTheme()
+  !localStorage.getItem('theme') && localStorage.setItem('theme', theme!)
 
   return <ThemeContext.Provider value={{ theme, switchTheme }}>{props.children}</ThemeContext.Provider>
 }
