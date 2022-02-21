@@ -44,11 +44,12 @@ const CommandItem = (props: ICommandItem) => (
 /*
  * CommandMenu component
  */
+// TODO: ? smh with switchTheme & move menus to constants
 // FIXME: cannot update a component (`ThemeProvider`) while rendering a different component (`CommandMenu`)
+// NOTE: likely fires due to double (idk why) rendering
 const CommandMenu = () => {
   const { switchTheme } = useTheme()
 
-  // TODO: ? smh with switchTheme & move to constants
   const themesMenu: ISubMenu = {
     content: [
       { id: 0, name: 'dark' },
@@ -80,14 +81,7 @@ const CommandMenu = () => {
     searchResult: []
   }
   const [state, dispatch] = React.useReducer(MenuReducer, initialState)
-  const [hovered, setHovered] = React.useState<IMenuItem>()
   const searchRef = React.useRef<HTMLInputElement>(null)
-
-  React.useEffect(() => {
-    if (state.activeMenu!.content.length && hovered) {
-      dispatch({ type: 'HOVERED', payload: { hovered: hovered } })
-    }
-  }, [hovered]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useKeyDown('ArrowUp', () => dispatch({ type: 'UP_PRESS', payload: { searchRef: searchRef } }))
   useKeyDown('ArrowDown', () => dispatch({ type: 'DOWN_PRESS', payload: { searchRef: searchRef } }))
@@ -96,14 +90,16 @@ const CommandMenu = () => {
 
   return (
     state.showMenu && (
-      <div className={styles.dim} onClick={() => dispatch({ type: 'OUTER_CLICK', payload: { mainMenu: mainMenu } })}>
+      <div
+        className={styles.dim}
+        onClick={() => dispatch({ type: 'OUTER_CLICK', payload: { mainMenu: mainMenu, searchRef: searchRef } })}
+      >
         <menu onClick={(event) => event.stopPropagation()}>
           <Searchbar
             innerRef={searchRef}
             autoFocus
             onChange={(event) => {
               state.searchResult = state.activeMenu.content.filter((item) => item.name.includes(event.target.value))
-              // FIXME: late filteredMenu update (state.filteredMenu = state.activeMenu ? )
               dispatch({ type: 'SEARCH_CHANGE', payload: { searchRef: searchRef } })
             }}
             onKeyDown={(event) => {
@@ -120,7 +116,7 @@ const CommandMenu = () => {
                   item={item}
                   current={item.id === state.current}
                   active={index === state.cursor}
-                  onMouseEnter={() => setHovered(item)}
+                  onMouseEnter={() => dispatch({ type: 'HOVER', payload: { hovered: item } })}
                   onClick={() =>
                     dispatch({ type: 'ENTER_PRESS', payload: { mainMenu: mainMenu, searchRef: searchRef } })
                   }
