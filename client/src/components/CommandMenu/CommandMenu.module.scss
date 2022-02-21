@@ -50,12 +50,6 @@
           color: var(--color-bg-secondary);
           background-color: var(--color-primary);
         }
-
-        &:hover,
-        &:focus,
-        &:active {
-          @extend .active;
-        }
       }
     }
   }
